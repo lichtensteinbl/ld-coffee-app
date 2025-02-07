@@ -1,56 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <script crossorigin="anonymous" src="https://unpkg.com/launchdarkly-js-client-sdk@3.1.3"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coffee Shop</title>
-    <div id = 'welcome'></div>
     <link rel="stylesheet" href="styles.css">
-      
-
 </head>
 <body>
 
-    <div class="login-container"> 
-        
-    </div>
-     
+    <a href="https://ibb.co/LwzbBgr"><img src="https://i.ibb.co/LwzbBgr/frame.png" alt="frame"></a>
 
-
-
-    <!-- Login Button and Dropdown -->
-    <div class="login-container">
-        <button class="login-btn" onclick="toggleLoginDropdown()">
-            <i class="fas fa-user"></i> Login
-        </button>
-
-        <!-- Login Dropdown -->
-        <div class="login-dropdown" id="loginDropdown">
-            <h3>Login</h3>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit">Login</button>
-            </form>
-        </div>
-    </div>
-
-
+    <!-- Navigation Bar -->
+    <div class="nav-bar">
     
 
+
+        <!-- Login Dropdown -->
+        <div class="login-container">
+            <button class="login-btn" id="loginButton" onclick="toggleLoginDropdown()">
+                <i class="fas fa-user"></i> Login
+            </button>
+            <div class="login-dropdown" id="loginDropdown">
+                <h3>Login</h3>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <h1>ToggleBucks Coffee</h1>
@@ -60,9 +44,9 @@
     <div id="warm-products"></div>
     <h2>Holiday Drinks</h2>
     <div id="holiday-products"></div>
-
-
-  
+    <h2>Food</h2>
+    <div id="food-products"></div>
+   
 
     <script src="app.js"></script>
 </body>

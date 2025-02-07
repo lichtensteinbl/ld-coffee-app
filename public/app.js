@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const warmContainer = document.getElementById('warm-products');
             const coldContainer = document.getElementById('cold-products');
             const holidayContainer = document.getElementById('holiday-products');
+            const foodContainer = document.getElementById('food-products');
             console.log(products)
             products.forEach(product => {
            
@@ -26,95 +27,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 else if (product.temp === 'cold'){
                 coldContainer.appendChild(productElement);
                 }
-                else {
+                else if (product.temp === 'holiday'){
                 holidayContainer.appendChild(productElement);  
                 }
+                else if (product.temp === 'food'){
+                    foodContainer.appendChild(productElement);  
+                    }
             }); 
         });
 
-    updateCart();
 });
 
 
 const context = {
     kind: 'user',
     key: 'context-key-123abc',
-    language: 'spanish'
+    tier: "non-member"
 
   };
 
   const client = LDClient.initialize('64fb46764b5857122177a598', context);
 
-//string flag
+  console.log(context)
 
-  client.on('ready', () => {
-    console.log('ready')
-    // initialization succeeded, flag values are now available
-    const flagValue = client.variationDetail('home-page-banner', false);
-    console.log(flagValue)
-    console.log (flagValue.reason)
-
-//numeric flag
-    const price = client.variation('price-for-coffee', false);
-    console.log('price is ' + price);
-
-  });
-
-
-function addToCart(productId) {
-    fetch('/api/cart', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ productId }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            updateCart();
-        } else {
-            alert('Failed to add product to cart');
-        }
-    });
-}
+const rewardsFlag = client.variation('membership-rewards', false);
+console.log('hey' + rewardsFlag)
 
 //if button is clicked, context user = member
-
-
-function updateCart() {
-    fetch('/api/cart')
-        .then(response => response.json())
-        .then(cart => {
-            const cartContainer = document.getElementById('cart');
-            cartContainer.innerHTML = '<h2>Cart</h2>';
-            if (cart.length === 0) {
-                cartContainer.innerHTML += '<p>Your cart is empty.</p>';
-            } else {
-                cart.forEach(item => {
-                    const cartItem = document.createElement('div');
-                    cartItem.className = 'product';
-                    cartItem.innerHTML = `
-                        <h3>${item.name}</h3>
-                        <p>$${item.price.toFixed(2)}</p>
-                    `;
-                    cartContainer.appendChild(cartItem);
-                });
-            }
-        });
-}
-
-console.log(cart);
-
-document.getElementById('find-store').addEventListener("click", ()=>{
-    console.log('you have logged in')
-    document.getElementById('welcome').innerHTML = 'You have 8000 rewards points available'
-})
-
-
-document.getElementById('clear-cart').addEventListener("click", ()=>{
-    cart.innerHTML = '';
-})
 
 
 
@@ -148,3 +87,64 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
         alert('Invalid username or password');
     }
 });
+
+let currentUser = null;
+
+// Toggle Login Dropdown
+function toggleLoginDropdown() {
+    const dropdown = document.getElementById('loginDropdown');
+    dropdown.classList.toggle('show');
+}
+
+
+function updateUser(username){
+    context.tier = 'member';
+    context.name = username;
+    client.identify(context, function () {
+        console.log("New context's flags available");
+        console.log(client.tier);
+    });
+    
+}
+
+// Handle Login Form Submission
+document.getElementById('loginForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent form submission
+
+    const username = document.getElementById('username').value;
+    if (username) {
+        console.log(username + ' has logged in successfully')
+        updateUser(username)
+        console.log(context)
+        updateLoginUI();
+        toggleLoginDropdown(); // Close dropdown after login
+    }
+   
+
+});
+
+// Logout Function
+function logout() {
+    currentUser = null;
+    updateLoginUI();
+
+    console.log('user has logged out')
+    console.log(newContext)
+    
+}
+
+// Update Login/Logout UI
+function updateLoginUI() {
+    const loginButton = document.getElementById('loginButton');
+    if (currentUser) {
+        loginButton.innerHTML = `<i class="fas fa-user"></i> ${currentUser} (Logout)`;
+        loginButton.onclick = logout;
+        loginButton.classList.remove('login-btn');
+        loginButton.classList.add('logout-btn');
+    } else {
+        loginButton.innerHTML = `<i class="fas fa-user"></i> Login`;
+        loginButton.onclick = toggleLoginDropdown;
+        loginButton.classList.remove('logout-btn');
+        loginButton.classList.add('login-btn');
+    }
+}
