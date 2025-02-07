@@ -6,9 +6,6 @@ const ld = require('@launchdarkly/node-server-sdk');
 const app = express();
 const port = 4000;
 
-app.set('view engine', 'ejs');
-app.set('views', './views');
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -59,19 +56,18 @@ client.on('ready', () => {
     if (showFeature) {
           // application code to show the feature
           coffeeProducts = [
-            { id: 1, temp: 'hot', name: 'Espresso', price: 2.50, img:'https://www.caffesociety.co.uk/assets/recipe-images/espresso-small.jpg'},
-            { id: 2, temp: 'hot', name: 'Cappuccino', price: 3.00, img: "https://www.caffesociety.co.uk/assets/recipe-images/cappuccino-small.jpg"},
-            { id: 3, temp: 'hot', name: 'Latte', price: 3.50, img: 'https://www.caffesociety.co.uk/assets/recipe-images/latte-small.jpg'},
-            { id: 4, temp: 'hot', name: 'Americano', price: 2.00, img: 'https://www.caffesociety.co.uk/assets/recipe-images/americano-small.jpg' },
+            { id: 1, temp: 'hot', name: 'Espresso', price: 2.50, img:'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_Espresso_Single.jpg?impolicy=1by1_wide_topcrop_630'},
+            { id: 2, temp: 'hot', name: 'Cappuccino', price: 3.00, img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_Cappuccino.jpg?impolicy=1by1_wide_topcrop_630"},
+            { id: 3, temp: 'hot', name: 'Latte', price: 3.50, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_CaffeLatte.jpg?impolicy=1by1_wide_topcrop_630'},
+            { id: 4, temp: 'hot', name: 'Americano', price: 2.00, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_CaffeAmericano.jpg?impolicy=1by1_wide_topcrop_630' },
             { id: 5, temp: 'cold',name: 'Iced Coffee', price: 2.50, img:'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190422_IcedVanillaLatte.jpg?impolicy=1by1_wide_topcrop_630'},
             { id: 6, temp: 'cold',name: 'Matcha Latte', price: 3.00, img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20181127_IcedMatchaGreenTeaLatte.jpg?impolicy=1by1_wide_topcrop_630"},
-            { id: 7, temp: 'cold',name: 'Cortado', price: 3.50, img: 'https://popmenucloud.com/cdn-cgi/image/width=640,height=640,format=auto,fit=scale-down/qvtwsegp/75e50c66-45de-4f0e-bdf1-ae7adb9c80ec.png'},
-            { id: 8, temp: 'cold',name: 'Rasberry Refresher', price: 2.00, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20221206_MangoDragonfruitRefreshers.jpg?impolicy=1by1_wide_topcrop_630' },
-            { id: 9, temp: 'holiday', name: 'Peppermint Mocha', price: 2.50, img:'https://about.starbucks.com/uploads/2024/11/Starbucks-Peppermint-Mocha.png'},
-            { id: 10, temp: 'holiday', name: 'Caramel Brulee Latte', price: 3.00, img: "https://about.starbucks.com/uploads/2024/11/Starbucks-Caramel-Brulee-Latte.png"},
-            { id: 11, temp: 'holiday', name: 'Chestnut Praline Latte', price: 3.50, img: 'https://www.caffesociety.co.uk/assets/recipe-images/latte-small.jpg'},
-            { id: 12, temp: 'holiday', name: 'Iced Gingerbread Chai', price: 2.00, img: 'https://www.caffesociety.co.uk/assets/recipe-images/americano-small.jpg' },
-
+            { id: 8, temp: 'cold', name: 'Rasberry Refresher', price: 2.00, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20221206_MangoDragonfruitRefreshers.jpg?impolicy=1by1_wide_topcrop_630' },
+            { id: 11, temp: 'holiday', name: 'Chestnut Praline Latte', price: 3.50, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190716_ChestnutPralineCreme.jpg?impolicy=1by1_wide_topcrop_630'},
+            { id: 9, temp: 'holiday', name: 'Peppermint Mocha', price: 2.50, img:'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20230612_4613_PeppermintMochaFrappuccino-onGreen-MOP_1800.jpg?impolicy=1by1_wide_topcrop_630'},
+            { id: 10, temp: 'holiday', name: 'Caramel Brulee Latte', price: 3.00, img: "https://globalassets.starbucks.com/digitalassets/products/bev/CaramelBruleeFrappuccino.jpg?impolicy=1by1_wide_topcrop_630"},
+            { id: 12, temp: 'cold', name: 'Iced Gingerbread Chai', price: 2.00, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20230612_4846_IcedGingerbreadOatmilkChai-onGreen-MOP_1800.jpg?impolicy=1by1_wide_topcrop_630term' },
+ 
         ];
         } 
         else {
@@ -82,7 +78,7 @@ client.on('ready', () => {
                 { id: 4, temp: 'hot', name: 'Americano', price: 2.00, img: 'https://www.caffesociety.co.uk/assets/recipe-images/americano-small.jpg' },
                 { id: 5, name: 'Iced Coffee', price: 2.50, img:'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190422_IcedVanillaLatte.jpg?impolicy=1by1_wide_topcrop_630'},
                 { id: 6, name: 'Matcha Latte', price: 3.00, img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20181127_IcedMatchaGreenTeaLatte.jpg?impolicy=1by1_wide_topcrop_630"},
-                { id: 7, name: 'Cortado', price: 3.50, img: 'https://popmenucloud.com/cdn-cgi/image/width=640,height=640,format=auto,fit=scale-down/qvtwsegp/75e50c66-45de-4f0e-bdf1-ae7adb9c80ec.png'},
+                { id: 7, name: 'Cortado', price: 3.50, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/Cortado.jpg?impolicy=1by1_wide_topcrop_630'},
                 { id: 8, name: 'Rasberry Refresher', price: 2.00, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20221206_MangoDragonfruitRefreshers.jpg?impolicy=1by1_wide_topcrop_630' },
               
             ];
@@ -99,10 +95,6 @@ app.get('/api/products', (req, res) => {
     res.json(coffeeProducts);
 });
 
-app.get('members', (req, res) => {
-    res.send('membership page');
-  });
-
 app.post('/api/cart', (req, res) => {
     const product = coffeeProducts.find(p => p.id === req.body.productId);
     if (product) {
@@ -112,8 +104,6 @@ app.post('/api/cart', (req, res) => {
         res.status(404).json({ success: false, message: 'Product not found' });
     }
 });
-app.use(express.static('public'));
-
 
 app.get('/api/cart', (req, res) => {
     res.json(cart);
