@@ -109,6 +109,6 @@ app.get('/api/cart', (req, res) => {
     res.json(cart);
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
