@@ -4,49 +4,68 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <script crossorigin="anonymous" src="https://unpkg.com/launchdarkly-js-client-sdk@3.1.3"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <meta charset="UTF-8">
+    <script crossorigin="anonymous" src="https://unpkg.com/launchdarkly-js-client-sdk@3.1.3"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coffee Shop</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <a href="https://ibb.co/LwzbBgr"><img src="https://i.ibb.co/LwzbBgr/frame.png" alt="frame"></a>
-
     <!-- Navigation Bar -->
     <div class="nav-bar">
-    
+        <div class="hamburger" onclick="toggleNav()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <a href="#">Menu</a>
+            <a href="#">Rewards</a>
+            <a href="#">Support</a>
+            <button class="cart-btn" id="cartButtonMobile" style = 'display: none'>
+                <i class="fas fa-shopping-cart"></i> <span id="cartCountMobile">0</span>
+            </button>
+            <button class="login-btn" id="loginButtonMobile" style = 'display: none' onclick="toggleLoginDropdown()">
+                <i class="fas fa-user"></i> Sign In
+            </button>
+        </div>
 
-
-        <!-- Login Dropdown -->
+        <h1>ToggleBucks</h1>
         <div class="login-container">
-            <button class="login-btn" id="loginButton" onclick="toggleLoginDropdown()">
-                <i class="fas fa-user"></i> Login
+            <button class="login-btn" id="loginButtonDesktop" onclick="toggleLoginDropdown()">
+                <i class="fas fa-user"></i> Sign In
+            </button>
+            <button class="cart-btn" id="cartButtonDesktop">
+                <i class="fas fa-shopping-cart"></i> <span id="cartCountDesktop">0</span>
             </button>
             <div class="login-dropdown" id="loginDropdown">
-                <h3>Login</h3>
-                <form id="loginForm">
+                <h3>Sign In</h3>
+                <form id="loginForm"> 
                     <div class="form-group">
                         <label for="username">Username:</label>
                         <input type="text" id="username" name="username" required>
                     </div>
-                    <button type="submit">Login</button>
+                    <button type="submit">Sign In</button>
                 </form>
             </div>
         </div>
     </div>
 
-    <h1>ToggleBucks Coffee</h1>
-    <h2>Cold Drinks</h2>
-    <div id="cold-products"></div>
-    <h2>Warm Drinks</h2>
-    <div id="warm-products"></div>
-    <h2>Holiday Drinks</h2>
-    <div id="holiday-products"></div>
-    <h2>Food</h2>
-    <div id="food-products"></div>
-   
+    <!-- Product Sections -->
+    <div class="container">
+        <h2 id="holiday-text" style="display: none">Holiday Favorites ❄️ 🎄</h2>
+        <div id="holiday-products" style="display: none" class="product-grid"></div>
+
+        <h2>Cold Drinks</h2>
+        <div id="cold-products" class="product-grid"></div>
+
+        <h2>Hot Drinks</h2>
+        <div id="warm-products" class="product-grid"></div>
+
+        <h2>Food</h2>
+        <div id="food-products" class="product-grid"></div>
+    </div>
 
     <script src="app.js"></script>
 </body>
