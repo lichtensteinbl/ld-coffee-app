@@ -19,7 +19,7 @@ function showHolidayDrinks() {
         holidayProducts.style.display = 'none';  
     } else {
         holidayText.style.display = 'block';
-        holidayProducts.style.display = 'flex';  // Use 'flex' to maintain horizontal layout
+        holidayProducts.style.display = 'flex';  
     }
 }
 
@@ -31,7 +31,6 @@ function getProducts() {
             const coldContainer = document.getElementById('cold-products');
             const foodContainer = document.getElementById('food-products');
             const holidayContainer = document.getElementById('holiday-products');
-            console.log(products);
 
             products.forEach(product => {
                 const productElement = document.createElement('div');
@@ -58,7 +57,9 @@ function getProducts() {
             });
 
             // Call the function to make images circular
-            makeImagesCircular();
+            if (circleLogos !== 'Rectangle'){
+                makeImagesCircular();
+            } 
         });
 }
 
@@ -69,12 +70,28 @@ function makeImagesCircular() {
     // Loop through each image and apply circular styles
     productImages.forEach(img => {
         // Apply styles to make the image circular
-        img.style.width = '150px'; // Set a fixed width
-        img.style.height = '150px'; // Set a fixed height
+        img.style.width = '250px'; // Set a fixed width
+        img.style.height = '250px'; // Set a fixed height
         img.style.borderRadius = '50%'; // Make the image circular
         img.style.objectFit = 'cover'; // Ensure the image covers the circle without distortion
         img.style.display = 'block'; // Ensure the image is a block element
         img.style.margin = '0 auto'; // Center the image horizontally
+    });
+}
+
+function makeImagesRectangle() {
+    // Select all product images
+    const productImages = document.querySelectorAll('.product img');
+
+    // Loop through each image and remove circular styles
+    productImages.forEach(img => {
+        // Remove styles to revert the image back to rectangle
+        img.style.width = ''; // Remove fixed width
+        img.style.height = ''; // Remove fixed height
+        img.style.borderRadius = ''; // Remove circular border radius
+        img.style.objectFit = ''; // Remove object fit
+        img.style.display = ''; // Remove block display
+        img.style.margin = ''; // Remove horizontal centering
     });
 }
 
@@ -135,6 +152,7 @@ function logout() {
     delete context.name;
     client.identify(context, function () {
         console.log("Context reset to non-member");
+        console.log(context)
     });
     updateLoginUI();
     console.log('user has logged out');
@@ -184,15 +202,47 @@ function updateCartCount() {
 
 client.on('ready', () => {
     holidayDrinks = client.variation('release-holiday-drinks', context, false);
+    membershipRewards = client.variation('membership-rewards', context, false);
+    circleLogos = client.variation('circular-logos', context, false);
+    console.log('circle logos is ' + circleLogos);
     console.log('client is ready');
     console.log(holidayDrinks);
     getProducts();
     showHolidayDrinks();
+    checkmember();
 });
 
 client.on('change', () => {
     holidayDrinks = client.variation('release-holiday-drinks', context, false);
+    membershipRewards = client.variation('membership-rewards', context, false);
+    circleLogos = client.variation('circular-logos', context, false);
     console.log(holidayDrinks);
     console.log('flag has changed');
+    if (circleLogos === 'Treatment 1') {
+        makeImagesCircular();
+    } else {
+        makeImagesRectangle();
+    }
     showHolidayDrinks();
+    checkmember();
 });
+
+
+function checkmember() {
+    const rewardsBanner = document.getElementById('rewardsBanner');
+    if (membershipRewards) {
+        rewardsBanner.style.display = 'block';
+        rewardsBanner.innerHTML = `
+            Congrats ${context.name}! You have 800 LaunchBucks! 🚀
+            <button onclick="redeemRewards()">Redeem</button>
+        `;
+        console.log('youre a member');
+    } else {
+        rewardsBanner.style.display = 'none';
+    }
+}
+
+function redeemRewards() {
+    alert('Rewards redeemed!');
+    // Add any additional logic for redeeming rewards here
+}

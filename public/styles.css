@@ -282,3 +282,94 @@ h1, h2 {
         border-radius: 20px; /* Match the login button style */
     }
 }
+
+
+/* Hero Section */
+.hero-section {
+    /*background-image: url('https://res.cloudinary.com/the-infatuation/image/upload/v1679083346/images/NYC_PrinceCoffee_Interior_EmilySchindler_02_swb6er.jpg'); /* Replace with your hero image */
+    background-size: cover;
+    background-position: center;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    text-align: center;
+    margin-top: 60px; /* Offset for fixed nav */
+    margin-bottom: 0; /* Decrease the space below the hero section */
+}
+
+.hero-content h1 {
+    font-size: 48px;
+    margin: 0;
+}
+
+.hero-content p {
+    font-size: 24px;
+    margin: 10px 0;
+    color:black
+}
+
+#rewards-sections {
+    font-size: 24px; /* Adjust the font size as needed */
+    color: black; /* Starbucks green */
+    text-align: center;
+    margin: 20px 0;
+}
+
+.redeem-btn {
+    background-color: #ffcc00; /* Gold color for the redeem button */
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px; /* Rounded corners */
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 10px; /* Add some space above the button */
+}
+
+.redeem-btn:hover {
+    background-color: #e6b800; /* Darker gold on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.redeem-btn:active {
+    transform: scale(0.95); /* Slightly shrink the button when clicked */
+}
+
+/* Rewards Banner */
+.rewards-banner {
+    background-color: #ffcc00; /* Gold color */
+    color: #333;
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    position: fixed;
+    top: 60px; /* Adjust based on your nav bar height */
+    left: 0;
+    right: 0;
+    z-index: 999; /* Ensure banner is above other elements */
+    display: none; /* Hide by default */
+}
+
+.rewards-banner button {
+    background-color: #006241;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+.rewards-banner button:hover {
+    background-color: #004d33;
+}
