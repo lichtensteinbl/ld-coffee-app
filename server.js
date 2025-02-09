@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ld = require('@launchdarkly/node-server-sdk');
-const { Configuration, OpenAIApi } = require('openai');
 
 const app = express();
 const port = 4004;
@@ -10,28 +9,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-// Initialize OpenAI API with your API key
-const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY, // Use environment variable for API key
-});
-const openai = new OpenAIApi(configuration);
-
-// Function to ask GPT a question
-async function askGPT(prompt) {
-    try {
-        const response = await openai.createCompletion({
-            model: "text-davinci-003",  // or "gpt-3.5-turbo"
-            prompt: prompt,
-            max_tokens: 150,
-        });
-
-        // Return the text of the first choice
-        return response.data.choices[0].text.trim();
-    } catch (error) {
-        console.error("Error fetching response from OpenAI:", error);
-        return "Sorry, there was an error processing your request.";
-    }
-}
 
 // Endpoint to handle chatbot requests
 app.post('/api/chatbot', async (req, res) => {
