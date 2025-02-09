@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script crossorigin="anonymous" src="https://unpkg.com/launchdarkly-js-client-sdk@3.1.3"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Support - Coffee Shop</title>
@@ -28,9 +29,19 @@
             <button class="cart-btn" id="cartButtonMobile" onclick="toggleCartDropdown()" style="display: none">
                 <i class="fas fa-shopping-cart"></i> <span id="cartCountMobile">0</span>
             </button>
-            <button class="login-btn" id="loginButtonMobile" style="display: none" onclick="toggleLoginDropdown()">
+            <button class="login-btn" id="loginButtonMobile" style="display: block" onclick="toggleLoginDropdownMobile()">
                 <i class="fas fa-user"></i> Sign In
             </button>
+            <div class="login-dropdown" id="loginDropdownMobile" style="display: none;">
+                <h3>Sign In</h3>
+                <form id="loginFormMobile">
+                    <div class="form-group">
+                        <label for="usernameMobile">Username:</label>
+                        <input type="text" id="usernameMobile" name="username" required>
+                    </div>
+                    <button type="submit">Sign In</button>
+                </form>
+            </div>
         </div>
 
         <h1>ToggleBucks</h1>
@@ -63,6 +74,21 @@
         </div>
     </div>
 
+    <div id="qrModal" class="qr-modal">
+        <div class="qr-modal-content">
+            <span class="qr-modal-close" onclick="toggleQRModal()">&times;</span>
+            <h2>Scan this QR Code</h2>
+            <img src="https://i.ibb.co/LwzbBgr/frame.png" alt="QR Code">
+        </div>
+    </div>
+
+    <script src="app.js"></script>
     <script src="support.js"></script>
+    <script>
+        function toggleNav() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('show');
+        }
+    </script>
 </body>
 </html>

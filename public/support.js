@@ -64,4 +64,22 @@ window.onclick = function(event) {
     if (event.target === qrModal) {
         qrModal.style.display = 'none';
     }
-};
+}
+
+// Handle Mobile Login Form Submission
+document.getElementById('loginFormMobile').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
+
+    const username = document.getElementById('usernameMobile').value;
+
+    // Accept any username for login
+    if (username) {
+        console.log(username + ' has logged in successfully');
+        currentUser = username;
+        localStorage.setItem('currentUser', username); // Save username to localStorage
+        updateUser(username);
+        toggleLoginDropdownMobile(); // Close dropdown after login
+    } else {
+        alert('Please enter a username');
+    }
+});

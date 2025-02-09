@@ -76,6 +76,10 @@ h2 {
     color: #006241;
 }
 
+.nav-links.show {
+    display: block;
+}
+
 /* Login Container */
 .login-container {
     margin-left: auto; /* Push the login container to the right */
