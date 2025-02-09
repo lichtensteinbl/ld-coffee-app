@@ -81,6 +81,11 @@ app.get('/api/cart', (req, res) => {
     res.status(200).json({ cart, totalPrice });
 });
 
+app.post('/api/checkout', (req, res) => {
+    cart = [];
+    res.status(200).json({ message: 'Thanks for shopping with us!' });
+});
+
 app.listen(process.env.PORT || port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });

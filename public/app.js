@@ -1,6 +1,6 @@
 const context = {
     kind: 'user',
-    key: 'context-key-123abc',
+    key: 'userabc',
     tier: "non-member"
 };
 
@@ -39,7 +39,7 @@ function getProducts() {
                     <h3>${product.name}</h3>
                     <p>$${product.price.toFixed(2)}</p>
                     <img src="${product.img}" alt="${product.name}">
-                    <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+                    <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add To Order</button>
                 `;
 
                 if (product.temp === 'hot') {
@@ -149,7 +149,7 @@ function updateUser(username) {
 function logout() {
     currentUser = null;
     context.tier = 'non-member';
-    delete context.name;
+    context.name = 'userabc';
     client.identify(context, function () {
         console.log("Context reset to non-member");
         console.log(context)
@@ -187,17 +187,101 @@ function updateLoginUI() {
 
 // Add to Cart Function
 function addToCart(productId) {
-    cartCount++;
-    updateCartCount();
-    console.log(`Product ${productId} added to cart. Total items: ${cartCount}`);
+    fetch('/api/cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: productId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message === 'Item added to cart') {
+            cart = data.cart;
+            updateCartCount();
+            updateCartUI();
+            console.log(`Product ${productId} added to cart. Total items: ${cart.length}`);
+        } else {
+            console.error('Failed to add item to cart');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// Toggle Cart Dropdown
+function toggleCartDropdown() {
+    const cartDropdown = document.getElementById('cartDropdown');
+    cartDropdown.classList.toggle('show');
+}
+
+// Update Cart UI
+function updateCartUI() {
+    const cartItemsContainer = document.getElementById('cartItems');
+    const totalPriceElement = document.getElementById('totalPrice');
+    cartItemsContainer.innerHTML = '';
+    let totalPrice = 0;
+
+    cart.forEach(item => {
+        const cartItemElement = document.createElement('div');
+        cartItemElement.className = 'cart-item';
+        cartItemElement.innerHTML = `
+            <img src="${item.img}" alt="${item.name}">
+            <div>
+                <span>${item.name}</span>
+                <p>$${item.price.toFixed(2)}</p>
+            </div>
+            <button onclick="removeFromCart(${item.id})">Remove</button>
+        `;
+        cartItemsContainer.appendChild(cartItemElement);
+        totalPrice += item.price;
+    });
+
+    totalPriceElement.textContent = `Total: $${totalPrice.toFixed(2)}`;
+}
+
+// Remove from Cart Function
+function removeFromCart(productId) {
+    fetch(`/api/cart/${productId}`, { method: 'DELETE' })
+        .then(response => response.json())
+        .then(data => {
+            cart = data.cart;
+            updateCartUI();
+            updateCartCount();
+        });
+}
+
+// Checkout Function
+function checkout() {
+    fetch('/api/checkout', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            cart = [];
+            updateCartUI();
+            updateCartCount();
+        });
 }
 
 // Update Cart Count
 function updateCartCount() {
     const cartCountMobile = document.getElementById('cartCountMobile');
     const cartCountDesktop = document.getElementById('cartCountDesktop');
+    const cartCount = cart.length;
     if (cartCountMobile) cartCountMobile.textContent = cartCount;
     if (cartCountDesktop) cartCountDesktop.textContent = cartCount;
+    updateCartUI();
+}
+
+// Fetch Cart from Server
+function fetchCart() {
+    fetch('/api/cart')
+        .then(response => response.json())
+        .then(data => {
+            cart = data.cart;
+            updateCartCount();
+            updateCartUI();
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 client.on('ready', () => {
@@ -210,6 +294,7 @@ client.on('ready', () => {
     getProducts();
     showHolidayDrinks();
     checkmember();
+    fetchCart(); // Fetch cart when client is ready
 });
 
 client.on('change', () => {
@@ -246,3 +331,18 @@ function redeemRewards() {
     alert('Rewards redeemed!');
     // Add any additional logic for redeeming rewards here
 }
+
+// Add event listener to the cart button
+document.getElementById('cartButtonDesktop').addEventListener('click', toggleCartDropdown);
+
+/*/ Add event listener to the "Add to Cart" button
+document.getElementById('id="cartButtonDesktop').addEventListener('click', () => {
+    // Track the event in LaunchDarkly
+    ldClient.track('add-to-cart-clicked', { key: context.key }, 1);
+
+    // Optional: Log to console for debugging
+    console.log('Add to Cart button clicked', context.key);
+});*/
+
+
+
