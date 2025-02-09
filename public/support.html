@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SoDo+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - Coffee Shop</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="nav-bar">
+        <div class="hamburger" onclick="toggleNav()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">Menu</a>
+            <a href="rewards.html">Rewards</a>
+            <a href="support.html">Support</a>
+            <a href="#" onclick="toggleQRModal()">QR Code</a>
+            <button class="cart-btn" id="cartButtonMobile" onclick="toggleCartDropdown()" style="display: none">
+                <i class="fas fa-shopping-cart"></i> <span id="cartCountMobile">0</span>
+            </button>
+            <button class="login-btn" id="loginButtonMobile" style="display: none" onclick="toggleLoginDropdown()">
+                <i class="fas fa-user"></i> Sign In
+            </button>
+        </div>
+
+        <h1>ToggleBucks</h1>
+        <div class="login-container">
+            <button class="login-btn" id="loginButtonDesktop" onclick="toggleLoginDropdown()">
+                <i class="fas fa-user"></i> Sign In
+            </button>
+            <button class="cart-btn" id="cartButtonDesktop" onclick="toggleCartDropdown()">
+                <i class="fas fa-shopping-cart"></i> <span id="cartCountDesktop">0</span>
+            </button>
+            <div class="login-dropdown" id="loginDropdown">
+                <h3>Sign In</h3>
+                <form id="loginForm"> 
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <button type="submit">Sign In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="support-container">
+        <h2>Support Chat</h2>
+        <div class="chat-box" id="chatBox"></div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Type your message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script src="support.js"></script>
+</body>
+</html>
