@@ -312,29 +312,63 @@ h2 {
     }
 
     .product {
-        width: 200px; /* Reduce product width */
+        width: 150px; /* Reduce product width */
+        height: auto; /* Adjust product height to fit content */
     }
 
     .add-to-cart-btn {
-        padding: 8px 16px; /* Reduce padding */
+        padding: 6px 12px; /* Reduce padding */
+        font-size: 10px; /* Reduce font size */
+    }
+
+    .product img {
+        height: auto; /* Adjust image height to fit content */
+    }
+
+    .product h3 {
+        font-size: 14px; /* Reduce font size */
+    }
+
+    .product p {
         font-size: 12px; /* Reduce font size */
     }
 
+    .chat-box {
+        height: 300px; /* Reduce chat box height */
+    }
+
+    .chat-input input {
+        padding: 8px; /* Reduce padding */
+    }
+
+    .chat-input button {
+        padding: 8px 16px; /* Reduce padding */
+    }
+
+    .chat-bubble {
+        padding: 8px; /* Reduce padding */
+    }
+
+    .chat-logo {
+        width: 20px; /* Reduce logo size */
+        height: 20px; /* Reduce logo size */
+    }
+
     .hero-content h1 {
-        font-size: 36px; /* Reduce font size */
+        font-size: 32px; /* Reduce font size */
     }
 
     .hero-content p {
-        font-size: 18px; /* Reduce font size */
-    }
-
-    .rewards-banner {
         font-size: 16px; /* Reduce font size */
     }
 
-    .rewards-banner button {
-        padding: 8px 16px; /* Reduce padding */
+    .rewards-banner {
         font-size: 14px; /* Reduce font size */
+    }
+
+    .rewards-banner button {
+        padding: 6px 12px; /* Reduce padding */
+        font-size: 12px; /* Reduce font size */
     }
 }
 
