@@ -9,17 +9,17 @@ body {
 }
 
 h1 {
-    color: #006241; /* Starbucks green */
+    color: #006241;
 }
 
 h2 {
-    color: black; /* Starbucks green */
+    color: black;
 }
 
 .container {
     padding: 20px;
-    max-width: 1400px; /* Increased from 1200px to 1400px */
-    margin: 80px auto 0 auto; /* Add top margin to prevent overlap with nav bar */
+    max-width: 1400px;
+    margin: 80px auto 0 auto;
 }
 
 /* Navigation Bar */
@@ -37,12 +37,42 @@ h2 {
     z-index: 1000;
 }
 
+.nav-bar h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-family: 'Pacifico', cursive;
+    font-weight: 300;
+}
+
+/* Login Dropdown */
+.login-dropdown {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 250px;
+    border-radius: 10px;
+    z-index: 1003;
+}
+
+.login-dropdown.show {
+    display: block;
+}
+
 /* Center the ToggleBucks text */
 .nav-bar h1 {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     margin: 0;
+    font-family: 'Pacifico', cursive; /* Thin script font */
+    font-weight: 300; /* Thin weight */
 }
 
 /* Hamburger Menu */
@@ -117,7 +147,7 @@ h2 {
     padding: 20px;
     width: 250px;
     border-radius: 10px;
-    z-index: 1002; /* Ensure dropdown is above the rewards banner */
+    z-index: 1003; /* Ensure dropdown is above the rewards banner */
 }
 
 .login-dropdown.show {
@@ -475,58 +505,6 @@ h2 {
     transform: scale(0.95); /* Slightly shrink the button when clicked */
 }
 
-/* Rewards Banner */
-.rewards-banner {
-    background: linear-gradient(90deg, #ffcc00, #ff9900); /* Gradient background */
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    display: none;
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
-
-.rewards-content {
-    display: flex;
-    justify-content: center; /* Center the content */
-    align-items: center;
-    gap: 10px; /* Add some space between the text and the button */
-}
-
-.rewards-text {
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.rewards-banner button {
-    background-color: #006241; 
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    margin-left: 10px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.rewards-banner button:hover {
-    background-color: #004d33;
-    transform: scale(1.05);
-}
-
-.rewards-banner button:active {
-    transform: scale(0.95);
-}
-
 /* Holiday Drinks Styles */
 #holiday-text {
     font-family: 'Pacifico', cursive; /* Festive font */
@@ -676,11 +654,27 @@ h2 {
 
 /* Holiday Favorites Container */
 #holiday-products {
-    background-color: #fff5e6; /* Light cream background */
+    background-color: white; /* Match the background color of other products */
     border: 2px solid #b22222; /* Christmas red border */
     border-radius: 10px; /* Rounded corners */
     padding: 20px; /* Padding inside the container */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    background-image: url('https://www.transparenttextures.com/patterns/brick-wall.png'); /* Festive background pattern */
-    background-size: cover; /* Cover the entire container */
+    /* Remove the background image */
+    background-image: none;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-in-out;
 }

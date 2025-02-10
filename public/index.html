@@ -71,7 +71,7 @@
     <div class="hero-section" style = "display: none">
         <br>
         <br>
-        <div id = 'rewards-sections' ></div>
+        <div id = 'rewards-sections' style = ></div>
 
         <div class="hero-content">
         </div>
@@ -92,13 +92,6 @@
         <div id="food-products" class="product-grid"></div>
     </div>
 
-    <div class="rewards-banner" id="rewardsBanner">
-        <div class="rewards-content">
-            <span class="rewards-text">🎉 You've earned <strong>800 LaunchBucks</strong>! 🚀</span>
-            <button class="redeem-btn" onclick="redeemRewards()">Redeem Now</button>
-        </div>
-    </div>
-
     <!-- QR Code Modal -->
     <div id="qrModal" class="qr-modal">
         <div class="qr-modal-content">
@@ -112,11 +105,7 @@
     <script>
         function toggleNav() {
             const navLinks = document.getElementById('navLinks');
-            const rewardsBanner = document.getElementById('rewardsBanner');
             navLinks.classList.toggle('show');
-            if (window.innerWidth <= 768) {
-                rewardsBanner.style.display = navLinks.classList.contains('show') ? 'none' : 'none';
-            }
         }
 
         window.onload = function() {

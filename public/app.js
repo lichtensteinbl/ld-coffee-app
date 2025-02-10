@@ -41,6 +41,27 @@ function showHolidayDrinks() {
     }
 }
 
+function showHolidayAnimation() {
+    console.log('showing drinks with animation');
+    const holidayText = document.getElementById('holiday-text');
+    const holidayProducts = document.getElementById('holiday-products');
+
+    if (!holidayDrinks) {
+        holidayText.style.display = 'none';
+        holidayProducts.style.display = 'none';
+    } else {
+        holidayText.style.display = 'block';
+        holidayProducts.style.display = 'flex';
+        // Add fade-in animation
+        holidayText.classList.add('fade-in');
+        holidayProducts.classList.add('fade-in');
+        setTimeout(() => {
+            holidayText.classList.remove('fade-in');
+            holidayProducts.classList.remove('fade-in');
+        }, 1000); // Duration of the animation
+    }
+}
+
 const brokenURL = 'https://globalassets.starbucks.com/djpg?impolicy=1by1_wide_topcrop_630';
 
 function createImageErrors() {
@@ -142,11 +163,7 @@ function makeImagesRectangle() {
 //Toggle Navigation Menu
 function toggleNav() {
     const navLinks = document.getElementById('navLinks');
-    const rewardsBanner = document.getElementById('rewardsBanner');
     navLinks.classList.toggle('show');
-    if (window.innerWidth <= 768) {
-        rewardsBanner.style.display = navLinks.classList.contains('show') ? 'none' : 'block';
-    }
 }
 
 // Toggle Login Dropdown
@@ -180,54 +197,60 @@ window.onclick = function (event) {
 };
 
 // Handle Form Submission
-document.getElementById('loginForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent form submission
+const loginForm = document.getElementById('loginForm');
+if (loginForm) {
+    loginForm.addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent form submission
 
-    const username = document.getElementById('username').value;
+        const username = document.getElementById('username').value;
 
-    // Accept any username for login
-    if (username) {
-        console.log(username + ' has logged in successfully');
-        currentUser = username;
-        localStorage.setItem('currentUser', username); // Save username to localStorage
-        checkmember()
-        updateUser(username);
-        if (username.length > 5) {
-            createImageErrors();
+        // Accept any username for login
+        if (username) {
+            console.log(username + ' has logged in successfully');
+            currentUser = username;
+            localStorage.setItem('currentUser', username); // Save username to localStorage
+            //checkmember();
+            updateUser(username);
+            if (username.length > 5) {
+                createImageErrors();
+            }
+
+            console.log(context);
+            updateLoginUI();
+            toggleLoginDropdown(); // Close dropdown after login
+        } else {
+            alert('Please enter a username');
         }
-
-        console.log(context);
-        updateLoginUI();
-        toggleLoginDropdown(); // Close dropdown after login
-    } else {
-        alert('Please enter a username');
-    }
-});
+    });
+}
 
 // Handle Mobile Form Submission
-document.getElementById('loginFormMobile').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent form submission
+const loginFormMobile = document.getElementById('loginFormMobile');
+if (loginFormMobile) {
+    loginFormMobile.addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent form submission
 
-    const username = document.getElementById('usernameMobile').value;
+        const username = document.getElementById('usernameMobile').value;
 
-    // Accept any username for login
-    if (username) {
-        console.log(username + ' has logged in successfully');
-        currentUser = username;
-        localStorage.setItem('currentUser', username); // Save username to localStorage
+        // Accept any username for login
+        if (username) {
+            console.log(username + ' has logged in successfully');
+            currentUser = username;
+            localStorage.setItem('currentUser', username); // Save username to localStorage
 
-        updateUser(username);
-        if (username.length > 5) {
-            createImageErrors();
+            updateUser(username);
+            if (username.length > 5) {
+                createImageErrors();
+            }
+
+            console.log(context);
+            updateLoginUI();
+            toggleLoginDropdownMobile(); // Close dropdown after login
+        } else {
+            alert('Please enter a username');
         }
-
-        console.log(context);
-        updateLoginUI();
-        toggleLoginDropdownMobile(); // Close dropdown after login
-    } else {
-        alert('Please enter a username');
-    }
-});
+    });
+}
 
 // Check if user is already logged in on page load
 window.onload = function () {
@@ -255,7 +278,7 @@ function updateUser(username) {
     context.key = username;
     client.identify(context, function () {
         console.log("New context's flags available");
-        console.log(client.tier);
+        console.log(context.tier);
         getProducts();
     });
 }
@@ -270,9 +293,10 @@ function logout() {
         console.log("Context reset to non-member");
         console.log(context);
     });
-    window.location.href = 'https://coffee-shop-bl-149d4d87ac05.herokuapp.com/';
+    window.location.href = 'http://localhost:4004/';
     updateLoginUI();
     console.log('user has logged out');
+    //checkmember();
 }
 
 // Update Login/Logout UI
@@ -290,6 +314,7 @@ function updateLoginUI() {
         loginDropdownMobile.innerHTML = `
             <button onclick="logout()">Logout</button>
         `;
+
     } else {
         loginButtonMobile.innerHTML = `<i class="fas fa-user"></i> Sign In`;
         loginButtonDesktop.innerHTML = `<i class="fas fa-user"></i> Sign In`;
@@ -338,6 +363,7 @@ function addToCart(productId) {
         .catch(error => console.error('Error:', error));
 }
 
+let holidayAlreadyOn = false;
 
 function imageShape(){
     if(circleFlag == 'Circle'){
@@ -399,15 +425,19 @@ client.on('ready', () => {
     console.log('client is ready');
 
     console.log(holidayDrinks);
-    
+    if(holidayDrinks){
+        holidayAlreadyOn = true;
+    }
 
     getProducts();
     showHolidayDrinks();
-    //checkmember();
+    checkmember();
     createImageErrors();
     
     //fetchCart(); 
 });
+
+
 
 client.on('change', () => {
     holidayDrinks = client.variation('release-holiday-drinks', context, false);
@@ -418,18 +448,27 @@ client.on('change', () => {
     console.log('badAPI is ' + badAPI);
     console.log('holiday drinks is ' + holidayDrinks);
     console.log('flag has changed');
+    if (!holidayDrinks){
+        holidayAlreadyOn = false;
+    }
 
     getProducts();
-    showHolidayDrinks();
-    //checkmember();
+    console.log('holidayAlreadyOn is '+ holidayAlreadyOn);
+    if (holidayAlreadyOn){
+        showHolidayDrinks();
+    }else {
+        showHolidayAnimation();
+    }
+    createImageErrors();
+    checkmember();
     imageShape();
 
 });
 
 function checkmember() {
     const rewardsBanner = document.getElementById('rewardsBanner');
-    if (membershipRewards) {
-        rewardsBanner.style.display = 'none';
+    if (currentUser && membershipRewards) {
+        rewardsBanner.style.display = 'block';
         rewardsBanner.innerHTML = `
             Congrats ${context.key}! You have 800 LaunchBucks! 🚀
             <button onclick="redeemRewards()">Redeem</button>
@@ -437,9 +476,8 @@ function checkmember() {
         console.log('youre a member');
     } else {
         rewardsBanner.style.display = 'none';
+        console.log('youre not a member');
     }
 }
 
-function redeemRewards() {
-    alert('Rewards redeemed!');
-}
+

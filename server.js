@@ -56,7 +56,7 @@ function guardianRunner() {
                 };
                 console.log(newContext);
                 const test = client.variation('release-new-product-api', newContext, false)
-                client.track('add_to_cart', newContext);
+                client.track('error-count', newContext);
                 i++;
                 setTimeout(loop, 5);
             }
@@ -85,7 +85,7 @@ const menu = [
     { id: 10, temp: 'holiday', name: 'Chestnut Praline Latte', price: 3.50, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190716_ChestnutPralineCreme.jpg?impolicy=1by1_wide_topcrop_630' },
     { id: 11, temp: 'holiday', name: 'Peppermint Mocha', price: 2.50, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20230612_4613_PeppermintMochaFrappuccino-onGreen-MOP_1800.jpg?impolicy=1by1_wide_topcrop_630' },
     { id: 12, temp: 'holiday', name: 'Caramel Brulee Latte', price: 3.00, img: "https://globalassets.starbucks.com/digitalassets/products/bev/CaramelBruleeFrappuccino.jpg?impolicy=1by1_wide_topcrop_630" },
-    { id: 13, temp: 'holiday', name: 'Gingerbread Chai', price: 2.00, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20230612_4846_IcedGingerbreadOatmilkChai-onGreen-MOP_1800.jpg?impolicy=1by1_wide_topcrop_630term' },
+    { id: 13, temp: 'holiday', name: 'Gingerbread Chai', price: 2.00, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20230612_7785_IcedPeppermintMocha-onGreen-MOP_1800.jpg?impolicy=1by1_wide_topcrop_630' },
     { id: 14, temp: 'food', name: 'Bacon, Sausage & Egg Wrap', price: 3.50, img: 'https://globalassets.starbucks.com/digitalassets/products/food/SBX20191018_BaconSausageCageFreeEggWrap.jpg?impolicy=1by1_medium_630' },
     { id: 15, temp: 'food', name: 'Butter Croissant ', price: 2.50, img: 'https://globalassets.starbucks.com/digitalassets/products/food/SBX20210915_Croissant-onGreen.jpg?impolicy=1by1_medium_630' },
     { id: 16, temp: 'food', name: 'Blueberry Scone', price: 3.00, img: "https://globalassets.starbucks.com/digitalassets/products/food/SBX20181219_BlueberryScone.jpg?impolicy=1by1_medium_630" },
