@@ -403,7 +403,7 @@ client.on('ready', () => {
 
     getProducts();
     showHolidayDrinks();
-    checkmember();
+    //checkmember();
     createImageErrors();
     
     //fetchCart(); 
@@ -421,7 +421,7 @@ client.on('change', () => {
 
     getProducts();
     showHolidayDrinks();
-    checkmember();
+    //checkmember();
     imageShape();
 
 });
