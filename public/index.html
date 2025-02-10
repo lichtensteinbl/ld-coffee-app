@@ -23,7 +23,6 @@
         </div>
         <div class="nav-links" id="navLinks">
             <a href="#">Menu</a>
-            <a href="#">Rewards</a>
             <a href="support.html">Support</a>
             <a href="#" onclick="toggleQRModal()">QR Code</a>
             <button class="cart-btn" id="cartButtonMobile" onclick="toggleCartDropdown()" style="display: none">
@@ -55,7 +54,7 @@
             <div class="login-dropdown" id="loginDropdown">
                 <h3>Sign In</h3>
                 <form id="loginForm"> 
-                    <div class="form-group">
+                    <div class= "form-group">
                         <label for="username">Username:</label>
                         <input type="text" id="username" name="username" required>
                     </div>
@@ -94,8 +93,10 @@
     </div>
 
     <div class="rewards-banner" id="rewardsBanner">
-        Congrats! You have 800 LaunchBucks! 🚀
-        <button onclick="redeemRewards()">Redeem</button>
+        <div class="rewards-content">
+            <span class="rewards-text">🎉 You've earned <strong>800 LaunchBucks</strong>! 🚀</span>
+            <button class="redeem-btn" onclick="redeemRewards()">Redeem Now</button>
+        </div>
     </div>
 
     <!-- QR Code Modal -->
@@ -109,8 +110,75 @@
 
     <script src="app.js"></script>
     <script>
+        function toggleNav() {
+            const navLinks = document.getElementById('navLinks');
+            const rewardsBanner = document.getElementById('rewardsBanner');
+            navLinks.classList.toggle('show');
+            if (window.innerWidth <= 768) {
+                rewardsBanner.style.display = navLinks.classList.contains('show') ? 'none' : 'block';
+            }
+        }
+
         window.onload = function() {
             getProducts();
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = savedUser;
+                updateUser(savedUser);
+                updateLoginUI();
+            }
+
+            fetch('/api/reset-cart')
+                .then(response => response.json())
+                .then(data => {
+                    cart = [];
+                    updateCartCount();
+                })
+                .catch(error => console.error('Error:', error));
+
+            // Add event listeners for login forms
+            const loginForm = document.getElementById('loginForm');
+            const loginFormMobile = document.getElementById('loginFormMobile');
+
+            if (loginForm) {
+                loginForm.addEventListener('submit', function (event) {
+                    event.preventDefault(); // Prevent form submission
+
+                    const username = document.getElementById('username').value;
+
+                    // Accept any username for login
+                    if (username) {
+                        console.log(username + ' has logged in successfully');
+                        currentUser = username;
+                        localStorage.setItem('currentUser', username); // Save username to localStorage
+                        updateUser(username);
+                        updateLoginUI();
+                        toggleLoginDropdown(); // Close dropdown after login
+                    } else {
+                        alert('Please enter a username');
+                    }
+                });
+            }
+
+            if (loginFormMobile) {
+                loginFormMobile.addEventListener('submit', function (event) {
+                    event.preventDefault(); // Prevent form submission
+
+                    const username = document.getElementById('usernameMobile').value;
+
+                    // Accept any username for login
+                    if (username) {
+                        console.log(username + ' has logged in successfully');
+                        currentUser = username;
+                        localStorage.setItem('currentUser', username); // Save username to localStorage
+                        updateUser(username);
+                        updateLoginUI();
+                        toggleLoginDropdownMobile(); // Close dropdown after login
+                    } else {
+                        alert('Please enter a username');
+                    }
+                });
+            }
         };
     </script>
 </body>

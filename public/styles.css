@@ -117,7 +117,7 @@ h2 {
     padding: 20px;
     width: 250px;
     border-radius: 10px;
-    z-index: 1000; /* Ensure dropdown is above other elements */
+    z-index: 1002; /* Ensure dropdown is above the rewards banner */
 }
 
 .login-dropdown.show {
@@ -156,10 +156,17 @@ h2 {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
 }
 
 .login-dropdown button:hover {
     background-color: #004d33;
+}
+
+.login-dropdown#loginDropdownMobile button {
+    width: 100%; /* Ensure the button takes the full width */
+    padding: 10px; /* Match the padding with the login button */
+    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
 }
 
 /* Cart Button */
@@ -269,7 +276,7 @@ h2 {
         right: 0;
         background-color: #ffffff;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        z-index: 999;
+        z-index: 1001; /* Ensure nav links are above the rewards banner */
     }
 
     .nav-links a {
@@ -363,7 +370,30 @@ h2 {
     }
 
     .rewards-banner {
-        font-size: 14px; /* Reduce font size */
+        font-size: 9px; /* Slightly reduce font size */
+        padding: 8px; /* Further reduce padding */
+        height: auto; /* Allow height to adjust based on content */
+    }
+
+    .rewards-banner button {
+        padding: 4px 8px; /* Further reduce padding */
+        font-size: 10px; /* Further reduce font size */
+    }
+
+    .rewards-banner {
+        font-size: 12px; /* Reduce font size */
+        padding: 10px; /* Reduce padding */
+        height: 40px; /* Set a fixed height */
+    }
+
+    .rewards-banner button {
+        padding: 6px 12px; /* Reduce padding */
+        font-size: 12px; /* Reduce font size */
+    }
+
+    .rewards-banner {
+        font-size: 12px; /* Reduce font size */
+        padding: 10px; /* Reduce padding */
     }
 
     .rewards-banner button {
@@ -375,6 +405,15 @@ h2 {
 @media (min-width: 769px) {
     .login-btn#loginButtonMobile {
         display: none !important; /* Hide mobile login button on larger screens */
+    }
+
+    .rewards-banner {
+        font-size: 20px; /* Increase font size */
+    }
+
+    .rewards-banner button {
+        padding: 10px 20px; /* Increase padding */
+        font-size: 16px; /* Increase font size */
     }
 }
 
@@ -438,34 +477,54 @@ h2 {
 
 /* Rewards Banner */
 .rewards-banner {
-    background-color: #ffcc00; /* Gold color */
-    color: #333;
+    background: linear-gradient(90deg, #ffcc00, #ff9900); /* Gradient background */
+    color: white;
     padding: 15px;
     text-align: center;
     font-size: 18px;
     font-weight: bold;
-    position: fixed;
-    top: 60px; /* Adjust based on your nav bar height */
+    position: absolute;
+    top: 60px;
     left: 0;
     right: 0;
-    z-index: 999; /* Ensure banner is above other elements */
-    display: none; /* Hide by default */
+    z-index: 1000;
+    display: none;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.rewards-content {
+    display: flex;
+    justify-content: center; /* Center the content */
+    align-items: center;
+    gap: 10px; /* Add some space between the text and the button */
+}
+
+.rewards-text {
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .rewards-banner button {
-    background-color: #006241;
+    background-color: #006241; 
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 25px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     margin-left: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .rewards-banner button:hover {
     background-color: #004d33;
+    transform: scale(1.05);
+}
+
+.rewards-banner button:active {
+    transform: scale(0.95);
 }
 
 /* Holiday Drinks Styles */
@@ -613,4 +672,15 @@ h2 {
 .chat-message.user .chat-logo {
     margin-left: 10px;
     margin-right: 0;
+}
+
+/* Holiday Favorites Container */
+#holiday-products {
+    background-color: #fff5e6; /* Light cream background */
+    border: 2px solid #b22222; /* Christmas red border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Padding inside the container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-image: url('https://www.transparenttextures.com/patterns/brick-wall.png'); /* Festive background pattern */
+    background-size: cover; /* Cover the entire container */
 }

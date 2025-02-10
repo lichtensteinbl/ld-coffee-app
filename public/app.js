@@ -1,8 +1,10 @@
 let context = {
     type: 'user',
-    key: 'abcdefg',
+    key: 'abcd',
     tier: 'non-member'
 };
+
+let circleFlag; // Define circleFlag at the top
 
 function generateRandomKey() {
     let randomKey = '';
@@ -23,6 +25,7 @@ const client = LDClient.initialize('64fb46764b5857122177a598', context);
 let holidayDrinks = '';
 let cartCount = 0;
 let cart = [];
+let badAPI;
 
 function showHolidayDrinks() {
     console.log('showing drinks');
@@ -40,9 +43,8 @@ function showHolidayDrinks() {
 
 const brokenURL = 'https://globalassets.starbucks.com/djpg?impolicy=1by1_wide_topcrop_630';
 
-//when the badAPI flag is on, the API will return a broken image URL for cold drinks
 function createImageErrors() {
-    if (badAPI) {
+    if (badAPI && context.key.length > 6) {
         const coldContainer = document.getElementById('cold-products');
         const images = coldContainer.getElementsByTagName('img');
         for (let img of images) {
@@ -72,10 +74,10 @@ function getProducts() {
             const holidayContainer = document.getElementById('holiday-products');
 
             products.forEach(product => {
-                if (product.temp === 'cold' && badAPI && context.key.length > 6) {
+                //if (product.temp === 'cold' && badAPI && context.key.length > 6) {
                     //sendErrors();
-                    product.img = brokenURL;
-                }
+                  //  product.img = brokenURL;
+                //}
                 const productElement = document.createElement('div');
                 productElement.className = 'product';
                 productElement.innerHTML = `
@@ -107,24 +109,7 @@ function getProducts() {
 
 }
 
-function guardianRunner() {
-    //checks to see if the guarded release flag is active
-    if (badAPI) {
-        for (let i = 0; i < 10; i++) {
-            const newKey = generateRandomKey();
 
-            let newContext = {
-                kind: "user",
-                key: newKey
-            }
-            setTimeout(() => {
-
-                client.track('add-to-cart', newContext);
-                console.log ("newContext.key =  " + newContext.key);
-            }, 100);
-        }
-    }
-}
 
 //used for experimentation to measure conversation rate
 function makeImagesCircular() {
@@ -157,7 +142,11 @@ function makeImagesRectangle() {
 //Toggle Navigation Menu
 function toggleNav() {
     const navLinks = document.getElementById('navLinks');
+    const rewardsBanner = document.getElementById('rewardsBanner');
     navLinks.classList.toggle('show');
+    if (window.innerWidth <= 768) {
+        rewardsBanner.style.display = navLinks.classList.contains('show') ? 'none' : 'block';
+    }
 }
 
 // Toggle Login Dropdown
@@ -281,7 +270,7 @@ function logout() {
         console.log("Context reset to non-member");
         console.log(context);
     });
-    window.location.href = 'https://coffee-shop-bl-149d4d87ac05.herokuapp.com/';
+    window.location.href = 'http://localhost:4004/';
     updateLoginUI();
     console.log('user has logged out');
 }
@@ -329,7 +318,7 @@ function updateLoginUI() {
 
 // Add to Cart Function
 function addToCart(productId) {
-    client.track('add_to_cart', context);
+    //client.track('add_to_cart', context);
     fetch('/api/cart', {
         method: 'POST',
         headers: {
@@ -407,8 +396,6 @@ client.on('ready', () => {
     badAPI = client.variation('release-new-product-api', context, false);
     console.log('badAPI is ' + badAPI);
 
-    //console.log('circle logos is ' + circleLogos);
-
     console.log('client is ready');
 
     console.log(holidayDrinks);
@@ -426,17 +413,11 @@ client.on('change', () => {
     holidayDrinks = client.variation('release-holiday-drinks', context, false);
     membershipRewards = client.variation('membership-rewards', context, false);
     circleFlag = client.variation('circular-logos', context, false);
-    console.log('circle = ' + circleLogos);
     badAPI = client.variation('release-new-product-api', context, false);
-
+    console.log('membership rewards is ' + membershipRewards)
     console.log('badAPI is ' + badAPI);
-    console.log(holidayDrinks);
+    console.log('holiday drinks is ' + holidayDrinks);
     console.log('flag has changed');
-    if(circleLogos === 'Rectangle'){
-        makeImagesRectangle();
-    }else {
-         makeImagesCircular();
-    }
 
     getProducts();
     showHolidayDrinks();

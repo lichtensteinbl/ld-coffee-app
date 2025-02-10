@@ -9,6 +9,61 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+const client = ld.init('sdk-5bb8da0f-8861-4d67-a2f4-c257055c2335');
+
+
+const context = {
+    "kind": 'user',
+    "key": 'user-key-123abc',
+    "name": 'Sandy'
+};
+
+client
+  .waitForInitialization()
+  .then(() => {
+    console.log('*** SDK successfully initialized!');
+    guardianRunner()
+  })
+  .catch((error) => {
+    console.log(`*** SDK failed to initialize: ${error}`);
+    process.exit(1);
+  });
+
+
+function randomKeyGenerator() {
+    const characters = 'ABCDEFG';
+    let randomValue = '';
+    for (let i = 0; i < characters.length; i++) {
+        randomValue += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    randomKey = randomValue;
+    return randomValue;
+}
+
+console.log('this is ' + randomKeyGenerator());
+
+
+function guardianRunner() {
+    console.log(randomKey);
+    //checks to see if the guarded release flag is active
+        let i = 1;
+        function loop() {
+            if (i < 100000) {
+                const newKey = randomKeyGenerator();
+                const newContext = {
+                    kind: "user",
+                    key: newKey
+                };
+                console.log(newContext);
+                const test = client.variation('release-new-product-api', newContext, false)
+                client.track('add_to_cart', newContext);
+                i++;
+                setTimeout(loop, 5);
+            }
+        }
+        loop();
+}
+
 
 // Endpoint to handle chatbot requests
 app.post('/api/chatbot', async (req, res) => {
