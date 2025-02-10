@@ -429,7 +429,7 @@ client.on('change', () => {
 function checkmember() {
     const rewardsBanner = document.getElementById('rewardsBanner');
     if (membershipRewards) {
-        rewardsBanner.style.display = 'block';
+        rewardsBanner.style.display = 'none';
         rewardsBanner.innerHTML = `
             Congrats ${context.key}! You have 800 LaunchBucks! 🚀
             <button onclick="redeemRewards()">Redeem</button>
