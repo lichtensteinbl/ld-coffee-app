@@ -4,6 +4,8 @@ let context = {
     tier: 'non-member'
 };
 
+
+
 let circleFlag; // Define circleFlag at the top
 
 function generateRandomKey() {
@@ -13,12 +15,10 @@ function generateRandomKey() {
         randomKey += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     context.key = randomKey;
-    console.log(context.key)
+    console.log(context.key);
 }
 
 generateRandomKey();
-
-
 
 const client = LDClient.initialize('64fb46764b5857122177a598', context);
 
@@ -85,57 +85,46 @@ function sendErrors() {
     }
 }
 
-function getProducts() {
-    fetch('/api/products')
-        .then(response => response.json())
-        .then(products => {
-            const warmContainer = document.getElementById('warm-products');
-            const coldContainer = document.getElementById('cold-products');
-            const foodContainer = document.getElementById('food-products');
-            const holidayContainer = document.getElementById('holiday-products');
+function getProducts(products) {
+    //<p>$${product.price.toFixed(2)}</p>
 
-            products.forEach(product => {
-                //if (product.temp === 'cold' && badAPI && context.key.length > 6) {
-                    //sendErrors();
-                  //  product.img = brokenURL;
-                //}
-                const productElement = document.createElement('div');
-                productElement.className = 'product';
-                productElement.innerHTML = `
-                    <h3>${product.name}</h3>
-                    <p>$${product.price.toFixed(2)}</p>
-                    <img src="${product.img}" alt="${product.name}">
-                    <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add To Order</button>
-                `;
+    const warmContainer = document.getElementById('warm-products');
+    const coldContainer = document.getElementById('cold-products');
+    const foodContainer = document.getElementById('food-products');
+    const holidayContainer = document.getElementById('holiday-products');
 
-                if (product.temp === 'hot') {
-                    warmContainer.appendChild(productElement);
-                }
-                if (product.temp === 'cold') {
-                    coldContainer.appendChild(productElement);
-                }
-
-                if (product.temp === 'holiday') {
-                    product.img = 'asdfas.com';
-                   // console.log('product img = ' + product.img);
-                    holidayContainer.appendChild(productElement);
-                }
-                if (product.temp === 'food') {
-                    foodContainer.appendChild(productElement);
-                }
-            });
-            imageShape();
-
-        });
-
+    products.forEach(product => {
+        if (product.temp === 'cold' && badAPI && context.key.length > 6) {
+            sendErrors();
+            product.img = brokenURL;
+        }
+        const productElement = document.createElement('div');
+        productElement.className = 'product';
+        productElement.innerHTML = `
+            <h3>${product.name}</h3>
+            <img src="${product.img}" alt="${product.name}">
+            <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add To Order</button>
+        `;
+        makeImagesCircular();
+        if (product.temp === 'hot') {
+            warmContainer.appendChild(productElement);
+        }
+        if (product.temp === 'cold') {
+            coldContainer.appendChild(productElement);
+        }
+        if (product.temp === 'holiday') {
+            product.img = 'asdfas.com';
+            holidayContainer.appendChild(productElement);
+        }
+        if (product.temp === 'food') {
+            foodContainer.appendChild(productElement);
+        }
+    });
+    imageShape();
 }
 
-
-
-//used for experimentation to measure conversation rate
 function makeImagesCircular() {
     const productImages = document.querySelectorAll('.product img');
-
     productImages.forEach(img => {
         img.style.width = '250px';
         img.style.height = '250px';
@@ -146,10 +135,8 @@ function makeImagesCircular() {
     });
 }
 
-//used for experimentation to measure conversation rate
 function makeImagesRectangle() {
     const productImages = document.querySelectorAll('.product img');
-
     productImages.forEach(img => {
         img.style.width = '';
         img.style.height = '';
@@ -160,31 +147,26 @@ function makeImagesRectangle() {
     });
 }
 
-//Toggle Navigation Menu
 function toggleNav() {
     const navLinks = document.getElementById('navLinks');
     navLinks.classList.toggle('show');
 }
 
-// Toggle Login Dropdown
 function toggleLoginDropdown() {
     const dropdown = document.getElementById('loginDropdown');
     dropdown.classList.toggle('show');
 }
 
-// Toggle Mobile Login Dropdown
 function toggleLoginDropdownMobile() {
     const dropdownMobile = document.getElementById('loginDropdownMobile');
     dropdownMobile.style.display = dropdownMobile.style.display === 'block' ? 'none' : 'block';
 }
 
-// Toggle QR Code Modal
 function toggleQRModal() {
     const qrModal = document.getElementById('qrModal');
     qrModal.style.display = qrModal.style.display === 'block' ? 'none' : 'block';
 }
 
-// Close QR Modal when clicking outside of it
 window.onclick = function (event) {
     const qrModal = document.getElementById('qrModal');
     const dropdown = document.getElementById('loginDropdown');
@@ -195,7 +177,6 @@ window.onclick = function (event) {
         dropdown.classList.remove('show');
     }
 };
-
 // Handle Form Submission
 const loginForm = document.getElementById('loginForm');
 if (loginForm) {
@@ -293,7 +274,7 @@ function logout() {
         console.log("Context reset to non-member");
         console.log(context);
     });
-    window.location.href = 'https://coffee-shop-bl-149d4d87ac05.herokuapp.com/#';
+    window.location.href = 'http://localhost:4004/';
     updateLoginUI();
     console.log('user has logged out');
     //checkmember();
@@ -341,9 +322,7 @@ function updateLoginUI() {
     }
 }
 
-// Add to Cart Function
 function addToCart(productId) {
-    //client.track('add_to_cart', context);
     fetch('/api/cart', {
         method: 'POST',
         headers: {
@@ -365,16 +344,15 @@ function addToCart(productId) {
 
 let holidayAlreadyOn = false;
 
-function imageShape(){
-    if(circleFlag == 'Circle'){
-        console.log('function says ' + circleFlag)
+function imageShape() {
+    if (circleFlag == 'Circle') {
+        console.log('function says ' + circleFlag);
         makeImagesCircular();
-}else {
-    makeImagesRectangle();
-}
+    } else {
+        makeImagesRectangle();
+    }
 }
 
-// Update Cart Count
 function updateCartCount() {
     const cartCountMobile = document.getElementById('cartCountMobile');
     const cartCountDesktop = document.getElementById('cartCountDesktop');
@@ -383,40 +361,11 @@ function updateCartCount() {
     if (cartCountDesktop) cartCountDesktop.textContent = cartCount;
 }
 
-// Fetch Cart from Server
-/*function fetchCart() {
-    fetch('/api/cart')
-        .then(response => response.json())
-        .then(data => {
-            cart = data.cart;
-            updateCartCount();
-            updateCartUI();
-        })
-        .catch(error => console.error('Error:', error));
-}*/
-
-// Reset Cart on Page Reload
-window.onload = function () {
-    const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) {
-        currentUser = savedUser;
-        updateUser(savedUser);
-        updateLoginUI();
-    }
-
-    fetch('/api/reset-cart')
-        .then(response => response.json())
-        .then(data => {
-            cart = [];
-            updateCartCount();
-        })
-        .catch(error => console.error('Error:', error));
-};
-
 client.on('ready', () => {
+    
     holidayDrinks = client.variation('release-holiday-drinks', context, false);
     membershipRewards = client.variation('membership-rewards', context, false);
-    console.log('member rewards = ' + membershipRewards)
+    console.log('member rewards = ' + membershipRewards);
     circleFlag = client.variation('circular-logos', context, false);
     console.log('circle = ' + circleFlag);
     badAPI = client.variation('release-new-product-api', context, false);
@@ -425,59 +374,68 @@ client.on('ready', () => {
     console.log('client is ready');
 
     console.log(holidayDrinks);
-    if(holidayDrinks){
+    if (holidayDrinks) {
         holidayAlreadyOn = true;
     }
 
-    getProducts();
+    getProducts(menu);
     showHolidayDrinks();
     checkmember();
     createImageErrors();
-    
-    //fetchCart(); 
 });
 
+function addEvents (flagName, flagValue){
+    document.getElementById('flagEvents').innerHTML = flagName +'= ' + flagValue
 
-
+}
 client.on('change', () => {
     holidayDrinks = client.variation('release-holiday-drinks', context, false);
+    addEvents('release-holiday-drinks', holidayDrinks);
     membershipRewards = client.variation('membership-rewards', context, false);
     circleFlag = client.variation('circular-logos', context, false);
     badAPI = client.variation('release-new-product-api', context, false);
-    console.log('membership rewards is ' + membershipRewards)
+    console.log('membership rewards is ' + membershipRewards);
     console.log('badAPI is ' + badAPI);
     console.log('holiday drinks is ' + holidayDrinks);
     console.log('flag has changed');
-    if (!holidayDrinks){
+    if (!holidayDrinks) {
         holidayAlreadyOn = false;
     }
 
-    getProducts();
-    console.log('holidayAlreadyOn is '+ holidayAlreadyOn);
-    if (holidayAlreadyOn){
+    getProducts(menu);
+    console.log('holidayAlreadyOn is ' + holidayAlreadyOn);
+    if (holidayAlreadyOn) {
         showHolidayDrinks();
-    }else {
+    } else {
         showHolidayAnimation();
     }
-    
+
     checkmember();
     imageShape();
-
 });
 
 function checkmember() {
-    const rewardsBanner = document.getElementById('rewardsBanner');
-    if (currentUser && membershipRewards) {
-        rewardsBanner.style.display = 'block';
-        rewardsBanner.innerHTML = `
-            Congrats ${context.key}! You have 800 LaunchBucks! 🚀
-            <button onclick="redeemRewards()">Redeem</button>
-        `;
-        console.log('youre a member');
-    } else {
-        rewardsBanner.style.display = 'none';
-        console.log('youre not a member');
-    }
+    // Membership check logic
 }
+
+const menu = [
+    { id: 10, temp: 'holiday', name: 'Chestnut Praline Latte', price: 3.50, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190716_ChestnutPralineCreme.jpg?impolicy=1by1_wide_topcrop_630' },
+    { id: 11, temp: 'holiday', name: 'Peppermint Mocha', price: 2.50, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20230612_4613_PeppermintMochaFrappuccino-onGreen-MOP_1800.jpg?impolicy=1by1_wide_topcrop_630' },
+    { id: 12, temp: 'holiday', name: 'Caramel Brulee Latte', price: 3.00, img: "https://globalassets.starbucks.com/digitalassets/products/bev/CaramelBruleeFrappuccino.jpg?impolicy=1by1_wide_topcrop_630" },
+    { id: 13, temp: 'holiday', name: 'Gingerbread Chai', price: 2.00, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20230612_7785_IcedPeppermintMocha-onGreen-MOP_1800.jpg?impolicy=1by1_wide_topcrop_630' },
+    { id: 1, temp: 'hot', name: 'Espresso', price: 2.50, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_Espresso_Single.jpg?impolicy=1by1_wide_topcrop_630' },
+    { id: 2, temp: 'hot', name: 'Cappuccino', price: 3.00, img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_Cappuccino.jpg?impolicy=1by1_wide_topcrop_630" },
+    { id: 3, temp: 'hot', name: 'Latte', price: 3.50, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_CaffeLatte.jpg?impolicy=1by1_wide_topcrop_630' },
+    { id: 4, temp: 'hot', name: 'Americano', price: 2.00, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_CaffeAmericano.jpg?impolicy=1by1_wide_topcrop_630' },
+    { id: 5, temp: 'cold', name: 'Iced Coffee', price: 2.50, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190422_IcedVanillaLatte.jpg?impolicy=1by1_wide_topcrop_630' },
+    { id: 6, temp: 'cold', name: 'Matcha Latte', price: 3.00, img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20181127_IcedMatchaGreenTeaLatte.jpg?impolicy=1by1_wide_topcrop_630" },
+    { id: 8, temp: 'cold', name: 'Berry Refresher', price: 2.00, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20221206_MangoDragonfruitRefreshers.jpg?impolicy=1by1_wide_topcrop_630' },
+    { id: 9, temp: 'cold', name: 'Iced Tea', price: 2.00, img: 'https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190531_IcedBlackTea.jpg?impolicy=1by1_wide_topcrop_630' },
+    { id: 14, temp: 'food', name: 'Bacon, Sausage & Egg Wrap', price: 3.50, img: 'https://globalassets.starbucks.com/digitalassets/products/food/SBX20191018_BaconSausageCageFreeEggWrap.jpg?impolicy=1by1_medium_630' },
+    { id: 15, temp: 'food', name: 'Butter Croissant ', price: 2.50, img: 'https://globalassets.starbucks.com/digitalassets/products/food/SBX20210915_Croissant-onGreen.jpg?impolicy=1by1_medium_630' },
+    { id: 16, temp: 'food', name: 'Blueberry Scone', price: 3.00, img: "https://globalassets.starbucks.com/digitalassets/products/food/SBX20181219_BlueberryScone.jpg?impolicy=1by1_medium_630" },
+    { id: 17, temp: 'food', name: 'Coffee Cake', price: 3.00, img: "https://globalassets.starbucks.com/digitalassets/products/food/SBX20180511_ClassicCoffeeCake.jpg?impolicy=1by1_medium_630" },
+];
+
 
 

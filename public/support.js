@@ -1,6 +1,7 @@
 const chatBox = document.getElementById('chatBox');
 const chatInput = document.getElementById('chatInput');
 
+
 function sendMessage() {
     const message = chatInput.value.trim();
     if (message) {
@@ -39,17 +40,22 @@ window.onload = function() {
     addMessage('bot', 'How can I help you today?');
 };
 
-function getBotResponse(message) {
-    // Simulate an AI response
-    setTimeout(() => {
+async function getBotResponse(message) {
+    try {
+        const response = await fetch('/api/chatbot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        });
 
-        // Here you would implement the call to your language learning model
-        // For example, you could use an API call to a service like OpenAI's GPT-3
-        // const botMessage = callToLanguageModelAPI(message);
-        
-        const botMessage = `You said: ${message}`; // Placeholder response
-        addMessage('bot', botMessage);
-    }, 1000);
+        const data = await response.json();
+        addMessage('bot', data.response);
+    } catch (error) {
+        console.error('Error:', error);
+        addMessage('bot', 'Sorry, I am having trouble understanding you right now.');
+    }
 }
 
 // Toggle QR Code Modal
