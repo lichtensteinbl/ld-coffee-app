@@ -285,11 +285,13 @@ function logout() {
         console.log("Context reset to non-member");
         console.log(context);
     });
-    window.location.href = 'https://coffee-shop-bl-149d4d87ac05.herokuapp.com/#';
+    window.location.href = 'http://localhost:4004/';
     updateLoginUI();
     console.log('user has logged out');
-    document.getElementById('rewards-section').style.display = 'none'
-
+document.getElementById('rewards-section').style.display = 'none'
+document.getElementById('rewards-section').style.display = 'none'
+document.getElementById('rewards-section').style.display = 'none'
+ 
     //checkmember();
 }
 
@@ -298,7 +300,7 @@ function updateLoginUI() {
 
     const loginButtonMobile = document.getElementById('loginButtonMobile');
     const loginButtonDesktop = document.getElementById('loginButtonDesktop');
-    const loginDropdown = document.getElementById('loginDropdown');
+    const  Dropdown = document.getElementById('loginDropdown');
     const loginDropdownMobile = document.getElementById('loginDropdownMobile');
     
     if (currentUser) {
@@ -384,8 +386,8 @@ client.on('ready', () => {
     membershipRewards = client.variation('membership-rewards', context, false);
     console.log('member rewards = ' + membershipRewards);
     circleFlag = client.variation('circular-logos', context, false);
-    console.log('circle = ' + circleFlag);
-    badAPI = client.variation('release-new-product-api', context, false);
+   console.log('circle = ' + circleFlag);
+        badAPI = client.variation('release-new-product-api', context, false);
     console.log('badAPI is ' + badAPI);
 
     console.log('client is ready');
@@ -399,7 +401,7 @@ client.on('ready', () => {
     showHolidayDrinks();
     checkmember();
     createImageErrors();
-});
+    });
 
 function addEvents (flagName, flagValue){
     document.getElementById('flagEvents').innerHTML = flagName +'= ' + flagValue
@@ -454,5 +456,42 @@ const menu = [
     { id: 17, temp: 'food', name: 'Coffee Cake', price: 3.00, img: "https://globalassets.starbucks.com/digitalassets/products/food/SBX20180511_ClassicCoffeeCake.jpg?impolicy=1by1_medium_630" },
 ];
 
+
+
+
+//turn on experimentation flag
+
+document.getElementById('experimentFlag').addEventListener('click', async () => {
+    let newflagVal = true;
+    if(circleFlag){newFlagVal = false }; // Toggle the current value of circleFlag
+    console.log('this is the new flag val =' + newFlagVal)
+
+    try {
+        // Make the API call to your server-side endpoint
+        const response = await fetch('/api/toggle-experimentation-flag', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                projectKey: 'brian-l-demo-project',
+                featureFlagKey: 'circular-logos',
+                value: true, // Use the toggled value
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to toggle feature flag');
+        }
+
+        const data = await response.json();
+        console.log(`Success: ${data.message}`);
+        circleFlag = newFlagValue; // Update the local state
+        imageShape(); // Update the image shape based on the new flag value
+    } catch (error) {
+        console.log(`Error: ${error.message}`);
+        document.getElementById('statusMessage').textContent = `Error: ${error.message}`;
+    }
+});
 
 

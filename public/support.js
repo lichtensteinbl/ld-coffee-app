@@ -70,4 +70,36 @@ window.onclick = function(event) {
     if (event.target === qrModal) {
         qrModal.style.display = 'none';
     }
-};
+}
+
+async function handleVariationOne() {
+    console.log('Variation One button clicked');
+    try {
+        const response = await fetch('/api/sad-context', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        console.log(data.message);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function handleVariationTwo() {
+    console.log('Variation Two button clicked');
+    try {
+        const response = await fetch('/api/happy-context', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        console.log(data.message);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
