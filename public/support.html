@@ -21,13 +21,13 @@
             <div></div>
             <div></div>
         </div>
+        <button class="cart-btn" id="cartButtonMobile" onclick="toggleCartDropdown()">
+            <i class="fas fa-shopping-cart"></i> <span id="cartCountMobile">0</span>
+        </button>
         <div class="nav-links" id="navLinks">
             <a href="index.html">Menu</a>
             <a href="support.html">Support</a>
             <a href="#" onclick="toggleQRModal()">QR Code</a>
-            <button class="cart-btn" id="cartButtonMobile" onclick="toggleCartDropdown()" style="display: none">
-                <i class="fas fa-shopping-cart"></i> <span id="cartCountMobile">0</span>
-            </button>
             <button class="login-btn" id="loginButtonMobile" style="display: block" onclick="toggleLoginDropdownMobile()">
                 <i class="fas fa-user"></i> Sign In
             </button>
@@ -42,7 +42,9 @@
                 </form>
             </div>
         </div>
-
+        <button class="cart-btn" id="cartButtonDesktop" onclick="toggleCartDropdown()">
+            <i class="fas fa-shopping-cart"></i> <span id="cartCountDesktop">0</span>
+        </button>
         <h1>ToggleBucks</h1>
         <div class="login-container">
             <button class="login-btn" id="loginButtonDesktop" onclick="toggleLoginDropdown()">
@@ -71,6 +73,11 @@
             <input type="text" id="chatInput" placeholder="Type your message...">
             <button onclick="sendMessage()">Send</button>
         </div>
+        <!-- New Buttons -->
+        <div class="variation-buttons">
+            <button class="variation-btn" onclick="handleVariationOne()">Variation One</button>
+            <button class="variation-btn" onclick="handleVariationTwo()">Variation Two</button>
+        </div>
     </div>
 
     <div id="qrModal" class="qr-modal">
@@ -87,6 +94,28 @@
         function toggleNav() {
             const navLinks = document.getElementById('navLinks');
             navLinks.classList.toggle('show');
+        }
+
+        function toggleLoginDropdownMobile() {
+            const dropdownMobile = document.getElementById('loginDropdownMobile');
+            dropdownMobile.style.display = dropdownMobile.style.display === 'block' ? 'none' : 'block';
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.remove('show'); // Hide the menu when Sign In is clicked
+        }
+
+        function closeLoginDropdownMobile() {
+            const dropdownMobile = document.getElementById('loginDropdownMobile');
+            dropdownMobile.style.display = 'none';
+        }
+
+        function handleVariationOne() {
+            console.log('Variation One button clicked');
+            // Add your logic for Variation One here
+        }
+
+        function handleVariationTwo() {
+            console.log('Variation Two button clicked');
+            // Add your logic for Variation Two here
         }
     </script>
 </body>

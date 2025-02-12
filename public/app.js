@@ -8,6 +8,9 @@ let context = {
 
 let circleFlag; // Define circleFlag at the top
 
+function showRewardsBanner (){
+    document.getElementById('rewards-sections').style.display = 'block';
+}
 function generateRandomKey() {
     let randomKey = '';
     const characters = 'ABCDI';
@@ -19,6 +22,7 @@ function generateRandomKey() {
 }
 
 generateRandomKey();
+
 
 const client = LDClient.initialize('64fb46764b5857122177a598', context);
 
@@ -195,9 +199,15 @@ if (loginForm) {
             if (username.length > 5) {
                 createImageErrors();
             }
-
             console.log(context);
             updateLoginUI();
+
+            if(membershipRewards){
+                showRewardsBanner();
+            }
+
+            
+
             toggleLoginDropdown(); // Close dropdown after login
         } else {
             alert('Please enter a username');
@@ -240,6 +250,7 @@ window.onload = function () {
         currentUser = savedUser;
         updateUser(savedUser);
         updateLoginUI();
+        
     }
 
     fetch('/api/reset-cart')
@@ -277,16 +288,23 @@ function logout() {
     window.location.href = 'http://localhost:4004/';
     updateLoginUI();
     console.log('user has logged out');
+    document.getElementById('rewards-section').style.display = 'none'
+
     //checkmember();
 }
 
 // Update Login/Logout UI
 function updateLoginUI() {
+
     const loginButtonMobile = document.getElementById('loginButtonMobile');
     const loginButtonDesktop = document.getElementById('loginButtonDesktop');
     const loginDropdown = document.getElementById('loginDropdown');
     const loginDropdownMobile = document.getElementById('loginDropdownMobile');
+    
     if (currentUser) {
+        
+        document.getElementById('rewards-sections').style.display = 'block';
+
         loginButtonMobile.innerHTML = `<i class="fas fa-user"></i> ${currentUser}`;
         loginButtonDesktop.innerHTML = `<i class="fas fa-user"></i> ${currentUser}`;
         loginDropdown.innerHTML = `
@@ -295,6 +313,8 @@ function updateLoginUI() {
         loginDropdownMobile.innerHTML = `
             <button onclick="logout()">Logout</button>
         `;
+
+      
 
     } else {
         loginButtonMobile.innerHTML = `<i class="fas fa-user"></i> Sign In`;
