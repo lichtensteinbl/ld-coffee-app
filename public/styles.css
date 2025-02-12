@@ -380,7 +380,7 @@ input:checked + .slider:before {
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         z-index: 1001; /* Ensure nav links are above the rewards banner */
         padding-top: 10px; /* Add some padding to separate from the nav bar */
-        padding-right: 50px; /* Add padding to avoid overlapping with the cart button */
+        padding-right: 20px; /* Reduce padding to make the menu shorter */
     }
 
     .nav-links a {
@@ -555,14 +555,14 @@ input:checked + .slider:before {
     /*background-image: url('https://res.cloudinary.com/the-infatuation/image/upload/v1679083346/images/NYC_PrinceCoffee_Interior_EmilySchindler_02_swb6er.jpg'); /* Replace with your hero image */
     background-size: cover;
     background-position: center;
-    height: 20px;
+    height: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: black;
     text-align: center;
-    margin-top: 60px; /* Offset for fixed nav */
-    margin-bottom: 0; /* Decrease the space below the hero section */
+    margin-top: 10px; /* Offset for fixed nav */
+    margin-bottom: 5px; /* Decrease the space below the hero section */
 }
 
 .hero-content h1 {
@@ -834,11 +834,12 @@ input:checked + .slider:before {
     padding: 15px 25px;
     text-align: center;
     border-radius: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 1px; /* Reduce the space below the rewards banner */
     font-size: 20px;
     color: #333;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
     animation: fadeIn 1s ease-in-out; /* Add fade-in animation */
+    margin-top: 80px; /* Add margin to ensure it is not covered by the top nav */
 }
 
 .rewards-banner p {

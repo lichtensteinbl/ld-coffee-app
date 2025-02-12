@@ -302,9 +302,6 @@ function updateLoginUI() {
     const loginDropdownMobile = document.getElementById('loginDropdownMobile');
     
     if (currentUser) {
-        
-        document.getElementById('rewards-sections').style.display = 'block';
-
         loginButtonMobile.innerHTML = `<i class="fas fa-user"></i> ${currentUser}`;
         loginButtonDesktop.innerHTML = `<i class="fas fa-user"></i> ${currentUser}`;
         loginDropdown.innerHTML = `
