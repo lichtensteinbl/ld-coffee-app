@@ -285,7 +285,7 @@ function logout() {
         console.log("Context reset to non-member");
         console.log(context);
     });
-    window.location.href = 'https://coffee-shop-bl-149d4d87ac05.herokuapp.com/#';
+    window.location.href = 'http://localhost:4004/';
     updateLoginUI();
     console.log('user has logged out');
 document.getElementById('rewards-section').style.display = 'none'
@@ -462,9 +462,7 @@ const menu = [
 //turn on experimentation flag
 
 document.getElementById('experimentFlag').addEventListener('click', async () => {
-    let newflagVal = true;
-    if(circleFlag){newFlagVal = false }; // Toggle the current value of circleFlag
-    console.log('this is the new flag val =' + newFlagVal)
+
 
     try {
         // Make the API call to your server-side endpoint
@@ -484,9 +482,10 @@ document.getElementById('experimentFlag').addEventListener('click', async () => 
             throw new Error('Failed to toggle feature flag');
         }
 
+        console.log('this is the new flag val =' + newFlagVal)
+
         const data = await response.json();
         console.log(`Success: ${data.message}`);
-        circleFlag = newFlagValue; // Update the local state
         imageShape(); // Update the image shape based on the new flag value
     } catch (error) {
         console.log(`Error: ${error.message}`);
@@ -494,4 +493,36 @@ document.getElementById('experimentFlag').addEventListener('click', async () => 
     }
 });
 
+
+document.getElementById('experimentFlagOff').addEventListener('click', async () => {
+
+
+    try {
+        // Make the API call to your server-side endpoint
+        const response = await fetch('https://coffee-shop-bl-149d4d87ac05.herokuapp.com/#', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                projectKey: 'brian-l-demo-project',
+                featureFlagKey: 'circular-logos',
+                value: false, // Use the toggled value
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to toggle feature flag');
+        }
+
+        console.log('this is the new flag val =' + newFlagVal)
+
+        const data = await response.json();
+        console.log(`Success: ${data.message}`);
+        imageShape(); // Update the image shape based on the new flag value
+    } catch (error) {
+        console.log(`Error: ${error.message}`);
+        document.getElementById('statusMessage').textContent = `Error: ${error.message}`;
+    }
+});
 

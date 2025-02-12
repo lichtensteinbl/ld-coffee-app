@@ -1,6 +1,7 @@
 const chatBox = document.getElementById('chatBox');
 const chatInput = document.getElementById('chatInput');
 
+let currentVariation = 'Variation 2'; // Default variation
 
 function sendMessage() {
     const message = chatInput.value.trim();
@@ -10,6 +11,13 @@ function sendMessage() {
         getBotResponse(message);
     }
 }
+
+client.on('ready', () => {
+    coffeeBotResponse = client.variation('coffee-bot', context, false);
+    console.log(coffeeBotResponse)
+    });
+
+
 
 function addMessage(sender, message) {
     const messageElement = document.createElement('div');
@@ -38,6 +46,7 @@ function addMessage(sender, message) {
 // Initial chatbot message
 window.onload = function() {
     addMessage('bot', 'How can I help you today?');
+    updateVariationText();
 };
 
 async function getBotResponse(message) {
@@ -74,6 +83,8 @@ window.onclick = function(event) {
 
 async function handleVariationOne() {
     console.log('Variation One button clicked');
+    currentVariation = 'Variation 1';
+    updateVariationText();
     try {
         const response = await fetch('/api/sad-context', {
             method: 'POST',
@@ -90,6 +101,8 @@ async function handleVariationOne() {
 
 async function handleVariationTwo() {
     console.log('Variation Two button clicked');
+    currentVariation = 'Variation 2';
+    updateVariationText();
     try {
         const response = await fetch('/api/happy-context', {
             method: 'POST',
@@ -102,4 +115,9 @@ async function handleVariationTwo() {
     } catch (error) {
         console.error('Error:', error);
     }
+}
+
+function updateVariationText() {
+    const variationText = document.getElementById('variationText');
+    variationText.textContent = `You are using ${currentVariation}`;
 }
