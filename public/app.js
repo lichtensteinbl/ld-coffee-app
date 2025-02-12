@@ -285,7 +285,7 @@ function logout() {
         console.log("Context reset to non-member");
         console.log(context);
     });
-    window.location.href = 'http://localhost:4004/';
+    window.location.href = 'https://coffee-shop-bl-149d4d87ac05.herokuapp.com/#';
     updateLoginUI();
     console.log('user has logged out');
 document.getElementById('rewards-section').style.display = 'none'
@@ -499,7 +499,7 @@ document.getElementById('experimentFlagOff').addEventListener('click', async () 
 
     try {
         // Make the API call to your server-side endpoint
-        const response = await fetch('https://coffee-shop-bl-149d4d87ac05.herokuapp.com/#', {
+        const response = await fetch('/api/toggle-experimentation-flag', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
