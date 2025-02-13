@@ -363,6 +363,34 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
+/* Sliders */
+.sliders {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.slider-container label {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.slider-container input[type="range"] {
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+.slider-container span {
+    font-size: 16px;
+    font-weight: bold;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
     .hamburger {
@@ -776,3 +804,4 @@ input:checked + .slider:before {
     animation: fadeIn 1s ease-in-out; /* Add fade-in animation */
     margin-top: 80px; /* Add margin to ensure it is not covered by the top nav */
 }
+

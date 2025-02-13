@@ -285,7 +285,7 @@ function logout() {
         console.log("Context reset to non-member");
         console.log(context);
     });
-    window.location.href = 'https://coffee-shop-bl-149d4d87ac05.herokuapp.com/#';
+    window.location.href = 'http://localhost:4004/';
     updateLoginUI();
     console.log('user has logged out');
 document.getElementById('rewards-section').style.display = 'none'
@@ -403,13 +403,9 @@ client.on('ready', () => {
     createImageErrors();
     });
 
-function addEvents (flagName, flagValue){
-    document.getElementById('flagEvents').innerHTML = flagName +'= ' + flagValue
 
-}
 client.on('change', () => {
     holidayDrinks = client.variation('release-holiday-drinks', context, false);
-    addEvents('release-holiday-drinks', holidayDrinks);
     membershipRewards = client.variation('membership-rewards', context, false);
     circleFlag = client.variation('circular-logos', context, false);
     badAPI = client.variation('release-new-product-api', context, false);
@@ -514,6 +510,48 @@ document.getElementById('experimentFlagOff').addEventListener('click', async () 
         if (!response.ok) {
             throw new Error('Failed to toggle feature flag');
         }
+
+        console.log('this is the new flag val =' + newFlagVal)
+
+        const data = await response.json();
+        console.log(`Success: ${data.message}`);
+        imageShape(); // Update the image shape based on the new flag value
+    } catch (error) {
+        console.log(`Error: ${error.message}`);
+        document.getElementById('statusMessage').textContent = `Error: ${error.message}`;
+    }
+});
+
+
+
+
+document.getElementById('bad-api-flag').addEventListener('click', async () => {
+    const newFlagVal = !badAPI
+
+
+    try {
+        // Make the API call to your server-side endpoint
+        const response = await fetch('/api/toggle-bad-api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                projectKey: 'brian-l-demo-project',
+                featureFlagKey: 'release-new-product-api',
+                value: newFlagVal, // Use the toggled value
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to toggle feature flag');
+        }
+
+        
+        if(newFlagVal){
+            alert('API Flag Is On')
+        }
+        else {alert('API Flag Is Off')}
 
         console.log('this is the new flag val =' + newFlagVal)
 

@@ -1,7 +1,6 @@
 const chatBox = document.getElementById('chatBox');
 const chatInput = document.getElementById('chatInput');
 
-let currentVariation = 'Variation 2'; // Default variation
 
 function sendMessage() {
     const message = chatInput.value.trim();
@@ -46,7 +45,6 @@ function addMessage(sender, message) {
 // Initial chatbot message
 window.onload = function() {
     addMessage('bot', 'How can I help you today?');
-    updateVariationText();
 };
 
 async function getBotResponse(message) {
@@ -81,43 +79,61 @@ window.onclick = function(event) {
     }
 }
 
-async function handleVariationOne() {
-    console.log('Variation One button clicked');
-    currentVariation = 'Variation 1';
-    updateVariationText();
+
+
+
+
+
+
+
+
+
+document.getElementById('variation1').addEventListener('click', async () => {
+
     try {
+        // Make the API call to your server-side endpoint
         const response = await fetch('/api/sad-context', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         });
-        const data = await response.json();
-        console.log(data.message);
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
 
-async function handleVariationTwo() {
-    console.log('Variation Two button clicked');
-    currentVariation = 'Variation 2';
-    updateVariationText();
+        if (!response.ok) {
+            throw new Error('Failed to toggle feature flag');
+        }
+
+        const data = await response.json();
+        console.log(`Success: ${data.message}`);
+    } catch (error) {
+        console.log(`Error: ${error.message}`);
+        document.getElementById('statusMessage').textContent = `Error: ${error.message}`;
+    }
+});
+
+document.getElementById('variation2').addEventListener('click', async () => {
+
     try {
+        // Make the API call to your server-side endpoint
         const response = await fetch('/api/happy-context', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         });
-        const data = await response.json();
-        console.log(data.message);
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
 
-function updateVariationText() {
-    const variationText = document.getElementById('variationText');
-    variationText.textContent = `You are using ${currentVariation}`;
-}
+        if (!response.ok) {
+            throw new Error('Failed to toggle feature flag');
+        }
+
+        const data = await response.json();
+        console.log(`Success: ${data.message}`);
+    } catch (error) {
+        console.log(`Error: ${error.message}`);
+        document.getElementById('statusMessage').textContent = `Error: ${error.message}`;
+    }
+});
+
+
+
+

@@ -4,24 +4,11 @@ const ld = require('@launchdarkly/node-server-sdk');
 const { initAi } = require('@launchdarkly/server-sdk-ai');
 const axios = require('axios');
 
+
 const app = express(); 
 const port = 4004;
 
-function sadContext() {
-    console.log("Sad context triggered");
-    context.mood = 'sad';
-    console.log('x, y');
-    openAIBot();
-    // Add your sad context logic here
-}
 
-function happyContext() {
-    console.log("Happy context triggered");
-    context.mood = 'happy';
-    console.log('asdfads' );
-    openAIBot;
-    // Add your happy context logic here
-}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,16 +23,117 @@ const context = {
 };
 
 // Endpoint to trigger sadContext
-app.post('/api/sad-context', (req, res) => {
-    sadContext();
-    res.json({ message: 'Sad context triggered' });
+
+
+app.post('/api/sad-context', async (req, res) => {
+  try {
+      // Update context
+      
+      context.mood = 'sad';
+     // console.log('Context:', context);
+
+      // Evaluate the flag (assuming client.variation is asynchronous)
+      const ldBot = await client.variation('coffee-bot', context, false);
+      console.log('Flag Value:', ldBot);
+      const botMessage =  ldBot.messages[0].content
+
+
+      // Send response
+      res.json({ message: 'sad context triggered', ldBot });
+  } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'An error occurred while evaluating the flag' });
+      
+  }
+
+
+  
 });
 
-// Endpoint to trigger happyContext
-app.post('/api/happy-context', (req, res) => {
-    happyContext();
-    res.json({ message: 'Happy context triggered' });
+
+
+
+
+
+app.post('/api/happy-context', async (req, res) => {
+  try {
+      // Update context
+      
+      context.mood = 'happy';
+     // console.log('Context:', context);
+      // Evaluate the flag (assuming client.variation is asynchronous)
+      const ldBot = await client.variation('coffee-bot', context, false);
+      console.log('Flag Value:', ldBot);
+      const botMessage =  ldBot.messages[0].content
+
+
+      // Send response
+      res.json({ message: 'Happy context triggered', ldBot });
+  } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'An error occurred while evaluating the flag' });
+      
+  }
 });
+
+
+
+async function aiConfigs(req, res, ldmessage) {
+  const { message } = req.body;
+
+  try {
+    const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: ldmessage }], // Use the 'message' from the request body
+        max_tokens: 500
+    }, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer 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` // Replace with your actual API key
+        }
+    });
+
+    const botMessage = response.data.choices[0].message.content.trim();
+    console.log('this is the LD bot talking' + botMessage)
+    res.json({ response: botMessage });
+} catch (error) {
+    console.error('Error:', error);
+    res.json({ response: 'Sorry, I am having trouble understanding you right now.' });
+}
+}
+
+app.post('/api/chatbot', async (req, res) => {
+
+  console.log('is htis hitting?')
+  const ldBot = await client.variation('coffee-bot', context, false);
+  const ldPrompt =  await ldBot.messages[0].content
+
+  await aiConfigs(req, res, ldPrompt); // Await the function and pass req and res
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Endpoint to toggle feature flags
 app.post('/api/toggle-feature-flag', async (req, res) => {
@@ -106,6 +194,65 @@ app.post('/api/toggle-experimentation-flag', async (req, res) => {
     }
 });
 
+app.post('/api/toggle-experimentation-flag', async (req, res) => {
+    const { projectKey, featureFlagKey, value } = req.body;
+
+    try {
+        const url = `https://app.launchdarkly.com/api/v2/flags/${projectKey}/${featureFlagKey}`;
+        const response = await axios.patch(
+            url,
+            [
+                {
+                    op: 'replace',
+                    path: `/environments/production/on`,
+                    value: value,
+                },
+            ],
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'api-78c8185b-3e24-4e42-850b-fce3db6ecd1d',
+                },
+            }
+        );
+
+        res.json({ message: 'Feature flag toggled successfully', data: response.data });
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        res.status(500).json({ message: 'Failed to toggle feature flag' });
+    }
+});
+
+app.post('/api/toggle-bad-api', async (req, res) => {
+    const { projectKey, featureFlagKey, value } = req.body;
+
+    try {
+        const url = `https://app.launchdarkly.com/api/v2/flags/${projectKey}/${featureFlagKey}`;
+        const response = await axios.patch(
+            url,
+            [
+                {
+                    op: 'replace',
+                    path: `/environments/production/on`,
+                    value: value,
+                },
+            ],
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'api-78c8185b-3e24-4e42-850b-fce3db6ecd1d',
+                },
+            }
+        );
+
+        res.json({ message: 'Feature flag toggled successfully', data: response.data });
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        res.status(500).json({ message: 'Failed to toggle feature flag' });
+    }
+});
+
+
 // Initialize the LaunchDarkly SDK and start the guardian runner
 async function initializeApp() {
     try {
@@ -113,9 +260,7 @@ async function initializeApp() {
         console.log('*** SDK successfully initialized!');
 
         // Start the guardian runner
-        await openAIBot();
         await guardianRunner();
-        
 
         // Test a feature flag
         const ldBot = await client.variation('coffee-bot', context, false);
@@ -129,30 +274,9 @@ async function initializeApp() {
 }
 
 
-function openAIBot() {
-  app.post('/api/chatbot', async (req, res) => {
-      const { message } = req.body;
 
-      try {
-          const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-              model: 'gpt-3.5-turbo',
-              messages: [{ role: 'user', content: message }], // Use the 'message' from the request body
-              max_tokens: 500
-          }, {
-              headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer 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` // Replace with your actual API key
-              }
-          });
 
-          const botMessage = response.data.choices[0].message.content.trim();
-          res.json({ response: botMessage });
-      } catch (error) {
-          console.error('Error:', error);
-          res.json({ response: 'Sorry, I am having trouble understanding you right now.' });
-      }
-  });
-}
+
 
 
 // Guardian runner function

@@ -12,6 +12,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Support - Coffee Shop</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .nav-links {
+            /* ...existing styles... */
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .nav-links.show {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-links a {
+            /* ...existing styles... */
+            padding: 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .nav-links.show {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -21,17 +54,18 @@
             <div></div>
             <div></div>
         </div>
-        <button class="cart-btn" id="cartButtonMobile" onclick="toggleCartDropdown()">
-            <i class="fas fa-shopping-cart"></i> <span id="cartCountMobile">0</span>
-        </button>
         <div class="nav-links" id="navLinks">
             <a href="index.html">Menu</a>
             <a href="support.html">Support</a>
+            <a href="#" id="toggleFeatureFlag">Holiday</a> 
+            <a href="#" id="bad-api-flag">API</a> 
+            <a href="#" id="experimentFlag">Experiment On</a> 
+            <a href="#" id="experimentFlagOff">Experiment Off</a> 
             <a href="#" onclick="toggleQRModal()">QR Code</a>
-            <button class="login-btn" id="loginButtonMobile" style="display: block" onclick="toggleLoginDropdownMobile()">
+            <button class="login-btn" id="loginButtonMobile" onclick="toggleLoginDropdownMobile()">
                 <i class="fas fa-user"></i> Sign In
             </button>
-            <div class="login-dropdown" id="loginDropdownMobile" style="display: none;">
+            <div class="login-dropdown" id="loginDropdownMobile">
                 <h3>Sign In</h3>
                 <form id="loginFormMobile">
                     <div class="form-group">
@@ -42,9 +76,6 @@
                 </form>
             </div>
         </div>
-        <button class="cart-btn" id="cartButtonDesktop" onclick="toggleCartDropdown()">
-            <i class="fas fa-shopping-cart"></i> <span id="cartCountDesktop">0</span>
-        </button>
         <h1>ToggleBucks</h1>
         <div class="login-container">
             <button class="login-btn" id="loginButtonDesktop" onclick="toggleLoginDropdown()">
@@ -64,22 +95,35 @@
                 </form>
             </div>
         </div>
+        <button class="cart-btn" id="cartButtonMobile" onclick="toggleCartDropdown()">
+            <i class="fas fa-shopping-cart"></i> <span id="cartCountMobile">0</span>
+        </button>
     </div>
 
     <div class="support-container">
         <h2>Support Chat</h2>
+        <button id = 'variation1'>Sad </button>
+        <button id = 'variation2'>Happy</button>
         <div class="chat-box" id="chatBox"></div>
         <div class="chat-input">
             <input type="text" id="chatInput" placeholder="Type your message...">
             <button onclick="sendMessage()">Send</button>
         </div>
         <!-- New Buttons -->
-        <div class="variation-buttons">
-            <button class="variation-btn" onclick="handleVariationOne()">Friendly Agent</button>
-            <button class="variation-btn" onclick="handleVariationTwo()">Sad Agent</button>
-        </div>
         <!-- New Text Element -->
         <p id="variationText"></p>
+        <div class="sliders">
+            <div class="slider-container">
+                <label for="temperatureSlider">Temperature:</label>
+                <input type="range" id="temperatureSlider" min="1" max="3" value="2" oninput="updateTemperatureValue(this.value)">
+                <span id="temperatureValue">Medium</span>
+            </div>
+            <div class="slider-container">
+                <label for="tokensSlider">Tokens:</label>
+                <input type="range" id="tokensSlider" min="1" max="3" value="2" oninput="updateTokensValue(this.value)">
+                <span id="tokensValue">Medium</span>
+            </div>
+        </div>
     </div>
 
     <div id="qrModal" class="qr-modal">
@@ -106,22 +150,19 @@
         }
 
         function closeLoginDropdownMobile() {
-            const dropdownMobile = document.getElemexntById('loginDropdownMobile');
+            const dropdownMobile = document.getElementById('loginDropdownMobile');
             dropdownMobile.style.display = 'none';
         }
 
-        function handleVariationOne() {
-            console.log('Variation One button clicked');
-            // Add your logic for Variation One here
+        function updateTemperatureValue(value) {
+            const temperatureText = value == 1 ? 'Low' : value == 2 ? 'Medium' : 'High';
+            document.getElementById('temperatureValue').textContent = temperatureText;
         }
 
-        function handleVariationTwo() {
-            console.log('Variation Two button clicked');
-            
-            // Add your logic for Variation Two here
+        function updateTokensValue(value) {
+            const tokensText = value == 1 ? 'Low' : value == 2 ? 'Medium' : 'High';
+            document.getElementById('tokensValue').textContent = tokensText;
         }
-
-        
     </script>
 </body>
 </html>
