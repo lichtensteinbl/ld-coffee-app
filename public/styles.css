@@ -501,7 +501,7 @@ input:checked + .slider:before {
     .login-btn#loginButtonMobile {
         display: block; /* Show mobile cart and login buttons in hamburger menu */
         margin: 10px auto; /* Center the buttons */
-        width: 90%; /* Make the buttons wider */
+        width: 80%; /* Make the buttons wider */
         border-radius: 20px; /* Match the login button style */
     }
 
@@ -522,7 +522,7 @@ input:checked + .slider:before {
     }
 
     .product {
-        width: 200px; /* Increase product width */
+        width: 150px; /* Reduce product width */
         height: auto; /* Adjust product height to fit content */
     }
 
