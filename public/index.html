@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <meta charset="UTF-8">
     <script crossorigin="anonymous" src="https://unpkg.com/launchdarkly-js-client-sdk@3.1.3"></script>
-    <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Coffee Shop</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -25,27 +25,34 @@
         </div>
         <div class="nav-links" id="navLinks">
             <button class="login-btn" id="loginButtonMobile" onclick="toggleLoginDropdownMobile()">
-                Sign In
+                <i class="fas fa-user"></i> Sign In
             </button>
             <div class="nav-item">
+                <div class="menu-dot"></div>
                 <a href="#">Menu</a>
             </div>
             <div class="nav-item">
+                <div class="support-dot"></div>
                 <a href="support.html">Support</a>
             </div>
             <div class="nav-item">
+                <div class="holiday-dot"></div>
                 <a href="#" id="toggleFeatureFlag">Holiday</a>
             </div>
             <div class="nav-item">
+                <div class="api-dot"></div>
                 <a href="#" id="bad-api-flag">API</a>
             </div>
             <div class="nav-item">
+                <div class="experiment-on-dot"></div>
                 <a href="#" id="experimentFlag">Experiment On</a>
             </div>
             <div class="nav-item">
+                <div class="experiment-off-dot"></div>
                 <a href="#" id="experimentFlagOff">Experiment Off</a>
             </div>
             <div class="nav-item">
+                <div class="qr-code-dot"></div>
                 <a href="#" onclick="toggleQRModal()">QR Code</a>
             </div>
             <div class="login-dropdown" id="loginDropdownMobile">

@@ -106,13 +106,13 @@
         <div class="sliders">
             <div class="slider-container" >
                 <label for="temperatureSlider">Temperature:</label>
-                <input type="range" id="temperatureSlider" min="1" max="3" value="2" oninput="updateTemperatureValue(this.value)">
-                <span id="temperatureValue">Medium</span>
+                <input type="range" id="temperatureSlider" min="1" max="3" value="1" oninput="updateTemperatureValue(this.value)">
+                <span id="temperatureValue">Low</span>
             </div>
-            <div class="slider-container"style="display: none">
-                <label for="tokensSlider">Tokens:</label>
-                <input type="range" id="tokensSlider" min="1" max="3" value="2" oninput="updateTokensValue(this.value)">
-                <span id="tokensValue">Medium</span>
+            <div class="slider-container">
+                <label for="tokensSlider">Language:</label>
+                <input type="range" id="tokensSlider" min="1" max="2" value="1" oninput="updateTokensValue(this.value)">
+                <span id="tokensValue">Spanish</span>
             </div>
         </div>
         <div class="button-container">
@@ -154,7 +154,7 @@
         }
 
         function updateTokensValue(value) {
-            const tokensText = value == 1 ? 'Low' : value == 2 ? 'Medium' : 'High';
+            const tokensText = value == 1 ? 'English' : 'Spanish';
             document.getElementById('tokensValue').textContent = tokensText;
         }
 

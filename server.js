@@ -25,7 +25,9 @@ app.post('/api/happy-context', async (req, res) => {
   try {
       ; // Log the request body to debug
       const { temperature, tokens } = req.body; // Destructure temperature and tokens from the request body
-      context.temperature = temperature.toLowerCase(); // Update context with the new temperature
+      context.temperature = temperature.toLowerCase();
+      context.language = tokens.toLowerCase();
+      // Update context with the new temperature
       context.tokens = tokens; // Update context with the new tokens value
       console.log(context);
 
