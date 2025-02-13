@@ -1,6 +1,9 @@
 const chatBox = document.getElementById('chatBox');
 const chatInput = document.getElementById('chatInput');
 
+// Access slider values
+const temperatureSlider = document.getElementById('temperatureSlider');
+const tokensSlider = document.getElementById('tokensSlider');
 
 function sendMessage() {
     const message = chatInput.value.trim();
@@ -14,9 +17,7 @@ function sendMessage() {
 client.on('ready', () => {
     coffeeBotResponse = client.variation('coffee-bot', context, false);
     console.log(coffeeBotResponse)
-    });
-
-
+});
 
 function addMessage(sender, message) {
     const messageElement = document.createElement('div');
@@ -79,39 +80,9 @@ window.onclick = function(event) {
     }
 }
 
-
-
-
-
-
-
-
-
-
-document.getElementById('variation1').addEventListener('click', async () => {
-
-    try {
-        // Make the API call to your server-side endpoint
-        const response = await fetch('/api/sad-context', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to toggle feature flag');
-        }
-
-        const data = await response.json();
-        console.log(`Success: ${data.message}`);
-    } catch (error) {
-        console.log(`Error: ${error.message}`);
-        document.getElementById('statusMessage').textContent = `Error: ${error.message}`;
-    }
-});
-
-document.getElementById('variation2').addEventListener('click', async () => {
+document.getElementById('selectConfig').addEventListener('click', async () => {
+    const temperature = document.getElementById('temperatureValue').textContent.toLowerCase();
+    const tokens = document.getElementById('tokensValue').textContent.toLowerCase();
 
     try {
         // Make the API call to your server-side endpoint
@@ -120,6 +91,7 @@ document.getElementById('variation2').addEventListener('click', async () => {
             headers: {
                 'Content-Type': 'application/json',
             },
+            body: JSON.stringify({ temperature, tokens }) // Send temperature and tokens in the request body
         });
 
         if (!response.ok) {
@@ -133,6 +105,10 @@ document.getElementById('variation2').addEventListener('click', async () => {
         document.getElementById('statusMessage').textContent = `Error: ${error.message}`;
     }
 });
+
+
+
+
 
 
 

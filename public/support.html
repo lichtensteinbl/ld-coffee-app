@@ -55,6 +55,9 @@
             <div></div>
         </div>
         <div class="nav-links" id="navLinks">
+            <span class="login-text" id="loginTextMobile" onclick="toggleLoginDropdownMobile()">
+                <i class="fas fa-user"></i> Sign In
+            </span>
             <a href="index.html">Menu</a>
             <a href="support.html">Support</a>
             <a href="#" id="toggleFeatureFlag">Holiday</a> 
@@ -62,9 +65,6 @@
             <a href="#" id="experimentFlag">Experiment On</a> 
             <a href="#" id="experimentFlagOff">Experiment Off</a> 
             <a href="#" onclick="toggleQRModal()">QR Code</a>
-            <button class="login-btn" id="loginButtonMobile" onclick="toggleLoginDropdownMobile()">
-                <i class="fas fa-user"></i> Sign In
-            </button>
             <div class="login-dropdown" id="loginDropdownMobile">
                 <h3>Sign In</h3>
                 <form id="loginFormMobile">
@@ -102,8 +102,6 @@
 
     <div class="support-container">
         <h2>Support Chat</h2>
-        <button id = 'variation1'>Sad </button>
-        <button id = 'variation2'>Happy</button>
         <div class="chat-box" id="chatBox"></div>
         <div class="chat-input">
             <input type="text" id="chatInput" placeholder="Type your message...">
@@ -123,6 +121,9 @@
                 <input type="range" id="tokensSlider" min="1" max="3" value="2" oninput="updateTokensValue(this.value)">
                 <span id="tokensValue">Medium</span>
             </div>
+        </div>
+        <div class="button-container">
+            <button class="select-config-btn" id = 'selectConfig'>Set Config</button>
         </div>
     </div>
 
@@ -162,6 +163,12 @@
         function updateTokensValue(value) {
             const tokensText = value == 1 ? 'Low' : value == 2 ? 'Medium' : 'High';
             document.getElementById('tokensValue').textContent = tokensText;
+        }
+
+        function selectConfig() {
+            const temperature = document.getElementById('temperatureValue').textContent;
+            const tokens = document.getElementById('tokensValue').textContent;
+            alert(`Selected Config - Temperature: ${temperature}, Tokens: ${tokens}`);
         }
     </script>
 </body>

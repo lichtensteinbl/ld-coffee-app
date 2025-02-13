@@ -104,6 +104,7 @@ h2 {
 
 .nav-links a:hover {
     color: #006241;
+    background-color: #f0f0f0;
 }
 
 .nav-links.show {
@@ -317,6 +318,37 @@ h2 {
     transform: scale(0.95); /* Slightly shrink the button when clicked */
 }
 
+/* Select Config Button */
+.select-config-btn {
+    background-color: #006241; /* Match the primary color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px; /* Rounded corners */
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+    text-align: center;
+    text-decoration: none;
+    margin-top: 20px; /* Add some space above the button */
+}
+
+.select-config-btn:hover {
+    background-color: #004d33; /* Darker green on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.select-config-btn:active {
+    transform: scale(0.95); /* Slightly shrink the button when clicked */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
 /* Toggle Switch */
 .switch {
     position: relative;
@@ -368,12 +400,14 @@ input:checked + .slider:before {
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
 .slider-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 10px; /* Add margin for spacing */
 }
 
 .slider-container label {
@@ -382,8 +416,34 @@ input:checked + .slider:before {
 }
 
 .slider-container input[type="range"] {
-    width: 200px;
+    width: 100%; /* Make the slider take full width */
+    max-width: 300px; /* Set a maximum width */
     margin-bottom: 10px;
+    background: linear-gradient(to right, #006241 0%, #006241 33%, #ffcc00 33%, #ffcc00 66%, #b22222 66%, #b22222 100%);
+    border-radius: 5px;
+    height: 8px;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.slider-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border: 2px solid #006241;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.slider-container input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border: 2px solid #006241;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 .slider-container span {
@@ -398,27 +458,30 @@ input:checked + .slider:before {
     }
 
     .nav-links {
-        display: none; /* Hide nav links by default on mobile */
+        display: none;
         flex-direction: column;
-        position: absolute;
-        top: 60px; /* Adjust based on your nav bar height */
-        left: 0;
-        right: 0;
         background-color: #ffffff;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        z-index: 1001; /* Ensure nav links are above the rewards banner */
-        padding-top: 10px; /* Add some padding to separate from the nav bar */
-        padding-right: 20px; /* Reduce padding to make the menu shorter */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        transition: all 0.3s ease-in-out;
+        position: absolute;
+        top: 60px; /* Adjust based on your header height */
+        left: 10px;
+        z-index: 1000;
     }
+    
 
     .nav-links a {
-        padding: 10px; /* Reduce padding */
-        text-align: center;
-        border-bottom: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
     }
 
     .nav-links.show {
-        display: flex; /* Show nav links when hamburger is clicked */
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
     }
 
     .cart-btn#cartButtonDesktop,
@@ -443,15 +506,15 @@ input:checked + .slider:before {
 
     .login-dropdown#loginDropdownMobile {
         display: none;
-        position: absolute;
-        top: calc(100% + 10px); /* Ensure dropdown is below the nav bar */
-        left: 50%;
-        transform: translateX(-50%);
+        position: fixed; /* Change to fixed positioning */
+        top: 50%; /* Center vertically */
+        left: 50%; /* Center horizontally */
+        transform: translate(-50%, -50%); /* Adjust to be centered */
         background: white;
         border: 1px solid #ccc;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         padding: 20px;
-        width: 50%; /* Cover half the screen */
+        width: 80%; /* Cover most of the screen */
         max-width: 300px;
         border-radius: 10px;
         z-index: 1000; /* Ensure dropdown is above other elements */
@@ -803,5 +866,20 @@ input:checked + .slider:before {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
     animation: fadeIn 1s ease-in-out; /* Add fade-in animation */
     margin-top: 80px; /* Add margin to ensure it is not covered by the top nav */
+}
+
+/* Sign-in Text */
+.login-text {
+    cursor: pointer;
+    color: #333;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.login-text:hover {
+    background-color: #f0f0f0;
 }
 

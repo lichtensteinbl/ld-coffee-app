@@ -4,11 +4,8 @@ const ld = require('@launchdarkly/node-server-sdk');
 const { initAi } = require('@launchdarkly/server-sdk-ai');
 const axios = require('axios');
 
-
 const app = express(); 
 const port = 4004;
-
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,73 +16,36 @@ const client = ld.init('sdk-5bb8da0f-8861-4d67-a2f4-c257055c2335');
 const context = {
   kind: 'user',
   key: 'user-key-123abc',
-  name: 'Sandy'
+  name: 'Sandy',
+  temperature: 'low'
 };
 
-// Endpoint to trigger sadContext
-
-
-app.post('/api/sad-context', async (req, res) => {
-  try {
-      // Update context
-      
-      context.mood = 'sad';
-     // console.log('Context:', context);
-
-      // Evaluate the flag (assuming client.variation is asynchronous)
-      const ldBot = await client.variation('coffee-bot', context, false);
-      console.log('Flag Value:', ldBot);
-      const botMessage =  ldBot.messages[0].content
-
-
-      // Send response
-      res.json({ message: 'sad context triggered', ldBot });
-  } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'An error occurred while evaluating the flag' });
-      
-  }
-
-
-  
-});
-
-
-
-
-
-
+// Endpoint to trigger happyContext
 app.post('/api/happy-context', async (req, res) => {
   try {
-      // Update context
-      
-      context.mood = 'happy';
-     // console.log('Context:', context);
-      // Evaluate the flag (assuming client.variation is asynchronous)
-      const ldBot = await client.variation('coffee-bot', context, false);
-      console.log('Flag Value:', ldBot);
-      const botMessage =  ldBot.messages[0].content
-
+      ; // Log the request body to debug
+      const { temperature, tokens } = req.body; // Destructure temperature and tokens from the request body
+      context.temperature = temperature.toLowerCase(); // Update context with the new temperature
+      context.tokens = tokens; // Update context with the new tokens value
+      console.log(context);
 
       // Send response
-      res.json({ message: 'Happy context triggered', ldBot });
+      res.json({ message: 'Happy context triggered', context });
   } catch (error) {
       console.error('Error:', error);
       res.status(500).json({ error: 'An error occurred while evaluating the flag' });
-      
   }
 });
-
-
 
 async function aiConfigs(req, res, ldmessage) {
   const { message } = req.body;
+  //const { tokens } = context.tokens;
 
   try {
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: ldmessage }], // Use the 'message' from the request body
-        max_tokens: 500
+        max_tokens: 300
     }, {
         headers: {
             'Content-Type': 'application/json',
@@ -110,30 +70,6 @@ app.post('/api/chatbot', async (req, res) => {
 
   await aiConfigs(req, res, ldPrompt); // Await the function and pass req and res
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Endpoint to toggle feature flags
 app.post('/api/toggle-feature-flag', async (req, res) => {
@@ -252,7 +188,6 @@ app.post('/api/toggle-bad-api', async (req, res) => {
     }
 });
 
-
 // Initialize the LaunchDarkly SDK and start the guardian runner
 async function initializeApp() {
     try {
@@ -266,18 +201,12 @@ async function initializeApp() {
         const ldBot = await client.variation('coffee-bot', context, false);
         console.log(context)
         const botMessage =  ldBot.messages[0].content
-        console.log('Feature flag value:', botMessage);
+        //console.log('Feature flag value:', botMessage);
     } catch (error) {
         console.error(`*** SDK failed to initialize: ${error}`);
         process.exit(1);
     }
 }
-
-
-
-
-
-
 
 // Guardian runner function
 async function guardianRunner() {

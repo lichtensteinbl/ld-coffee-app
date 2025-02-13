@@ -492,7 +492,6 @@ document.getElementById('experimentFlag').addEventListener('click', async () => 
 
 document.getElementById('experimentFlagOff').addEventListener('click', async () => {
 
-
     try {
         // Make the API call to your server-side endpoint
         const response = await fetch('/api/toggle-experimentation-flag', {
@@ -563,4 +562,5 @@ document.getElementById('bad-api-flag').addEventListener('click', async () => {
         document.getElementById('statusMessage').textContent = `Error: ${error.message}`;
     }
 });
+
 
