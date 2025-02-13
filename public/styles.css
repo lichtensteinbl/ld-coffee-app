@@ -522,7 +522,7 @@ input:checked + .slider:before {
     }
 
     .product {
-        width: 150px; /* Reduce product width */
+        width: 200px; /* Increase product width */
         height: auto; /* Adjust product height to fit content */
     }
 
