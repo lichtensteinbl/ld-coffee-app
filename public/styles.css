@@ -470,12 +470,15 @@ input:checked + .slider:before {
         left: 10px;
         z-index: 1000;
         gap: 5px; /* Reduced gap between links */
+        width: 90%;
+        max-width: 300px;
     }
 
     .nav-links a {
         padding: 15px;
         border-radius: 5px;
         transition: background-color 0.3s ease;
+        text-align: center;
     }
 
     .nav-links.show {
@@ -497,12 +500,17 @@ input:checked + .slider:before {
         transform: translateY(-50%); /* Adjust to be even with the text */
     }
 
-    .login-btn#loginButtonMobile {
+    .nav-links .login-btn#loginButtonMobile {
         display: block; /* Show mobile cart and login buttons in hamburger menu */
         margin: 10px auto; /* Center the buttons */
         width: 90%; /* Make the buttons wider */
         border-radius: 20px; /* Match the login button style */
-        margin-left: -10px; /* Adjust the margin as needed */
+        background-color: #006241;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
     }
 
     .login-dropdown#loginDropdownMobile {
