@@ -23,16 +23,30 @@
             <div></div>
         </div>
         <div class="nav-links" id="navLinks">
-            <a href="index.html">Menu</a>
-            <a href="support.html">Support</a>
-            <a href="#" id="toggleFeatureFlag">Holiday</a> 
-            <a href="#" id="bad-api-flag">API</a> 
-            <a href="#" id="experimentFlag">Experiment On</a> 
-            <a href="#" id="experimentFlagOff">Experiment Off</a> 
-            <a href="#" onclick="toggleQRModal()">QR Code</a>
             <button class="login-btn" id="loginButtonMobile" onclick="toggleLoginDropdownMobile()">
-                <i class="fas fa-user"></i> Sign In
+                Sign In
             </button>
+            <div class="nav-item">
+                <a href="index.html">Menu</a>
+            </div>
+            <div class="nav-item">
+                <a href="support.html">Support</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" id="toggleFeatureFlag">Holiday</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" id="bad-api-flag">API</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" id="experimentFlag">Experiment On</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" id="experimentFlagOff">Experiment Off</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" onclick="toggleQRModal()">QR Code</a>
+            </div>
             <div class="login-dropdown" id="loginDropdownMobile">
                 <h3>Sign In</h3>
                 <form id="loginFormMobile">
@@ -95,7 +109,7 @@
                 <input type="range" id="temperatureSlider" min="1" max="3" value="2" oninput="updateTemperatureValue(this.value)">
                 <span id="temperatureValue">Medium</span>
             </div>
-            <div class="slider-container" style="display: none;">
+            <div class="slider-container"style="display: none">
                 <label for="tokensSlider">Tokens:</label>
                 <input type="range" id="tokensSlider" min="1" max="3" value="2" oninput="updateTokensValue(this.value)">
                 <span id="tokensValue">Medium</span>

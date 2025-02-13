@@ -471,7 +471,6 @@ input:checked + .slider:before {
         z-index: 1000;
         gap: 5px; /* Reduced gap between links */
     }
-    
 
     .nav-links a {
         padding: 15px;
@@ -503,6 +502,7 @@ input:checked + .slider:before {
         margin: 10px auto; /* Center the buttons */
         width: 90%; /* Make the buttons wider */
         border-radius: 20px; /* Match the login button style */
+        margin-left: -10px; /* Adjust the margin as needed */
     }
 
     .login-dropdown#loginDropdownMobile {
@@ -595,6 +595,11 @@ input:checked + .slider:before {
         text-align: center;
         padding: 10px;
         font-size: 14px;
+    }
+
+    .nav-item {
+        display: flex;
+        align-items: center;
     }
 }
 

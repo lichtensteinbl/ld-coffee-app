@@ -285,7 +285,7 @@ function logout() {
         console.log("Context reset to non-member");
         console.log(context);
     });
-    window.location.href = 'https://coffee-shop-bl-149d4d87ac05.herokuapp.com/';
+    window.location.href = 'http://localhost:4004/index.html';
     updateLoginUI();
     console.log('user has logged out');
 document.getElementById('rewards-section').style.display = 'none'
@@ -562,5 +562,9 @@ document.getElementById('bad-api-flag').addEventListener('click', async () => {
         document.getElementById('statusMessage').textContent = `Error: ${error.message}`;
     }
 });
+
+function addEventListenersToDots() {
+    // Remove all the dot event listener logic
+}
 
 
