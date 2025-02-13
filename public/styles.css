@@ -469,6 +469,7 @@ input:checked + .slider:before {
         top: 60px; /* Adjust based on your header height */
         left: 10px;
         z-index: 1000;
+        gap: 5px; /* Reduced gap between links */
     }
     
 
@@ -500,7 +501,7 @@ input:checked + .slider:before {
     .login-btn#loginButtonMobile {
         display: block; /* Show mobile cart and login buttons in hamburger menu */
         margin: 10px auto; /* Center the buttons */
-        width: 50%; /* Make the buttons narrower */
+        width: 90%; /* Make the buttons wider */
         border-radius: 20px; /* Match the login button style */
     }
 
@@ -586,6 +587,15 @@ input:checked + .slider:before {
         padding: 6px 12px; /* Reduce padding */
         font-size: 12px; /* Reduce font size */
     }
+
+    .congrats-banner-mobile {
+        display: block;
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        font-size: 14px;
+    }
 }
 
 @media (min-width: 769px) {
@@ -622,6 +632,10 @@ input:checked + .slider:before {
 
     .login-btn#loginButtonDesktop {
         margin-right: 60px; /* Ensure there's enough space for the cart button */
+    }
+
+    .congrats-banner-mobile {
+        display: none;
     }
 }
 
@@ -881,5 +895,9 @@ input:checked + .slider:before {
 
 .login-text:hover {
     background-color: #f0f0f0;
+}
+
+.congrats-banner-mobile {
+    display: none;
 }
 

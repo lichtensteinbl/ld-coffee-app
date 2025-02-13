@@ -45,7 +45,7 @@ async function aiConfigs(req, res, ldmessage) {
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: ldmessage }], // Use the 'message' from the request body
-        max_tokens: 300
+        max_tokens: 300,
     }, {
         headers: {
             'Content-Type': 'application/json',

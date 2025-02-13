@@ -40,7 +40,7 @@ function addMessage(sender, message) {
     }
 
     chatBox.appendChild(messageElement);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    chatBox.scrollTop = chatBox.scrollHeight; 
 }
 
 // Initial chatbot message
@@ -81,8 +81,8 @@ window.onclick = function(event) {
 }
 
 document.getElementById('selectConfig').addEventListener('click', async () => {
-    const temperature = document.getElementById('temperatureValue').textContent.toLowerCase();
-    const tokens = document.getElementById('tokensValue').textContent.toLowerCase();
+    const temperature = temperatureSlider.value; // Use .value to get the slider value
+    const tokens = tokensSlider.value; // Use .value instead of .textContent for slider
 
     try {
         // Make the API call to your server-side endpoint
