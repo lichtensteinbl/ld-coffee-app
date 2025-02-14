@@ -60,7 +60,7 @@ const context = {
       setTimeout(() => {
         holidayText.classList.remove("fade-in")
         holidayProducts.classList.remove("fade-in")
-      }, 4000) // Duration of the animation
+      }, 10000) // Duration of the animation
     }
   }
   
@@ -130,8 +130,8 @@ const context = {
   function makeImagesCircular() {
     const productImages = document.querySelectorAll(".product img")
     productImages.forEach((img) => {
-      img.style.width = "250px"
-      img.style.height = "250px"
+      img.style.width = "150px"
+      img.style.height = "150px"
       img.style.borderRadius = "50%"
       img.style.objectFit = "cover"
       img.style.display = "block"
@@ -168,6 +168,7 @@ const context = {
   function toggleLoginDropdownMobile() {
     if (!currentUser) {
       signIn()
+      
     } else {
       logout()
     }
@@ -351,9 +352,9 @@ const context = {
     } else {
       logout() // If already signed in, sign out
     }
-    //window.location.reload();
-  
+    window.location.reload();
   }
+
   
   function toggler() {
     document.getElementById("holiday-switch").checked = holidayDrinks
@@ -714,5 +715,4 @@ const context = {
   
   // Add this event listener at the end of the file
   document.addEventListener("click", closeNavOnClickOutside)
-  
-  
+

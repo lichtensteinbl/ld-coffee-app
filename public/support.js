@@ -72,6 +72,17 @@ function toggleQRModal() {
     qrModal.style.display = qrModal.style.display === 'block' ? 'none' : 'block';
 }
 
+// Toggle Login Dropdown Mobile
+function toggleLoginDropdownMobile() {
+    if (!currentUser) {
+        signIn();
+    } else {
+        logout();
+    }
+    const dropdownMobile = document.getElementById("loginDropdownMobile")
+    dropdownMobile.style.display = dropdownMobile.style.display === "block" ? "none" : "block"
+}
+
 // Close QR Modal when clicking outside of it
 window.onclick = function(event) {
     const qrModal = document.getElementById('qrModal');

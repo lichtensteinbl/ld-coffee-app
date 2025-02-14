@@ -33,6 +33,11 @@
                 <a href="support.html">Support</a>
             </div>
             <div class="nav-item">
+                <a href="#" onclick="toggleQRModal()">QR Code</a>
+                 <div class="toggle-switch">
+                </div>
+            </div>
+            <div class="nav-item">
                 <a href="#" id="toggleFeatureFlag">Holiday</a>
                 <div class="toggle-switch">
                     <label class="switch">
@@ -68,15 +73,7 @@
                     </label>
                 </div>
             </div>
-            <div class="nav-item">
-                <a href="#" onclick="toggleQRModal()">QR Code</a>
-                 <div class="toggle-switch">
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </div>
+
             <div class="login-dropdown" id="loginDropdownMobile" style="display: none;">
                 <h3>Sign In</h3>
                 <form id="loginFormMobile">

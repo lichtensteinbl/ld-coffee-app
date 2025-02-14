@@ -25,7 +25,7 @@
         </div>
         <div class="nav-links" id="navLinks">
             <button class="login-btn" id="loginButtonMobile" onclick="toggleLoginDropdownMobile()">
-                <i class="loggy"> Log In</i> 
+                <i class=""> Log In</i> 
             </button>
             <div class="nav-item">
                 <div class="menu-dot"></div>
@@ -34,6 +34,10 @@
             <div class="nav-item">
                 <div class="support-dot"></div>
                 <a href="support.html">Support</a>
+            </div>
+            <div class="nav-item">
+                <div class="qr-code-dot"></div>
+                <a href="#" onclick="toggleQRModal()">QR Code</a>
             </div>
             <div class="nav-item">
                 <div class="holiday-dot"></div>
@@ -74,10 +78,6 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
-            </div>
-            <div class="nav-item">
-                <div class="qr-code-dot"></div>
-                <a href="#" onclick="toggleQRModal()">QR Code</a>
             </div>
             <div class="login-dropdown" id="loginDropdownMobile">
                 <h3>Sign In</h3>
@@ -138,11 +138,17 @@
         <h2 id="holiday-text" style="display: none">Holiday Favorites ❄️ 🎄</h2>
         <div id="holiday-products", class="product-grid"></div>
 
+        <div class="section-separator"></div>
+
         <h2>Cold Drinks</h2>
         <div id="cold-products" class="product-grid"></div>
          
+        <div class="section-separator"></div>
+
         <h2>Hot Drinks</h2>
         <div id="warm-products" class="product-grid"></div>
+
+        <div class="section-separator"></div>
 
         <h2>Food</h2>
         <div id="food-products" class="product-grid"></div>

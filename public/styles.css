@@ -5,7 +5,7 @@ body {
     padding: 0;
     font-size: 16px;
     color: #333;
-    background-color: #f9f9f9;
+    background-color: #F5F5F5;
 }
 
 h1 {
@@ -14,6 +14,8 @@ h1 {
 
 h2 {
     color: black;
+    font-weight: 700;
+    font-size: 20px;
 }
 
 .container {
@@ -31,7 +33,7 @@ h2 {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #ffffff;
+    background-color: #F5F5F5;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: fixed;
     top: 0;
@@ -142,7 +144,7 @@ h2 {
 /* Login and Profile Buttons */
 .login-btn, .profile-btn {
     background-color: #006241;
-    color: white;
+    color: #F5F5F5;
     border: none;
     padding: 10px 20px;
     border-radius: 20px;
@@ -165,7 +167,7 @@ h2 {
     position: absolute;
     top: 50px;
     right: 0;
-    background: white;
+    background:#F5F5F5;
     color: #333; /* Ensure text is dark */
     border: 1px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -207,7 +209,7 @@ h2 {
     width: 100%;
     padding: 10px;
     background-color: #006241;
-    color: white;
+    color: #F5F5F5;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -226,13 +228,13 @@ h2 {
 
 /* Cart Button */
 .cart-btn {
-    background-color: #006241;
-    color: white;
+    background-color: #F5F5F5;
+    color: black;
     border: none;
-    padding: 10px;
+    padding: 12px;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
     position: relative;
 }
 
@@ -245,8 +247,8 @@ h2 {
     position: absolute;
     top: -5px;
     right: -5px;
-    background-color: red;
-    color: white;
+    background-color: #004d33;
+    color:  #F5F5F5;
     border-radius: 50%;
     padding: 2px 6px;
     font-size: 12px;
@@ -266,7 +268,7 @@ h2 {
 
 /* Product Grid */
 .product-grid {
-    background-color: white;
+    background-color:  #F5F5F5;
     display: flex;
     overflow-x: auto;
     gap: 20px;
@@ -281,7 +283,7 @@ h2 {
 .product {
     flex: 0 0 auto;
     width: 300px; /* Increased from 200px to 250px */
-    background-color: white;
+    background-color: #F5F5F5;
     /* Remove the border */
     border: none;
     border-radius: 10px;
@@ -296,7 +298,7 @@ h2 {
 
 .product h3 {
     margin: 10px 0;
-    color: #006241;
+    color: black;
 }
 
 .product p {
@@ -306,7 +308,7 @@ h2 {
 /* Add to Cart Button */
 .add-to-cart-btn {
     background-color: #006241; /* Starbucks green */
-    color: white;
+    color: #F5F5F5;
     border: none;
     padding: 10px 20px;
     border-radius: 25px; /* Rounded corners */
@@ -362,7 +364,7 @@ h2 {
     width: 26px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
+    background-color: #F5F5F5;
     transition: .4s;
     border-radius: 50%;
 }
@@ -413,7 +415,7 @@ input:checked + .slider:before {
     width: 13px; /* Reduced width */
     left: 2px;
     bottom: 2px;
-    background-color: white;
+    background-color: #F5F5F5;
     transition: .4s;
     border-radius: 50%;
 }
@@ -439,6 +441,14 @@ input:checked + .slider:before {
     border-radius: 50%;
 }
 
+/* Separator */
+.section-separator {
+    width: 100%;
+    height: 1px;
+    background-color: black;
+    margin: 20px auto; /* Adjust margin as needed */
+}
+
 @media (max-width: 768px) {
     .hamburger {
         display: flex; /* Show hamburger menu on mobile */
@@ -448,7 +458,7 @@ input:checked + .slider:before {
         position: fixed;
         top: 0;
         left: -70%; /* Start off-screen */
-        background-color: white;
+        background-color:#F5F5F5;
         height: 100%;
         width: 50%;
         display: flex;
@@ -497,6 +507,9 @@ input:checked + .slider:before {
         width: 100%; /* Make the buttons wider */
         border-radius: 10px; /* Match the login button style */
         margin-left: -10px; /* Adjust the margin as needed */
+        text-indent: .4em;
+        font-style: italic;
+
     }
 
     .login-dropdown#loginDropdownMobile {
@@ -505,7 +518,7 @@ input:checked + .slider:before {
         top: 50%; /* Center vertically */
         left: 50%; /* Center horizontally */
         transform: translate(-50%, -50%); /* Adjust to be centered */
-        background: white;
+        background: #F5F5F5;
         border: 0px solid #ccc;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         padding: 0px;
@@ -585,7 +598,7 @@ input:checked + .slider:before {
     .congrats-banner-mobile {
         display: block;
         background-color: #4CAF50;
-        color: white;
+        color: #F5F5F5;
         text-align: center;
         padding: 10px;
         font-size: 14px;
@@ -650,7 +663,6 @@ input:checked + .slider:before {
 
 /* Holiday Drinks Styles */
 #holiday-text {
-    font-family: 'Pacifico', cursive; /* Festive font */
     color: #B22222; /* Christmas red */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
     
@@ -705,7 +717,7 @@ input:checked + .slider:before {
     max-width: 800px;
     margin: 100px auto;
     padding: 20px;
-    background-color: #ffffff;
+    background-color: #F5F5F5;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -741,7 +753,7 @@ input:checked + .slider:before {
 .chat-input button {
     padding: 10px 20px;
     background-color: #006241;
-    color: white;
+    color: #F5F5F5;
     border: none;
     border-radius: 0 10px 10px 0;
     cursor: pointer;
@@ -776,7 +788,7 @@ input:checked + .slider:before {
 
 .chat-message.user .chat-bubble {
     background-color: #006241;
-    color: white;
+    color: #F5F5F5
 }
 
 .chat-message.bot .chat-bubble {
@@ -798,11 +810,11 @@ input:checked + .slider:before {
 
 /* Holiday Favorites Container */
 #holiday-products {
-    background-color: white; /* Match the background color of other products */
+    background-color:#F5F5F5; /* Match the background color of other products */
     border: 0px solid #b22222; /* Christmas red border */
     border-radius: 10px; /* Rounded corners */
     padding: 20px; /* Padding inside the container */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+     /* Subtle shadow */
     /* Remove the background image */
     background-image: none;
 
