@@ -60,7 +60,7 @@ const context = {
       setTimeout(() => {
         holidayText.classList.remove("fade-in")
         holidayProducts.classList.remove("fade-in")
-      }, 10000) // Duration of the animation
+      }, 400) // Duration of the animation
     }
   }
   
@@ -81,7 +81,7 @@ const context = {
           img.src = storedImg[0]
         }
         callBadApi()
-      }, 2000)
+      }, 6000)
     }
   }
   
