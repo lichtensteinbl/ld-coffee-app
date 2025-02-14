@@ -22,6 +22,9 @@ h2 {
     margin: 0px auto 0 auto;
 }
 
+#loggy {
+    text-indent: -2em;
+}
 /* Navigation Bar */
 .nav-bar {
     display: flex;
@@ -93,14 +96,19 @@ h2 {
 /* Navigation Links */
 .nav-links {
     display: flex;
-    gap: 20px;
+    gap: 5px;
+    text-align: left;
+    
     
 }
 
 .nav-links a {
     text-decoration: none;
     color: #333;
-    font-weight: 500;
+    font-weight: bold;
+    font-size: large;
+    text-align: left;
+
    
 }
 
@@ -141,7 +149,7 @@ h2 {
     cursor: pointer;
     font-size: 16px;
     width: 120px; /* Set a fixed width */
-    text-align: center; /* Center the text inside the button */
+    text-align: left; /* Center the text inside the button */
     white-space: nowrap; /* Prevent text from wrapping */
     overflow: hidden; /* Hide overflow text */
     text-overflow: ellipsis; /* Add ellipsis for overflow text */
