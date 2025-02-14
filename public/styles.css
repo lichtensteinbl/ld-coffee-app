@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+
 /* General Styles */
 body {
-    font-family: "Kanit", sans-serif;
+    font-family: "Montserrat", sans-serif;
     margin: 0;
     padding: 0;
     font-size: 16px;
@@ -282,7 +284,7 @@ h2 {
 
 .product {
     flex: 0 0 auto;
-    width: 300px; /* Increased from 200px to 250px */
+    width: px; /* Increased from 300px to 400px */
     background-color: #F5F5F5;
     /* Remove the border */
     border: none;
@@ -907,4 +909,23 @@ input:checked + .slider:before {
 .nav-item a {
     flex-grow: 1; /* Allow the link to take up available space */
 }
+
+.img-wrapper {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative; /* Add this */
+}
+/*
+.img-wrapper img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1); /* Adjust scale for tighter crop 
+    width: 100%;
+}
+
+}*/
+
 

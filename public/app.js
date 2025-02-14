@@ -31,20 +31,24 @@ const context = {
   
   function showHolidayDrinks() {
     console.log("showing drinks")
-    const holidayText = document.getElementById("holiday-text")
-    const holidayProducts = document.getElementById("holiday-products")
+    //const holidayText = document.getElementById("holiday-text")
+    //const holidayProducts = document.getElementById("holiday-products")
+    
+    turnOnHero();
   
-    if (!holidayDrinks) {
-      holidayText.style.display = "none"
-      holidayProducts.style.display = "none"
-    } else {
-      holidayText.style.display = "block"
-      holidayProducts.style.display = "flex"
-    }
+    //if (!holidayDrinks) {
+      //holidayText.style.display = "none"
+      //holidayProducts.style.display = "none"
+    //} else {
+      //holidayText.style.display = "block"
+      //holidayProducts.style.display = "flex"
+    //}
   }
   
   function showHolidayAnimation() {
-    console.log("showing drinks with animation")
+    turnOnHero();
+
+    /*console.log("showing drinks with animation")
     const holidayText = document.getElementById("holiday-text")
     const holidayProducts = document.getElementById("holiday-products")
   
@@ -61,7 +65,7 @@ const context = {
         holidayText.classList.remove("fade-in")
         holidayProducts.classList.remove("fade-in")
       }, 400) // Duration of the animation
-    }
+    }*/
   }
   
   const brokenURL = "https://globalassets.starbucks.com/djpg?impolicy=1by1_wide_topcrop_630"
@@ -102,7 +106,9 @@ const context = {
       productElement.className = "product"
       productElement.innerHTML = `
               <h3>${product.name}</h3>
-              <img src="${product.img}" alt="${product.name}">
+              <div class="img-wrapper">
+                  <img src="${product.img}" alt="${product.name}">
+              </div>
               <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add To Order</button>
           `
   
@@ -130,10 +136,12 @@ const context = {
   function makeImagesCircular() {
     const productImages = document.querySelectorAll(".product img")
     productImages.forEach((img) => {
-      img.style.width = "150px"
-      img.style.height = "150px"
-      img.style.borderRadius = "50%"
-      img.style.objectFit = "cover"
+      img.style.width = "250px"
+      img.style.height = "250px"
+      img.style.borderRadius = "0%"
+      img.style.objectFit = "cover"; /* Ensure the image covers the area */
+      img.style.objectPosition = "center"; /* Zoom in by focusing on the center */
+      img.style.overflow = "hidden";
       img.style.display = "block"
       img.style.margin = "0 auto"
     })
@@ -382,7 +390,8 @@ const context = {
   }
   
   let holidayAlreadyOn = false
-  
+  let heroBanner; 
+
   function imageShape() {
     if (circleFlag == "Circle") {
       console.log("function says " + circleFlag)
@@ -401,6 +410,8 @@ const context = {
   }
   
   client.on("ready", () => {
+    heroBanner = client.variation("release-hero-banner", context, false)
+    console.log('I AM A HERO' + heroBanner)
     holidayDrinks = client.variation("release-holiday-drinks", context, false)
     membershipRewards = client.variation("membership-rewards", context, false)
     console.log("member rewards = " + membershipRewards)
@@ -408,7 +419,10 @@ const context = {
     console.log("circle = " + circleFlag)
     badAPI = client.variation("release-new-product-api", context, false)
     console.log("badAPI is " + badAPI)
+    console.log('I AM A HERO' + heroBanner)
+
     toggler()
+    turnOnHero();
   
     console.log("client is ready")
   
@@ -424,11 +438,13 @@ const context = {
   })
   
   client.on("change", () => {
+    heroBanner = client.variation("release-hero-banner", context, false)
     holidayDrinks = client.variation("release-holiday-drinks", context, false)
     membershipRewards = client.variation("membership-rewards", context, false)
     circleFlag = client.variation("circular-logos", context, false)
     badAPI = client.variation("release-new-product-api", context, false)
     toggler()
+    turnOnHero();
   
     if (badAPI) {
     }
@@ -703,6 +719,8 @@ const context = {
     }
   }
   
+
+
   // Add this function at the end of the file
   function closeNavOnClickOutside(event) {
     const navLinks = document.getElementById("navLinks")
@@ -716,3 +734,160 @@ const context = {
   // Add this event listener at the end of the file
   document.addEventListener("click", closeNavOnClickOutside)
 
+  function applyTheme() {
+    // 1. Font Changes
+    const link = document.createElement("link")
+    link.rel = "stylesheet"
+    link.href =
+      "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto+Mono:wght@400&display=swap"
+    document.head.appendChild(link)
+  
+    document.body.style.fontFamily = "'Poppins', sans-serif"
+  
+    // 2. Color Palette (Original Color Scheme)
+    const primary = "#006241" // Starbucks green
+    const secondary = "#f9f9f9" // Light gray background
+    const accent = "#B22222" // Christmas red (for highlights)
+    const text = "#333" // Dark gray text
+  
+    document.body.style.backgroundColor = secondary
+  
+    // 3. Element Styling
+    const allElements = document.querySelectorAll("*")
+    allElements.forEach((element) => {
+      element.style.color = text
+    })
+  
+    const headings = document.querySelectorAll("h1, h2, h3")
+    headings.forEach((heading) => {
+      heading.style.color = primary
+    })
+  
+    const buttons = document.querySelectorAll("button, .add-to-cart-btn")
+    buttons.forEach((button) => {
+      button.style.backgroundColor = primary
+      button.style.color = "white"
+      button.style.border = "none"
+      button.style.padding = "10px 20px"
+      button.style.borderRadius = "20px"
+      button.style.cursor = "pointer"
+      button.style.transition = "background-color 0.3s"
+  
+      button.addEventListener("mouseover", () => {
+        button.style.backgroundColor = "#004d33" // Darker green on hover
+      })
+      button.addEventListener("mouseout", () => {
+        button.style.backgroundColor = primary
+      })
+    })
+  
+    const navBar = document.querySelector(".nav-bar")
+    if (navBar) {
+      navBar.style.backgroundColor = "#fff" // White navbar
+      navBar.style.color = text
+      navBar.style.padding = "10px 20px"
+      navBar.style.display = "flex"
+      navBar.style.justifyContent = "space-between"
+      navBar.style.alignItems = "center"
+      navBar.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.1)"
+    }
+  
+    const navLinks = document.querySelectorAll(".nav-links a")
+    navLinks.forEach((link) => {
+      link.style.color = text
+      link.style.textDecoration = "none"
+      link.style.margin = "0 10px"
+    })
+  
+    const productGrid = document.querySelector(".product-grid")
+    if (productGrid) {
+      productGrid.style.display = "grid"
+      productGrid.style.gridTemplateColumns = "repeat(auto-fit, minmax(250px, 1fr))"
+      productGrid.style.gap = "20px"
+      productGrid.style.padding = "20px"
+      productGrid.style.backgroundColor = "#fff" // White product grid
+      productGrid.style.borderRadius = "10px"
+    }
+  
+    const product = document.querySelectorAll(".product")
+    product.forEach((prod) => {
+      prod.style.backgroundColor = "#fff" // White product cards
+      prod.style.borderRadius = "8px"
+      prod.style.padding = "15px"
+      prod.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)"
+    })
+  
+    // Remove circular images
+    const productImages = document.querySelectorAll(".product img")
+    productImages.forEach((img) => {
+      img.style.borderRadius = "0" // Make images rectangular
+    })
+  
+    // Create submenu container
+    const submenuContainer = document.createElement("div")
+    submenuContainer.style.display = "flex"
+    submenuContainer.style.justifyContent = "center"
+    submenuContainer.style.gap = "20px"
+    submenuContainer.style.padding = "10px"
+  
+    // Create submenu buttons
+    const sections = [
+      { id: "holiday-products", text: "Holiday" },
+      { id: "cold-products", text: "Cold Drinks" },
+      { id: "warm-products", text: "Hot Drinks" },
+      { id: "food-products", text: "Food" },
+    ]
+  
+    sections.forEach((section) => {
+      const button = document.createElement("button")
+      button.textContent = section.text
+      button.style.backgroundColor = primary
+      button.style.color = "white"
+      button.style.border = "none"
+      button.style.padding = "8px 16px"
+      button.style.borderRadius = "5px"
+      button.style.cursor = "pointer"
+      button.addEventListener("click", () => {
+        document.getElementById(section.id).scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        })
+      })
+      submenuContainer.appendChild(button)
+    })
+  
+    // Add submenu to the container
+    const container = document.querySelector(".container")
+    if (container) {
+      container.insertBefore(submenuContainer, container.firstChild)
+    }
+  
+    // 4. Restructure (Example: Move Cart Button)
+    const loginContainer = document.querySelector(".login-container")
+    const cartButtonDesktop = document.getElementById("cartButtonDesktop")
+  
+    if (loginContainer && cartButtonDesktop) {
+      loginContainer.parentNode.insertBefore(cartButtonDesktop, loginContainer)
+      cartButtonDesktop.style.marginLeft = "20px" // Add some spacing
+    }
+  
+    // 5. Transitions
+    allElements.forEach((element) => {
+      element.style.transition = "all 0.3s ease"
+    })
+  }
+  
+  window.onload = () => {
+    //applyTheme()
+  }
+  
+
+
+function turnOnHero(){
+  if(holidayDrinks){
+    document.getElementById('rewards-sections').style.display = 'block';
+  }
+  else{
+    document.getElementById('rewards-sections').style.display = 'none';
+  }
+}
