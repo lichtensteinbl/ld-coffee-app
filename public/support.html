@@ -24,7 +24,7 @@
         </div>
         <div class="nav-links" id="navLinks">
             <button class="login-btn" id="loginButtonMobile" onclick="toggleLoginDropdownMobile()">
-                Sign In
+                <i class="fas fa-user"></i> Sign In
             </button>
             <div class="nav-item">
                 <a href="index.html">Menu</a>
@@ -34,20 +34,50 @@
             </div>
             <div class="nav-item">
                 <a href="#" id="toggleFeatureFlag">Holiday</a>
+                <div class="toggle-switch">
+                    <label class="switch">
+                        <input type="checkbox" id="holiday-switch" onclick="document.getElementById('toggleFeatureFlag').click()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
             <div class="nav-item">
                 <a href="#" id="bad-api-flag">API</a>
+                <div class="toggle-switch">
+                    <label class="switch">
+                        <input type="checkbox" id="api-switch" onclick="document.getElementById('bad-api-flag').click()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
             <div class="nav-item">
                 <a href="#" id="experimentFlag">Experiment On</a>
+                <div class="toggle-switch">
+                    <label class="switch">
+                        <input type="checkbox" onclick="document.getElementById('experimentFlag').click()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
             <div class="nav-item">
                 <a href="#" id="experimentFlagOff">Experiment Off</a>
+                <div class="toggle-switch">
+                    <label class="switch">
+                        <input type="checkbox" id = 'experiment-off-switch' onclick="document.getElementById('experimentFlagOff').click()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
             <div class="nav-item">
                 <a href="#" onclick="toggleQRModal()">QR Code</a>
+                 <div class="toggle-switch">
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
-            <div class="login-dropdown" id="loginDropdownMobile">
+            <div class="login-dropdown" id="loginDropdownMobile" style="display: none;">
                 <h3>Sign In</h3>
                 <form id="loginFormMobile">
                     <div class="form-group">
@@ -66,7 +96,7 @@
             <button class="cart-btn" id="cartButtonDesktop" onclick="toggleCartDropdown()">
                 <i class="fas fa-shopping-cart"></i> <span id="cartCountDesktop">0</span>
             </button>
-            <div class="login-dropdown" id="loginDropdown">
+            <div class="login-dropdown" id="loginDropdown" style="display: none;">
                 <h3>Sign In</h3>
                 <form id="loginForm"> 
                     <div class= "form-group">
@@ -137,6 +167,11 @@
         }
 
         function toggleLoginDropdownMobile() {
+            if (!currentUser) {
+                signIn();
+            } else {
+                logout();
+            }
             const dropdownMobile = document.getElementById('loginDropdownMobile');
             dropdownMobile.style.display = dropdownMobile.style.display === 'block' ? 'none' : 'block';
             const navLinks = document.getElementById('navLinks');

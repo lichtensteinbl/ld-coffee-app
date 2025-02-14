@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=no">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <meta charset="UTF-8">
     <script crossorigin="anonymous" src="https://unpkg.com/launchdarkly-js-client-sdk@3.1.3"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Coffee Shop</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -24,24 +24,70 @@
             <div></div>
         </div>
         <div class="nav-links" id="navLinks">
-            <a href="#">Menu</a>
-            <a href="support.html">Support</a>
-            <a href="#" id="toggleFeatureFlag">Holiday Toggle</a> 
-            <a href="#" id="bad-api-flag">Release API</a> 
-            <a href="#" id="experimentFlag">Experiment On</a> 
-            <a href="#" id="experimentFlagOff">Experiment Off</a> 
-            <a href="#" onclick="toggleQRModal()">QR Code</a>
             <button class="login-btn" id="loginButtonMobile" onclick="toggleLoginDropdownMobile()">
                 <i class="fas fa-user"></i> Sign In
             </button>
+            <div class="nav-item">
+                <div class="menu-dot"></div>
+                <a href="#">Menu</a>
+            </div>
+            <div class="nav-item">
+                <div class="support-dot"></div>
+                <a href="support.html">Support</a>
+            </div>
+            <div class="nav-item">
+                <div class="holiday-dot"></div>
+                <a href="#" id="toggleFeatureFlag">Holiday</a>
+                <div class="toggle-switch">
+                    <label class="switch">
+                        <input type="checkbox" id="holiday-switch" onclick="document.getElementById('toggleFeatureFlag').click()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="nav-item">
+                <div class="api-dot"></div>
+                <a href="#" id="bad-api-flag">API</a>
+                <div class="toggle-switch">
+                    <label class="switch">
+                        <input type="checkbox" id="api-switch" onclick="document.getElementById('bad-api-flag').click()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="nav-item">
+                <div class="experiment-on-dot"></div>
+                <a href="#" id="experimentFlag">Experiment On</a>
+                 <div class="toggle-switch">
+                    <label class="switch" id = 'experiment-on-switch'>
+                        <input type="checkbox" onclick="document.getElementById('experimentFlag').click()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="nav-item">
+                <div class="experiment-off-dot"></div>
+                <a href="#" id="experimentFlagOff">Experiment Off</a>
+                <div class="toggle-switch">
+                    <label class="switch">
+                        <input type="checkbox" id = 'experiment-off-switch' onclick="document.getElementById('experimentFlagOff').click()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="nav-item">
+                <div class="qr-code-dot"></div>
+                <a href="#" onclick="toggleQRModal()">QR Code</a>
+            </div>
             <div class="login-dropdown" id="loginDropdownMobile">
+                <h3>Sign In</h3>
                 <form id="loginFormMobile">
                     <div class="form-group">
                         <label for="usernameMobile">Username:</label>
                         <input type="text" id="usernameMobile" name="username" required>
                     </div>
                     <button type="submit">Sign In</button>
-                </form></button>
+                </form>
             </div>
         </div>
         <h1>ToggleBucks</h1>
@@ -68,17 +114,23 @@
         </button>
     </div>
 
-    <p id="statusMessage"></p> 
+  
+<!-- Video Section -->
+  
+</section>
+<br>
+<br>
+<br>
+<br>
 
 
-        <div id="rewards-sections" style="display: none;">
-            <div class="rewards-banner">
-                <p>🚀 Congrats! You have <strong>800 LaunchBucks</strong>. <a href="#" onclick="redeemLaunchBucks()">Click here to redeem!</a></p>
-            </div>
+        <div id="rewards-sections" style="display: block;">
+            <script src="https://cdn.jwplayer.com/players/ioBU7uFL-tbDcRRiq.js"></script>
+
         </div>
 
      
-    </div>
+ 
 
 
     <!-- Product Sections -->
@@ -198,7 +250,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body:  aJSON.stringify({
+                    body: JSON.stringify({
                         projectKey: 'brian-l-demo-project',
                         featureFlagKey: 'release-holiday-drinks',
                         value: newFlagValue, // Use the toggled value

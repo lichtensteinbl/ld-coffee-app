@@ -16,20 +16,12 @@
   "dependencies": {
     "@launchdarkly/node-server-sdk": "^9.7.3",
     "@launchdarkly/server-sdk-ai": "^0.9.0",
-    "@radix-ui/react-dialog": "^1.1.6",
-    "@radix-ui/react-slot": "^1.1.2",
     "axios": "^1.7.9",
     "body-parser": "^1.20.3",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
-    "lucide-react": "^0.475.0",
     "node-fetch": "^3.3.2",
     "openai": "^4.83.0"
   },
-  "description": "",
-  "devDependencies": {
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.5.2",
-    "tailwindcss": "^4.0.6"
-  }
+  "description": ""
 }
