@@ -18,7 +18,7 @@
 <body>
     <!-- Navigation Bar -->
     <div class="nav-bar">
-        <div class="hamburger" onclick="toggleNav()">
+        <div class="hamburger" onclick="toggleNav(event)">
             <div></div>
             <div></div>
             <div></div>
@@ -159,7 +159,7 @@
 
     <script src="app.js"></script>
     <script>
-        function toggleNav() {
+        function toggleNav(event) {
             const navLinks = document.getElementById('navLinks');
             navLinks.classList.toggle('show');
         }
@@ -276,3 +276,4 @@
 <div id="flagEvents"></div>
 </body>
 </html>
+
