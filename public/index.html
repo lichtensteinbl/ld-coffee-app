@@ -41,7 +41,7 @@
             </div>
             <div class="nav-item">
                 <div class="holiday-dot"></div>
-                <a href="#" id="toggleFeatureFlag">Holiday</a>
+                <a href="#" id="toggleFeatureFlag">Banner</a>
                 <div class="toggle-switch">
                     <label class="switch">
                         <input type="checkbox" id="holiday-switch" onclick="document.getElementById('toggleFeatureFlag').click()">
@@ -92,13 +92,13 @@
         </div>
         <h1>ToggleBucks</h1>
         <div class="login-container">
-            <button class="login-btn" id="loginButtonDesktop" onclick="toggleLoginDropdown()">
+            <button class="login-btn" id="loginButtonDesktop" onclick="toggleLoginDropdown()" hidden>
                 <i class="fas fa-user"></i> Sign In
             </button>
-            <button class="cart-btn" id="cartButtonDesktop" onclick="toggleCartDropdown()">
+            <button class="cart-btn" id="cartButtonDesktop" onclick="toggleCartDropdown()" hidden>
                 <i class="fas fa-shopping-cart"></i> <span id="cartCountDesktop">0</span>
             </button>
-            <div class="login-dropdown" id="loginDropdown">
+            <div class="login-dropdown" id="loginDropdown" style="display: none;">
                 <h3>Sign In</h3>
                 <form id="loginForm"> 
                     <div class= "form-group">
@@ -114,29 +114,29 @@
         </button>
     </div>
 
+    <!-- Submenu -->
+    <div class="submenu">
+        <a href="#holiday-products">Featured</a>
+        <a href="#cold-products">Cold Drinks</a>
+        <a href="#warm-products">Hot Drinks</a>
+        <a href="#food-products">Food</a>
+    </div>
+
   
 <!-- Video Section -->
   
 </section>
-<br>
-<br>
-<br>
-<br>
-
 
         <div id="rewards-sections" style="display: block;">
             <script src="https://cdn.jwplayer.com/players/ioBU7uFL-tbDcRRiq.js"></script>
-
         </div>
 
-     
- 
 
 
     <!-- Product Sections -->
     <div class="container">
         <h2 id="holiday-text" style="display: none">Holiday Favorites ❄️ 🎄</h2>
-        <div id="holiday-products", class="product-grid" style="display: none"></div>
+        <div id="holiday-products" style ="display: none", class="product-grid"></div>
 
         <div class="section-separator"></div>
 

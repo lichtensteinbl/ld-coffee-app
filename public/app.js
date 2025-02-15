@@ -3,7 +3,25 @@ const context = {
     key: "abcd",
     tier: "non-member",
   }
+
+
+  document.addEventListener("DOMContentLoaded", function(){
+    const logo = document.querySelector('.nav-bar h1');
+    const greenElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop');
   
+    if (logo) {
+        logo.style.fontFamily = 'Impact, sans-serif';
+        logo.style.color = '#FF0000'; // Red color
+    }
+  
+    greenElements.forEach(element => {
+        element.style.backgroundColor = '#FF0000'; // Red background
+        element.style.color = '#fff'; // Ensure text is white
+        logo.style.font = "36px Impact, sans-serif";
+        logo.style.display = display = 'none';
+    });
+});
+
   const storedImg = []
   let circleFlag // Define circleFlag at the top
   
@@ -410,6 +428,9 @@ const context = {
   }
   
   client.on("ready", () => {
+  
+    
+
     heroBanner = client.variation("release-hero-banner", context, false)
     console.log('I AM A HERO' + heroBanner)
     holidayDrinks = client.variation("release-holiday-drinks", context, false)
@@ -420,6 +441,11 @@ const context = {
     badAPI = client.variation("release-new-product-api", context, false)
     console.log("badAPI is " + badAPI)
     console.log('I AM A HERO' + heroBanner)
+    if (circleFlag === 'Circle'){
+      applyRedColorScheme()
+    } else {
+      revertToOriginalColorScheme() ;
+    }
 
     toggler()
     turnOnHero();
@@ -734,153 +760,6 @@ const context = {
   // Add this event listener at the end of the file
   document.addEventListener("click", closeNavOnClickOutside)
 
-  function applyTheme() {
-    // 1. Font Changes
-    const link = document.createElement("link")
-    link.rel = "stylesheet"
-    link.href =
-      "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto+Mono:wght@400&display=swap"
-    document.head.appendChild(link)
-  
-    document.body.style.fontFamily = "'Poppins', sans-serif"
-  
-    // 2. Color Palette (Original Color Scheme)
-    const primary = "#006241" // Starbucks green
-    const secondary = "#f9f9f9" // Light gray background
-    const accent = "#B22222" // Christmas red (for highlights)
-    const text = "#333" // Dark gray text
-  
-    document.body.style.backgroundColor = secondary
-  
-    // 3. Element Styling
-    const allElements = document.querySelectorAll("*")
-    allElements.forEach((element) => {
-      element.style.color = text
-    })
-  
-    const headings = document.querySelectorAll("h1, h2, h3")
-    headings.forEach((heading) => {
-      heading.style.color = primary
-    })
-  
-    const buttons = document.querySelectorAll("button, .add-to-cart-btn")
-    buttons.forEach((button) => {
-      button.style.backgroundColor = primary
-      button.style.color = "white"
-      button.style.border = "none"
-      button.style.padding = "10px 20px"
-      button.style.borderRadius = "20px"
-      button.style.cursor = "pointer"
-      button.style.transition = "background-color 0.3s"
-  
-      button.addEventListener("mouseover", () => {
-        button.style.backgroundColor = "#004d33" // Darker green on hover
-      })
-      button.addEventListener("mouseout", () => {
-        button.style.backgroundColor = primary
-      })
-    })
-  
-    const navBar = document.querySelector(".nav-bar")
-    if (navBar) {
-      navBar.style.backgroundColor = "#fff" // White navbar
-      navBar.style.color = text
-      navBar.style.padding = "10px 20px"
-      navBar.style.display = "flex"
-      navBar.style.justifyContent = "space-between"
-      navBar.style.alignItems = "center"
-      navBar.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.1)"
-    }
-  
-    const navLinks = document.querySelectorAll(".nav-links a")
-    navLinks.forEach((link) => {
-      link.style.color = text
-      link.style.textDecoration = "none"
-      link.style.margin = "0 10px"
-    })
-  
-    const productGrid = document.querySelector(".product-grid")
-    if (productGrid) {
-      productGrid.style.display = "grid"
-      productGrid.style.gridTemplateColumns = "repeat(auto-fit, minmax(250px, 1fr))"
-      productGrid.style.gap = "20px"
-      productGrid.style.padding = "20px"
-      productGrid.style.backgroundColor = "#fff" // White product grid
-      productGrid.style.borderRadius = "10px"
-    }
-  
-    const product = document.querySelectorAll(".product")
-    product.forEach((prod) => {
-      prod.style.backgroundColor = "#fff" // White product cards
-      prod.style.borderRadius = "8px"
-      prod.style.padding = "15px"
-      prod.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)"
-    })
-  
-    // Remove circular images
-    const productImages = document.querySelectorAll(".product img")
-    productImages.forEach((img) => {
-      img.style.borderRadius = "0" // Make images rectangular
-    })
-  
-    // Create submenu container
-    const submenuContainer = document.createElement("div")
-    submenuContainer.style.display = "flex"
-    submenuContainer.style.justifyContent = "center"
-    submenuContainer.style.gap = "20px"
-    submenuContainer.style.padding = "10px"
-  
-    // Create submenu buttons
-    const sections = [
-      { id: "holiday-products", text: "Holiday" },
-      { id: "cold-products", text: "Cold Drinks" },
-      { id: "warm-products", text: "Hot Drinks" },
-      { id: "food-products", text: "Food" },
-    ]
-  
-    sections.forEach((section) => {
-      const button = document.createElement("button")
-      button.textContent = section.text
-      button.style.backgroundColor = primary
-      button.style.color = "white"
-      button.style.border = "none"
-      button.style.padding = "8px 16px"
-      button.style.borderRadius = "5px"
-      button.style.cursor = "pointer"
-      button.addEventListener("click", () => {
-        document.getElementById(section.id).scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        })
-      })
-      submenuContainer.appendChild(button)
-    })
-  
-    // Add submenu to the container
-    const container = document.querySelector(".container")
-    if (container) {
-      container.insertBefore(submenuContainer, container.firstChild)
-    }
-  
-    // 4. Restructure (Example: Move Cart Button)
-    const loginContainer = document.querySelector(".login-container")
-    const cartButtonDesktop = document.getElementById("cartButtonDesktop")
-  
-    if (loginContainer && cartButtonDesktop) {
-      loginContainer.parentNode.insertBefore(cartButtonDesktop, loginContainer)
-      cartButtonDesktop.style.marginLeft = "20px" // Add some spacing
-    }
-  
-    // 5. Transitions
-    allElements.forEach((element) => {
-      element.style.transition = "all 0.3s ease"
-    })
-  }
-  
-  window.onload = () => {
-    //applyTheme()
-  }
-  
 
 
 function turnOnHero(){
@@ -891,3 +770,196 @@ function turnOnHero(){
     document.getElementById('rewards-sections').style.display = 'none';
   }
 }
+
+function applyRedColorScheme() {
+  const logo = document.querySelector('.nav-bar h1');
+  const allElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop, button');
+
+  if (logo) {
+    logo.style.fontFamily = 'Impact, sans-serif';
+    logo.style.color = '#FF0000';
+  }
+
+  allElements.forEach(element => {
+    element.style.backgroundColor = '#FF0000';
+    element.style.color = '#fff';
+    element.style.display = 'block';
+  });
+}
+
+
+function applyRedColorScheme() {
+  const logo = document.querySelector('.nav-bar h1');
+  const greenElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop');
+
+  if (logo) {
+      logo.style.fontFamily = 'Impact, sans-serif';
+      logo.style.color = '#FF0000'; // Red color
+      logo.style.display = display = 'block';
+  }
+
+  greenElements.forEach(element => {
+      element.style.backgroundColor = '#FF0000'; // Red background
+      element.style.color = '#fff'; // Ensure text is white
+      logo.style.font = "36px Impact, sans-serif";
+      logo.style.display = display = 'block';
+  });
+}
+
+function revertToOriginalColorScheme()  {
+  const logo = document.querySelector('.nav-bar h1');
+  const greenElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop');
+
+  if (logo) {
+      logo.style.fontFamily = 'Pacifico, cursive';
+      logo.style.color = '#006241'; // Red color
+      logo.style.display = display = 'block';
+  }
+
+  greenElements.forEach(element => {
+      element.style.backgroundColor = '#006241'; // Red background
+      element.style.color = '#fff'; // Ensure text is white
+      logo.style.font = "24px Pacifico, cursive";
+      logo.style.display = display = 'block';
+  });
+}
+
+
+
+
+
+
+function dfasdfrevertToOriginalColorScheme() {
+    const logo = document.querySelector('.nav-bar h1');
+    const greenElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop');
+
+    if (logo) {
+        logo.style.color = '#006241'; // Original green color
+        logo.style.font = "24px Pacifico, cursive";
+        logo.style.display = display = 'block';
+
+    }
+
+    greenElements.forEach(element => {
+        element.style.backgroundColor = '#006241'; // Original green background
+        logo.style.display = display = 'block';
+    });
+}
+
+
+
+
+const secondMenu = [
+  {
+    id: 10,
+    temp: "holiday",
+    name: "Chestnut Praline Latte",
+    price: 3.5,
+    img: "https://i.ibb.co/gZh5NhsD/SBX20190716-Chestnut-Praline-Creme-removebg-preview.png",
+  },
+  {
+    id: 11,
+    temp: "holiday",
+    name: "Peppermint Mocha",
+    price: 2.5,
+    img: "https://i.ibb.co/TqrnX893/SBX20230612-7785-Iced-Peppermint-Mocha-on-Green-MOP-1800-removebg-preview.png",
+  },
+  {
+    id: 12,
+    temp: "holiday",
+    name: "Caramel Brulee Latte",
+    price: 3.0,
+    img: "https://i.ibb.co/QvBSLtV3/Caramel-Brulee-Frappuccino-removebg-preview.png",
+  },
+  {
+    id: 13,
+    temp: "holiday",
+    name: "Gingerbread Chai",
+    price: 2.0,
+    img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20230612_7785_IcedPeppermintMocha-onGreen-MOP_1800.jpg?impolicy=1by1_wide_topcrop_630",
+  },
+  {
+    id: 1,
+    temp: "hot",
+    name: "Espresso",
+    price: 2.5,
+    img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_Espresso_Single.jpg?impolicy=1by1_wide_topcrop_630",
+  },
+  {
+    id: 2,
+    temp: "hot",
+    name: "Cappuccino",
+    price: 3.0,
+    img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_Cappuccino.jpg?impolicy=1by1_wide_topcrop_630",
+  },
+  {
+    id: 3,
+    temp: "hot",
+    name: "Latte",
+    price: 3.5,
+    img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_CaffeLatte.jpg?impolicy=1by1_wide_topcrop_630",
+  },
+  {
+    id: 4,
+    temp: "hot",
+    name: "Americano",
+    price: 2.0,
+    img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_CaffeAmericano.jpg?impolicy=1by1_wide_topcrop_630",
+  },
+  {
+    id: 5,
+    temp: "cold",
+    name: "Iced Coffee",
+    price: 2.5,
+    img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190422_IcedVanillaLatte.jpg?impolicy=1by1_wide_topcrop_630",
+  },
+  {
+    id: 6,
+    temp: "cold",
+    name: "Matcha Latte",
+    price: 3.0,
+    img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20181127_IcedMatchaGreenTeaLatte.jpg?impolicy=1by1_wide_topcrop_630",
+  },
+  {
+    id: 8,
+    temp: "cold",
+    name: "Berry Refresher",
+    price: 2.0,
+    img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20221206_MangoDragonfruitRefreshers.jpg?impolicy=1by1_wide_topcrop_630",
+  },
+  {
+    id: 9,
+    temp: "cold",
+    name: "Iced Tea",
+    price: 2.0,
+    img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190531_IcedBlackTea.jpg?impolicy=1by1_wide_topcrop_630",
+  },
+  {
+    id: 14,
+    temp: "food",
+    name: "Bacon, Sausage & Egg Wrap",
+    price: 3.5,
+    img: "https://globalassets.starbucks.com/digitalassets/products/food/SBX20191018_BaconSausageCageFreeEggWrap.jpg?impolicy=1by1_medium_630",
+  },
+  {
+    id: 15,
+    temp: "food",
+    name: "Butter Croissant ",
+    price: 2.5,
+    img: "https://globalassets.starbucks.com/digitalassets/products/food/SBX20210915_Croissant-onGreen.jpg?impolicy=1by1_medium_630",
+  },
+  {
+    id: 16,
+    temp: "food",
+    name: "Blueberry Scone",
+    price: 3.0,
+    img: "https://globalassets.starbucks.com/digitalassets/products/food/SBX20181219_BlueberryScone.jpg?impolicy=1by1_medium_630",
+  },
+  {
+    id: 17,
+    temp: "food",
+    name: "Coffee Cake",
+    price: 3.0,
+    img: "https://globalassets.starbucks.com/digitalassets/products/food/SBX20180511_ClassicCoffeeCake.jpg?impolicy=1by1_medium_630",
+  },
+]

@@ -4,7 +4,7 @@
 body {
     font-family: "Montserrat", sans-serif;
     margin: 0;
-    padding: 0;
+    padding-top: 100px; /* Add padding to the top of the body */
     font-size: 16px;
     color: #333;
     background-color: #F5F5F5;
@@ -12,6 +12,7 @@ body {
 
 h1 {
     color: #006241;
+    font-size: 24px
 }
 
 h2 {
@@ -23,7 +24,7 @@ h2 {
 .container {
     padding: 10px;
     max-width: 1400px;
-    margin: 0px auto 0 auto;
+    margin: 0 auto 0 auto; /* Increased margin-top to accommodate both nav bars */
 }
 
 #loggy {
@@ -59,13 +60,15 @@ h2 {
     position: absolute;
     top: 50px;
     right: 0;
-    background: white;
+    background:#F5F5F5;
+    color: #333; /* Ensure text is dark */
     border: 1px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     width: 250px;
     border-radius: 10px;
-    z-index: 1003;
+    z-index: 1003; /* Ensure dropdown is above the rewards banner */
+    font-family: "Helvetica Neue", sans-serif; /* Set the font */
 }
 
 .login-dropdown.show {
@@ -109,7 +112,7 @@ h2 {
 .nav-links a {
     text-decoration: none;
     color: #333;
-    font-weight: bold;
+    font-weight: 500;
     font-size: large;
     text-align: left;
 
@@ -177,6 +180,7 @@ h2 {
     width: 250px;
     border-radius: 10px;
     z-index: 1003; /* Ensure dropdown is above the rewards banner */
+    font-family: "Helvetica Neue", sans-serif; /* Set the font */
 }
 
 .login-dropdown.show {
@@ -211,6 +215,8 @@ h2 {
     width: 100%;
     padding: 10px;
     background-color: #006241;
+    font-size: 20px;
+    font-family: 'Montserrat', sans-serif;
     color: #F5F5F5;
     border: none;
     border-radius: 4px;
@@ -240,9 +246,7 @@ h2 {
     position: relative;
 }
 
-.cart-btn:hover {
-    background-color: #004d33;
-}
+
 
 .cart-btn #cartCountMobile,
 .cart-btn #cartCountDesktop {
@@ -447,7 +451,7 @@ input:checked + .slider:before {
 .section-separator {
     width: 100%;
     height: 1px;
-    background-color: black;
+    background-color: #808080; /* Dark grey */
     margin: 20px auto; /* Adjust margin as needed */
 }
 
@@ -507,6 +511,7 @@ input:checked + .slider:before {
         display: block; /* Show mobile cart and login buttons in hamburger menu */
         margin: 0px auto; /* Center the buttons */
         width: 100%; /* Make the buttons wider */
+        font-size: 18px;
         border-radius: 10px; /* Match the login button style */
         margin-left: -10px; /* Adjust the margin as needed */
         text-indent: .4em;
@@ -609,6 +614,20 @@ input:checked + .slider:before {
     .nav-item {
         display: flex;
         align-items: center;
+    }
+
+    .submenu {
+        display: block; /* Override any display: none; */
+        position: fixed; /* Ensure it's fixed on mobile too */
+        top: 70px; /* Maintain the position below the main nav */
+        left: 0;
+        right: 0;
+        margin-top: 0; /* Remove the margin-top */
+        overflow-x: hidden; /* Enable horizontal scrolling if needed */
+        text-align: left !important
+    }
+    .nav-bar + .submenu a {
+        text-align: left !important; /* Align text to the left on mobile */
     }
 }
 
@@ -857,7 +876,7 @@ input:checked + .slider:before {
     color: #333;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
     animation: fadeIn 1s ease-in-out; /* Add fade-in animation */
-    margin-top: 80px; /* Add margin to ensure it is not covered by the top nav */
+    margin-top: 200px; /* Add margin to ensure it is not covered by the top nav */
 }
 
 /* Sign-in Text */
@@ -883,14 +902,8 @@ input:checked + .slider:before {
 .video-section {
     width: 100%;
     overflow: hidden; /* Hide any video overflow */
-    margin-top: 60px; /* Adjust margin to account for fixed nav-bar height */
+    margin-top: 130px; /* Adjust margin to account for fixed nav-bar height */
     margin-bottom: 0px;
-}
-
-.video-section video {
-    display: block; /* Remove extra space below video */
-    width: 100%; /* Make video span the entire width */
-    height: 80%; /* Maintain aspect ratio */
 }
 
 /* Toggle Switch Styles */
@@ -927,5 +940,65 @@ input:checked + .slider:before {
 }
 
 }*/
+
+/* Submenu Styles */
+.submenu {
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    text-align: center;
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow-x: hidden; /* Enable horizontal scrolling if needed */
+    border-bottom: 0px solid #ddd;
+    position: fixed; /* Make it fixed */
+    top: 70px; /* Position it below the main nav */
+    left: 0;
+    right: 0;
+    z-index: 999; /* Ensure it's above other content */
+    
+    
+}
+
+.submenu a {
+    text-decoration: none;
+    color: #333;
+    margin: 0 15px;
+    font-weight: 250;
+    font-size: 12px;
+    display: inline-block; /* Ensure inline layout */
+
+}
+
+.submenu a:hover {
+    color: #006241;
+}
+
+/* Ensure submenu is visible on mobile */
+@media (max-width: 768px) {
+    .submenu {
+        display: block; /* Override any display: none; */
+        position: fixed; /* Ensure it's fixed on mobile too */
+        top: 85px; /* Maintain the position below the main nav */
+        left: 0;
+        right: 0;
+        margin-top: 0; /* Remove the margin-top */
+        overflow-x: hidden; /* Enable horizontal scrolling if needed */
+        text-align: left; /* Align text to the left on mobile */
+    }
+    .nav-bar + .submenu {
+        display: block; /* Override any display: none; */
+        position: fixed; /* Ensure it's fixed on mobile too */
+        top: 70px; /* Maintain the position below the main nav */
+        left: 0;
+        right: 0;
+        margin-top: 0; /* Remove the margin-top */
+        overflow-x: hidden; /* Enable horizontal scrolling if needed */
+        text-align: left; /* Align text to the left on mobile */
+    }
+}
+
+.submenu a.active {
+    border-bottom: 2px solid #006241; /* Starbucks green */
+    padding-bottom: 1px; /* Adjust as needed */
+}
 
 
