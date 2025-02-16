@@ -470,9 +470,7 @@ client.on("change", () => {
   badAPI = client.variation("release-new-product-api", context, false)
   toggler()
   turnOnHero();
-  if(membershipRewards){
-    document.querySelector('.fas.fa-user-alt').style.display = "block";
-    }
+ 
 
   if (badAPI) {
   }
