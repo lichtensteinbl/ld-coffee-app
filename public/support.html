@@ -25,7 +25,7 @@
         </div>
         <div class="nav-links" id="navLinks">
             <button class="login-btn" style="display: none;" id="loginButtonMobile" onclick="toggleLoginDropdownMobile()">
-                <i class="">Log In</i> ß
+                <i class="">Log In</i>
             </button>
             <div class="nav-item">
                 <a href="index.html">Menu</a>
@@ -77,21 +77,17 @@
 
             <div class="login-dropdown" id="loginDropdownMobile" style="display: none;">
                 <h3>Sign In</h3>
-                <form id="loginFormMobile">
-                    <div class="form-group">
-                        <label for="usernameMobile">Username:</label>
-                        <input type="text" id="usernameMobile" name="username" required>
-                    </div>
-                    <button type="submit">Sign In</button>
-                </form>
             </div>
         </div>
         <h1>ToggleBucks</h1>
-        <div class="login-container">
-            <button class="login-btn" id="loginButtonDesktop" onclick="toggleLoginDropdown()">
+
+        <div class="login-container" style = "display: none";>
+            <button class="login-btn" id="loginButtonDesktop" onclick="toggleLoginDropdown()" hidden>
                 <i class="fas fa-user"></i> Sign In
             </button>
-            <button class="cart-btn" id="cartButtonDesktop"  onclick="toggleCartDropdown()">
+
+
+            <button class="cart-btn" id="cartButtonDesktop" onclick="toggleCartDropdown()" hidden>
                 <i class="fas fa-shopping-cart"></i> <span id="cartCountDesktop">0</span>
             </button>
             <div class="login-dropdown" id="loginDropdown" style="display: none;">
@@ -105,11 +101,12 @@
                 </form>
             </div>
         </div>
-        <button class="cart-btn" id="cartButtonMobile" onclick="toggleCartDropdown()">
-            <i class="fas fa-shopping-cart"></i> <span style = "display:none"id="cartCountMobile">0</span>
+
+        <button class="cart-btn" id="cartButtonMobile"  onclick="toggleCartDropdown()">
+            <i class='fas fa-user-alt' style = "display:none"></i>
+
+            <i class="fas fa-shopping-cart"></i> <span style="display:none" id="cartCountMobile">0</span>
         </button>
-    </div>
-     
     </div>
     <div class="support-container">
         <h2>Support Chat</h2>
@@ -155,11 +152,6 @@
         }
 
         function toggleLoginDropdownMobile() {
-            if (!currentUser) {
-                signIn();
-            } else {
-                logout();
-            }
             const dropdownMobile = document.getElementById('loginDropdownMobile');
             dropdownMobile.style.display = dropdownMobile.style.display === 'block' ? 'none' : 'block';
             const navLinks = document.getElementById('navLinks');

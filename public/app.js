@@ -1,5 +1,5 @@
 const context = {
-  type: "user",
+  kind: "user",
   key: "abcd",
   tier: "non-member",
 }
@@ -53,7 +53,8 @@ function generateRandomKey() {
   //console.log(context.key)
 }
 
-generateRandomKey()
+//generateRandomKey()
+console.log(context);
 
 const client = LDClient.initialize("64fb46764b5857122177a598", context)
 let holidayDrinks = ""
@@ -303,7 +304,7 @@ function updateUser(username) {
 function logout() {
     currentUser = null;
     localStorage.removeItem("currentUser"); // Remove username from localStorage
-    context.tier = "non-member";
+    context.tier = "member";
     context.key = "asdfa";
     client.identify(context, () => {
         console.log("Context reset to non-member");
@@ -420,15 +421,19 @@ function updateCartCount() {
 }
 
 client.on("ready", () => {
+  membershipRewards = client.variation("release-membership", context, false)
+  console.log("member rewards = " + membershipRewards)
+
   
   
   jwplayer().on('ready', () => {
     const jwpSeek = setInterval(videoSeek, 100);
   })
-  heroBanner = client.variation("circular-logos", context, false)
+  if(membershipRewards){
+  document.querySelector('.fas.fa-user-alt').style.display = "block";
+  }
+
   holidayDrinks = client.variation("release-holiday-drinks", context, false)
-  membershipRewards = client.variation("release-membership", context, false)
-  console.log("member rewards = " + membershipRewards)
   circleFlag = client.variation("circular-logos", context, false)
   console.log("circle = " + circleFlag)
   badAPI = client.variation("release-new-product-api", context, false)
@@ -465,6 +470,9 @@ client.on("change", () => {
   badAPI = client.variation("release-new-product-api", context, false)
   toggler()
   turnOnHero();
+  if(membershipRewards){
+    document.querySelector('.fas.fa-user-alt').style.display = "block";
+    }
 
   if (badAPI) {
   }

@@ -500,11 +500,26 @@ input:checked + .slider:before {
     }
 
     .cart-btn#cartButtonMobile {
-        display: block; /* Show mobile cart button */
+        display: flex;
+        align-items: center;
+        gap: 15px; /* Space between icons */
         position: absolute;
         top: 50%; /* Center vertically */
         right: 10px;
-        transform: translateY(-50%); /* Adjust to be even with the text */
+        transform: translateY(-50%);
+        background: none;
+        padding: 0 15px;
+    }
+
+    .cart-btn#cartButtonMobile .fas.fa-user-alt {
+        font-size: 18px;
+        color: #333;
+        margin-right: 5px;
+    }
+
+    .cart-btn#cartButtonMobile .fas.fa-shopping-cart {
+        font-size: 18px;
+        color: #333;
     }
 
     .login-btn#loginButtonMobile {
@@ -634,6 +649,30 @@ input:checked + .slider:before {
         margin-top: 0; /* Remove the margin-top */
         padding-top: 0; /* Remove padding-top */
     }
+
+    .sliders {
+        margin: 15px 0;
+        padding: 12px;
+    }
+
+    .slider-container {
+        margin-bottom: 15px;
+    }
+
+    .slider-container label {
+        font-size: 14px;
+    }
+
+    .slider-container span {
+        font-size: 12px;
+        padding: 3px 10px;
+    }
+
+    .select-config-btn {
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 16px;
+    }
 }
 
 @media (min-width: 769px) {
@@ -750,7 +789,7 @@ input:checked + .slider:before {
 }
 
 .support-container h2 {
-    font-family: 'Merriweather', serif;
+    font-family: 'montserrat', sans-serif;
     color: #333;
     text-align: center;
     margin-bottom: 20px;
@@ -1121,6 +1160,90 @@ input:checked + .slider:before {
 
 .notification.show {
     display: block; /* Show the notification */
+}
+
+/* Support Page Slider Styles */
+.sliders {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.slider-container {
+    margin-bottom: 20px;
+}
+
+.slider-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.slider-container input[type="range"] {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: #e0e0e0;
+    outline: none;
+    -webkit-appearance: none;
+    margin-bottom: 10px;
+}
+
+.slider-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #006241;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.slider-container span {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: #f5f5f5;
+    border-radius: 15px;
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Set Config Button Style */
+.button-container {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.select-config-btn {
+    background-color: #006241;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.select-config-btn:hover {
+    background-color: #004d33;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.select-config-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 
