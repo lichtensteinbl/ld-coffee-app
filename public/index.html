@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=no">
+    <script src=" https://cdn.jwplayer.com/libraries/tbDcRRiq.js"></script>
 
+   
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=SoDo+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -91,7 +93,7 @@
             </div>
         </div>
         <h1>ToggleBucks</h1>
-        <div class="login-container">
+        <div class="login-container" style = "display: none";>
             <button class="login-btn" id="loginButtonDesktop" onclick="toggleLoginDropdown()" hidden>
                 <i class="fas fa-user"></i> Sign In
             </button>
@@ -127,16 +129,17 @@
   
 </section>
 
-        <div id="rewards-sections" style="display: block;">
-            <script src="https://cdn.jwplayer.com/players/ioBU7uFL-tbDcRRiq.js"></script>
+        <div id="rewards-sections" style="display: none;">
+            <script src="https://cdn.jwplayer.com/players/8DVx6fWQ-tbDcRRiq.js"></script>
+
         </div>
 
 
 
     <!-- Product Sections -->
     <div class="container">
-        <h2 id="holiday-text" style="display: none">Holiday Favorites ❄️ 🎄</h2>
-        <div id="holiday-products" style ="display: none", class="product-grid"></div>
+        <h2 id="holiday-text">Holiday Favorites ❄️ 🎄</h2>
+        <div id="holiday-products", class="product-grid"></div>
 
         <div class="section-separator"></div>
 
