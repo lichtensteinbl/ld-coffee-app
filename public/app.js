@@ -53,7 +53,7 @@ function generateRandomKey() {
   //console.log(context.key)
 }
 
-//generateRandomKey()
+generateRandomKey()
 console.log(context);
 
 const client = LDClient.initialize("64fb46764b5857122177a598", context)
