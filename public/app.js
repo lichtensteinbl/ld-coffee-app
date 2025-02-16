@@ -429,7 +429,7 @@ client.on("ready", () => {
   jwplayer().on('ready', () => {
     const jwpSeek = setInterval(videoSeek, 100);
   })
-  if(membershipRewards){
+  if(context.tier == "member"){
   document.querySelector('.fas.fa-user-alt').style.display = "block";
   }
 
@@ -470,7 +470,6 @@ client.on("change", () => {
   badAPI = client.variation("release-new-product-api", context, false)
   toggler()
   turnOnHero();
- 
 
   if (badAPI) {
   }
