@@ -619,7 +619,7 @@ input:checked + .slider:before {
     .submenu {
         display: block; /* Override any display: none; */
         position: fixed; /* Ensure it's fixed on mobile too */
-        top: 70px; /* Maintain the position below the main nav */
+        top: 50px; /* Adjusted to position directly below the main nav */
         left: 0;
         right: 0;
         margin-top: 0; /* Remove the margin-top */
@@ -878,7 +878,7 @@ input:checked + .slider:before {
     text-align: center;
     border-radius: 15px;
     margin-bottom: 5px; /* Reduce the space below the rewards banner */
-    font-size: 20px;
+    font-size: 15px;
     color: #333;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
     animation: fadeIn 1s ease-in-out; /* Add fade-in animation */
@@ -908,7 +908,7 @@ input:checked + .slider:before {
 .video-section {
     width: 100%;
     overflow: hidden; /* Hide any video overflow */
-    margin-top: 130px; /* Adjust margin to account for fixed nav-bar height */
+    margin-top: 0px; /* Adjust margin to account for fixed nav-bar height */
     margin-bottom: 0px;
 }
 
@@ -956,12 +956,11 @@ input:checked + .slider:before {
     overflow-x: hidden; /* Enable horizontal scrolling if needed */
     border-bottom: 0px solid #ddd;
     position: fixed; /* Make it fixed */
-    top: 70px; /* Position it below the main nav */
+    top: 50px; /* Adjusted to position directly below the main nav */
     left: 0;
     right: 0;
     z-index: 999; /* Ensure it's above other content */
-    
-    
+    margin-top: 0; /* Remove any margin */
 }
 
 .submenu a {
@@ -969,7 +968,7 @@ input:checked + .slider:before {
     color: #333;
     margin: 0 15px;
     font-weight: 250;
-    font-size: 12px;
+    font-size: 13px;
     display: inline-block; /* Ensure inline layout */
 
 }
@@ -983,17 +982,17 @@ input:checked + .slider:before {
     .submenu {
         display: block; /* Override any display: none; */
         position: fixed; /* Ensure it's fixed on mobile too */
-        top: 85px; /* Maintain the position below the main nav */
+        top: 50px; /* Adjusted to position directly below the main nav */
         left: 0;
         right: 0;
-        margin-top: 0; /* Remove the margin-top */
+        margin-top: 22px; /* Remove the margin-top */
         overflow-x: hidden; /* Enable horizontal scrolling if needed */
         text-align: left; /* Align text to the left on mobile */
     }
     .nav-bar + .submenu {
         display: block; /* Override any display: none; */
         position: fixed; /* Ensure it's fixed on mobile too */
-        top: 70px; /* Maintain the position below the main nav */
+        top: 50px; /* Adjusted to position directly below the main nav */
         left: 0;
         right: 0;
         margin-top: 0; /* Remove the margin-top */
@@ -1005,6 +1004,123 @@ input:checked + .slider:before {
 .submenu a.active {
     border-bottom: 2px solid #006241; /* Starbucks green */
     padding-bottom: 1px; /* Adjust as needed */
+}
+
+/* Loyalty Dashboard */
+.loyalty-dashboard {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 80px; /* Adjust margin to position below the nav bar */
+    border-radius: 10px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.loyalty-dashboard h2 {
+    text-align: center;
+    color: #006241;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.dashboard-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: center; /* Center items vertically */
+}
+
+.points-section, .rewards-section, .activity-section {
+    height: 50px;
+    flex: 1;
+    height: 10%;
+    min-width: 250px;
+    font-size: 15px;
+    margin: 0px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.coffee-cup {
+    flex: 1;
+    text-align: center;
+    margin: 20px;
+}
+
+.coffee-cup img {
+    max-width: 100px;
+    height: auto;
+}
+
+.points-section h3, .rewards-section h3, .activity-section h3 {
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.points {
+    font-size: 36px;
+    color: #006241;
+    text-align: center;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gold-star {
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+}
+
+.progress-bar {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+.progress {
+    background-color: #FBC901;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.rewards-section ul, .activity-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.rewards-section li, .activity-section li {
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.notification {
+    position: fixed;
+    top: 70px; /* Adjust to position below the nav bar */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #006241; /* Green background */
+    color: #fff; /* White text */
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1001; /* Ensure it's above other content */
+    display: none; /* Hidden by default */
+}
+
+.notification.show {
+    display: block; /* Show the notification */
 }
 
 

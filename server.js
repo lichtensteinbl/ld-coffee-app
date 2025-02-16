@@ -135,6 +135,37 @@ app.post("/api/toggle-experimentation-flag", async (req, res) => {
   }
 })
 
+
+
+app.post("/api/toggle-membership-flag", async (req, res) => {
+  const { projectKey, featureFlagKey, value } = req.body
+
+  try {
+    const url = `https://app.launchdarkly.com/api/v2/flags/${projectKey}/${featureFlagKey}`
+    const response = await axios.patch(
+      url,
+      [
+        {
+          op: "replace",
+          path: `/environments/production/on`,
+          value: value,
+        },
+      ],
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "api-78c8185b-3e24-4e42-850b-fce3db6ecd1d",
+        },
+      },
+    )
+
+    res.json({ message: "Feature flag toggled successfully", data: response.data })
+  } catch (error) {
+    console.error("Error:", error.response ? error.response.data : error.message)
+    res.status(500).json({ message: "Failed to toggle feature flag" })
+  }
+})
+
 app.post("/api/toggle-experimentation-flag", async (req, res) => {
   const { projectKey, featureFlagKey, value } = req.body
 

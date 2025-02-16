@@ -16,7 +16,9 @@ function videoSeek() {
 
 
 
+
 document.addEventListener("DOMContentLoaded", function () {
+  
   const logo = document.querySelector('.nav-bar h1');
   const greenElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop');
 
@@ -31,7 +33,9 @@ document.addEventListener("DOMContentLoaded", function () {
     logo.style.font = "36px Impact, sans-serif";
     logo.style.display = display = 'none';
   });
+
 });
+
 
 const storedImg = []
 let circleFlag // Define circleFlag at the top
@@ -46,7 +50,7 @@ function generateRandomKey() {
     randomKey += characters.charAt(Math.floor(Math.random() * characters.length))
   }
   context.key = randomKey
-  console.log(context.key)
+  //console.log(context.key)
 }
 
 generateRandomKey()
@@ -58,10 +62,7 @@ let cart = []
 let badAPI
 
 function showHolidayDrinks() {
-  console.log("showing drinks")
-
   turnOnHero();
-
 }
 
 const brokenURL = "https://globalassets.starbucks.com/djpg?impolicy=1by1_wide_topcrop_630"
@@ -73,8 +74,6 @@ function createImageErrors() {
     let counter = 0; 
     for (const img of images) {
       storedImg.push(img.src)
-      console.log(storedImg)
-      console.log("why is this working?")
       img.src = brokenURL
     }
     setTimeout(() => {
@@ -96,10 +95,7 @@ function getProducts(products) {
   const holidayContainer = document.getElementById("holiday-products")
 
   products.forEach((product) => {
-    /*    if (product.temp === 'cold' && badAPI && context.key.length > 6) {
-            sendErrors();
-            product.img = brokenURL;
-        }*/
+
     const productElement = document.createElement("div")
     productElement.className = "product"
     productElement.innerHTML = `
@@ -115,11 +111,10 @@ function getProducts(products) {
     }
     if (product.temp === "cold") {
       coldContainer.appendChild(productElement)
-      storedImg.push(product.img)
-      //console.log(storedImg)
+      
     }
     if (product.temp === "holiday") {
-      product.img = "asdfas.com"
+      product.img = "asdfas.com";
       holidayContainer.appendChild(productElement)
     }
     if (product.temp === "food") {
@@ -172,22 +167,21 @@ function toggleNav(event) {
 }
 
 function toggleLoginDropdown() {
-  if (!currentUser) {
-    signIn()
-  } else {
-    logout()
-  }
+    if (!currentUser) {
+        signIn();
+    } else {
+        logout();
+    }
 }
 
 function toggleLoginDropdownMobile() {
-  if (!currentUser) {
-    signIn()
-
-  } else {
-    logout()
-  }
-  const dropdownMobile = document.getElementById("loginDropdownMobile")
-  dropdownMobile.style.display = dropdownMobile.style.display === "block" ? "none" : "block"
+    if (!currentUser) {
+        signIn();
+    } else {
+        logout();
+    }
+    const dropdownMobile = document.getElementById("loginDropdownMobile");
+    dropdownMobile.style.display = dropdownMobile.style.display === "block" ? "none" : "block";
 }
 
 function toggleQRModal() {
@@ -267,7 +261,6 @@ if (loginFormMobile) {
         //createImageErrors();
       }
 
-      console.log(context)
       updateLoginUI()
       toggleLoginDropdownMobile() // Close dropdown after login
     } else {
@@ -288,7 +281,6 @@ window.onload = () => {
   fetch("/api/reset-cart")
     .then((response) => response.json())
     .then((data) => {
-      console.log(data.message)
       cart = []
       updateCartCount()
     })
@@ -309,25 +301,23 @@ function updateUser(username) {
 
 // Logout Function
 function logout() {
-  currentUser = null
-  localStorage.removeItem("currentUser") // Remove username from localStorage
-  context.tier = "non-member"
-  context.key = "asdfa"
-  client.identify(context, () => {
-    console.log("Context reset to non-member")
-    console.log(context)
-  })
-  window.location.reload()
-  updateLoginUI()
-  console.log("user has logged out")
-  document.getElementById("rewards-section").style.display = "none"
-  document.getElementById("rewards-section").style.display = "none"
-  document.getElementById("rewards-section").style.display = "none"
-
-  //checkmember();
+    currentUser = null;
+    localStorage.removeItem("currentUser"); // Remove username from localStorage
+    context.tier = "non-member";
+    context.key = "asdfa";
+    client.identify(context, () => {
+        console.log("Context reset to non-member");
+        console.log(context);
+    });
+    window.location.reload();
+    updateLoginUI();
+    console.log("user has logged out");
+    showNotification("Logged out successfully!");
+    document.getElementById("rewards-section").style.display = "none";
+    document.getElementById("rewards-section").style.display = "none";
+    document.getElementById("rewards-section").style.display = "none";
 }
 
-// Update Login/Logout UI
 function updateLoginUI() {
   const loginButtonMobile = document.getElementById("loginButtonMobile")
   const loginButtonDesktop = document.getElementById("loginButtonDesktop")
@@ -353,28 +343,28 @@ function updateLoginUI() {
 
 // New signIn function
 function signIn() {
-  if (!currentUser) {
-    const defaultUsername = "defaultUser" // You can set any default username here
-    console.log(defaultUsername + " has logged in successfully")
-    currentUser = defaultUsername
-    localStorage.setItem("currentUser", defaultUsername) // Save username to localStorage
-    updateUser(defaultUsername)
-    console.log(context)
-    updateLoginUI()
-
-    if (membershipRewards) {
-      showRewardsBanner()
+    if (!currentUser) {
+        const defaultUsername = "defaultUser"; // You can set any default username here
+        console.log(defaultUsername + " has logged in successfully");
+        currentUser = defaultUsername;
+        localStorage.setItem("currentUser", defaultUsername); // Save username to localStorage
+        updateUser(defaultUsername);
+        console.log(context);
+        updateLoginUI();
+        showNotification("Logged in successfully!");
+        if (membershipRewards) {
+            showRewardsBanner();
+        }
+    } else {
+        logout(); // If already signed in, sign out
     }
-  } else {
-    logout() // If already signed in, sign out
-  }
-  window.location.reload();
+    window.location.reload();
 }
-
 
 function toggler() {
   document.getElementById("holiday-switch").checked = holidayDrinks
   document.getElementById("api-switch").checked = badAPI
+  document.getElementById("rewards-switch").checked = membershipRewards;
   
   let expState;
 
@@ -410,7 +400,6 @@ let heroBanner;
 
 function applyTheme() {
   if (circleFlag == "Circle") {
-    console.log("function says " + circleFlag)
     applyRedColorScheme()
     getProducts(secondMenu)
   }
@@ -431,17 +420,14 @@ function updateCartCount() {
 }
 
 client.on("ready", () => {
-
-  uiTheme = client.variation("circular-logos", context, false)
-  console.log(uiTheme);
+  
   
   jwplayer().on('ready', () => {
     const jwpSeek = setInterval(videoSeek, 100);
   })
   heroBanner = client.variation("circular-logos", context, false)
-  console.log('I AM A HERO' + heroBanner)
   holidayDrinks = client.variation("release-holiday-drinks", context, false)
-  membershipRewards = client.variation("membership-rewards", context, false)
+  membershipRewards = client.variation("release-membership", context, false)
   console.log("member rewards = " + membershipRewards)
   circleFlag = client.variation("circular-logos", context, false)
   console.log("circle = " + circleFlag)
@@ -450,6 +436,12 @@ client.on("ready", () => {
 
   toggler()
   turnOnHero();
+
+  if(membershipRewards){
+    document.querySelector(".dashboard-content").style.display = "block";
+  } else{
+    document.querySelector(".dashboard-content").style.display = "none";
+  }
 
   console.log("client is ready")
 
@@ -468,13 +460,19 @@ client.on("ready", () => {
 client.on("change", () => {
   heroBanner = client.variation("release-hero-banner", context, false)
   holidayDrinks = client.variation("release-holiday-drinks", context, false)
-  membershipRewards = client.variation("membership-rewards", context, false)
+  membershipRewards = client.variation("release-membership", context, false)
   circleFlag = client.variation("circular-logos", context, false)
   badAPI = client.variation("release-new-product-api", context, false)
   toggler()
   turnOnHero();
 
   if (badAPI) {
+  }
+
+  if(membershipRewards){
+    document.querySelector(".dashboard-content").style.display = "block";
+  } else{
+    document.querySelector(".dashboard-content").style.display = "none";
   }
 
   console.log("membership rewards is " + membershipRewards)
@@ -495,7 +493,7 @@ const menu = [
   {
     id: 10,
     temp: "holiday",
-    name: "Chestnut Praline Latte",
+    name: "Chestnut Latte",
     price: 3.5,
     img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190716_ChestnutPralineCreme.jpg?impolicy=1by1_wide_topcrop_630",
   },
@@ -579,7 +577,42 @@ const menu = [
 
 ]
 
+
+
 //turn on experimentation flag
+
+
+
+document.getElementById("rewards-flag").addEventListener("click", async () => {
+  let newFlagVal = !membershipRewards
+  try {
+    // Make the API call to your server-side endpoint
+    const response = await fetch("/api/toggle-membership-flag", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        projectKey: "brian-l-demo-project",
+        featureFlagKey: "release-membership",
+        value: newFlagVal, // Use the toggled value
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error("Failed to toggle feature flag")
+    }
+
+    console.log("this is the new flag val =" + newFlagVal)
+
+    const data = await response.json()
+    console.log(`Success: ${data.message}`)
+    imageShape() // Update the image shape based on the new flag value
+  } catch (error) {
+    console.log(`Error: ${error.message}`)
+    document.getElementById("statusMessage").textContent = `Error: ${error.message}`
+  }
+})
 
 document.getElementById("experimentFlag").addEventListener("click", async () => {
   let newFlagVal;
@@ -616,6 +649,8 @@ document.getElementById("experimentFlag").addEventListener("click", async () => 
     document.getElementById("statusMessage").textContent = `Error: ${error.message}`
   }
 })
+
+
 
 
 document.getElementById("bad-api-flag").addEventListener("click", async () => {
@@ -715,26 +750,11 @@ function turnOnHero() {
     jwplayer().pause();
   }
 }
-function applyRedColorScheme() {
-  const logo = document.querySelector('.nav-bar h1');
-  const allElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop, button');
-
-  if (logo) {
-    logo.style.fontFamily = 'Impact, sans-serif';
-    logo.style.color = '#FF0000';
-  }
-
-  allElements.forEach(element => {
-    element.style.backgroundColor = '#FF0000';
-    element.style.color = '#fff';
-    element.style.display = 'block';
-  });
-}
 
 
 function applyRedColorScheme() {
   const logo = document.querySelector('.nav-bar h1');
-  const redElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop');
+  const redElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile,.cart-btn #cartCountDesktop');
   //const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
 
   if (logo) {
@@ -743,6 +763,8 @@ function applyRedColorScheme() {
     logo.style.display = display = 'block';
     //addToCartButtons.style.color = '#FF0000';
   }
+
+  document.querySelector(".points").style.color = 'black';
 
   redElements.forEach(element => {
     element.style.backgroundColor = '#FF0000'; // Red background
@@ -758,7 +780,6 @@ function applyRedColorScheme() {
 function applyGreenColorScheme() {
   const logo = document.querySelector('.nav-bar h1');
   const greenElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop');
-  //const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
 
 
 
@@ -769,6 +790,7 @@ function applyGreenColorScheme() {
     //addToCartButtons.style.color = '#0062410';
 
   }
+  document.querySelector(".points").style.color = '#006241';
 
   greenElements.forEach(element => {
     element.style.backgroundColor = '#006241'; // Red background
@@ -789,7 +811,7 @@ const secondMenu = [
   {
     id: 10,
     temp: "holiday",
-    name: "Chestnut Praline Latte",
+    name: "Chestnut Latte",
     price: 3.5,
     img: "https://i.ibb.co/gZh5NhsD/SBX20190716-Chestnut-Praline-Creme-removebg-preview.png",
   },
@@ -872,3 +894,13 @@ const secondMenu = [
   },
   
 ]
+
+function showNotification(message) {
+    const notification = document.getElementById('notification');
+    const notificationMessage = document.getElementById('notificationMessage');
+    notificationMessage.textContent = message;
+    notification.classList.add('show');
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000); // Hide after 3 seconds
+}
