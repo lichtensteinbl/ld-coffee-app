@@ -629,6 +629,11 @@ input:checked + .slider:before {
     .nav-bar + .submenu a {
         text-align: left !important; /* Align text to the left on mobile */
     }
+
+    .support-container {
+        margin-top: 0; /* Remove the margin-top */
+        padding-top: 0; /* Remove padding-top */
+    }
 }
 
 @media (min-width: 769px) {
@@ -755,7 +760,7 @@ input:checked + .slider:before {
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 10px;
-    height: 400px;
+    height: 330px;
     overflow-y: auto;
     background-color: #f9f9f9;
 }

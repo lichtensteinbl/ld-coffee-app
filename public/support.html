@@ -91,7 +91,7 @@
             <button class="login-btn" id="loginButtonDesktop" onclick="toggleLoginDropdown()">
                 <i class="fas fa-user"></i> Sign In
             </button>
-            <button class="cart-btn" id="cartButtonDesktop" style = "display:none" onclick="toggleCartDropdown()">
+            <button class="cart-btn" id="cartButtonDesktop"  onclick="toggleCartDropdown()">
                 <i class="fas fa-shopping-cart"></i> <span id="cartCountDesktop">0</span>
             </button>
             <div class="login-dropdown" id="loginDropdown" style="display: none;">
@@ -105,13 +105,10 @@
                 </form>
             </div>
         </div>
-        <button class="cart-btn" id="cartButtonMobile"style = "display:none" onclick="toggleCartDropdown()">
-            <i class="fas fa-shopping-cart"></i> <span id="cartCountMobile">0</span>
+        <button class="cart-btn" id="cartButtonMobile" onclick="toggleCartDropdown()">
+            <i class="fas fa-shopping-cart"></i> <span style = "display:none"id="cartCountMobile">0</span>
         </button>
     </div>
-
-    <p id="statusMessage"></p> 
-
      
     </div>
     <div class="support-container">

@@ -4,12 +4,17 @@ const context = {
   tier: "non-member",
 }
 
+
+
 function videoSeek() {
   let currentPos = jwplayer().getPosition();
   if (currentPos > 25) {
     jwplayer().seek(1)
   } 
 }
+
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const logo = document.querySelector('.nav-bar h1');
@@ -54,7 +59,9 @@ let badAPI
 
 function showHolidayDrinks() {
   console.log("showing drinks")
+
   turnOnHero();
+
 }
 
 const brokenURL = "https://globalassets.starbucks.com/djpg?impolicy=1by1_wide_topcrop_630"
@@ -81,12 +88,18 @@ function createImageErrors() {
 }
 
 function getProducts(products) {
+  //<p>$${product.price.toFixed(2)}</p>
+
   const warmContainer = document.getElementById("warm-products")
   const coldContainer = document.getElementById("cold-products")
   const foodContainer = document.getElementById("food-products")
   const holidayContainer = document.getElementById("holiday-products")
 
   products.forEach((product) => {
+    /*    if (product.temp === 'cold' && badAPI && context.key.length > 6) {
+            sendErrors();
+            product.img = brokenURL;
+        }*/
     const productElement = document.createElement("div")
     productElement.className = "product"
     productElement.innerHTML = `
@@ -102,6 +115,8 @@ function getProducts(products) {
     }
     if (product.temp === "cold") {
       coldContainer.appendChild(productElement)
+      storedImg.push(product.img)
+      //console.log(storedImg)
     }
     if (product.temp === "holiday") {
       product.img = "asdfas.com"
@@ -114,7 +129,39 @@ function getProducts(products) {
     if (circleFlag == "Circle") {
       applyRedColorScheme();
     }
-    else { applyGreenColorScheme(); }
+    else { applyGreenColorScheme(); 
+      makeImagesCircular()
+
+    }
+
+
+  })
+  //imageShape();
+}
+
+function makeImagesCircular() {
+  const productImages = document.querySelectorAll(".product img")
+  productImages.forEach((img) => {
+    img.style.width = "250px"
+    img.style.height = "250px"
+    img.style.borderRadius = "0%"
+    img.style.objectFit = "cover"; /* Ensure the image covers the area */
+    img.style.objectPosition = "center"; /* Zoom in by focusing on the center */
+    img.style.overflow = "hidden";
+    img.style.display = "block"
+    img.style.margin = "0 auto"
+  })
+}
+
+function makeImagesRectangle() {
+  const productImages = document.querySelectorAll(".product img")
+  productImages.forEach((img) => {
+    img.style.width = ""
+    img.style.height = ""
+    img.style.borderRadius = ""
+    img.style.objectFit = ""
+    img.style.display = ""
+    img.style.margin = ""
   })
 }
 
@@ -135,6 +182,7 @@ function toggleLoginDropdown() {
 function toggleLoginDropdownMobile() {
   if (!currentUser) {
     signIn()
+
   } else {
     logout()
   }
@@ -150,7 +198,7 @@ function toggleQRModal() {
 window.onclick = (event) => {
   const qrModal = document.getElementById("qrModal")
   const dropdown = document.getElementById("loginDropdown")
-  const dropdownMobile = document.getElementById("loginDropdownMobile")
+  const dropdownMobile = document.getElementById("loginDropdownMobile") // Get the mobile dropdown
 
   if (event.target === qrModal) {
     qrModal.style.display = "none"
@@ -160,56 +208,75 @@ window.onclick = (event) => {
     !event.target.matches(".profile-btn") &&
     !event.target.closest(".login-dropdown")
   ) {
-    dropdown.style.display = "none"
+    dropdown.style.display = "none" // Hide desktop dropdown
   }
   if (dropdownMobile && !event.target.matches(".login-btn") && !event.target.closest(".login-dropdown")) {
-    dropdownMobile.style.display = "none"
+    dropdownMobile.style.display = "none" // Hide mobile dropdown
   }
 }
+// Handle Form Submission
+
 
 const loginForm = document.getElementById("loginForm")
 if (loginForm) {
   loginForm.addEventListener("submit", (event) => {
-    event.preventDefault()
+    event.preventDefault() // Prevent form submission
+
     const username = document.getElementById("username").value
+
+    // Accept any username for login
     if (username) {
       console.log(username + " has logged in successfully")
       currentUser = username
-      localStorage.setItem("currentUser", username)
+      localStorage.setItem("currentUser", username) // Save username to localStorage
+      //checkmember();
       updateUser(username)
+      //if (username.length > 5) {
+      //  createImageErrors();
+      //}
       console.log(context)
       updateLoginUI()
+
       if (membershipRewards) {
         showRewardsBanner()
       }
-      toggleLoginDropdown()
+
+      toggleLoginDropdown() // Close dropdown after login
     } else {
       alert("Please enter a username")
     }
   })
 }
 
+// Handle Mobile Form Submission
 const loginFormMobile = document.getElementById("loginFormMobile")
 if (loginFormMobile) {
   loginFormMobile.addEventListener("submit", (event) => {
-    event.preventDefault()
+    event.preventDefault() // Prevent form submission
+
     const username = document.getElementById("usernameMobile").value
+
+    // Accept any username for login
     if (username) {
       console.log(username + " has logged in successfully")
       currentUser = username
-      localStorage.setItem("currentUser", username)
+      localStorage.setItem("currentUser", username) // Save username to localStorage
+
       updateUser(username)
       if (username.length > 5) {
+        //createImageErrors();
       }
+
       console.log(context)
       updateLoginUI()
-      toggleLoginDropdownMobile()
+      toggleLoginDropdownMobile() // Close dropdown after login
     } else {
       alert("Please enter a username")
     }
   })
 }
 
+// Check if user is already logged in on page load
 window.onload = () => {
   const savedUser = localStorage.getItem("currentUser")
   if (savedUser) {
@@ -240,9 +307,10 @@ function updateUser(username) {
   })
 }
 
+// Logout Function
 function logout() {
   currentUser = null
-  localStorage.removeItem("currentUser")
+  localStorage.removeItem("currentUser") // Remove username from localStorage
   context.tier = "non-member"
   context.key = "asdfa"
   client.identify(context, () => {
@@ -253,8 +321,13 @@ function logout() {
   updateLoginUI()
   console.log("user has logged out")
   document.getElementById("rewards-section").style.display = "none"
+  document.getElementById("rewards-section").style.display = "none"
+  document.getElementById("rewards-section").style.display = "none"
+
+  //checkmember();
 }
 
+// Update Login/Logout UI
 function updateLoginUI() {
   const loginButtonMobile = document.getElementById("loginButtonMobile")
   const loginButtonDesktop = document.getElementById("loginButtonDesktop")
@@ -267,23 +340,24 @@ function updateLoginUI() {
     loginDropdown.innerHTML = `
             <button onclick="logout()">Log Out</button>
         `
-    loginDropdownMobile.innerHTML = ``
+    loginDropdownMobile.innerHTML = `` //remove the log out button
   } else {
     loginButtonMobile.innerHTML = `Log In`
     loginButtonDesktop.innerHTML = `Log In`
     loginDropdown.innerHTML = `
             <button onclick="signIn()">Log In</button>
         `
-    loginDropdownMobile.innerHTML = ``
+    loginDropdownMobile.innerHTML = `` //remove the log in button
   }
 }
 
+// New signIn function
 function signIn() {
   if (!currentUser) {
-    const defaultUsername = "defaultUser"
+    const defaultUsername = "defaultUser" // You can set any default username here
     console.log(defaultUsername + " has logged in successfully")
     currentUser = defaultUsername
-    localStorage.setItem("currentUser", defaultUsername)
+    localStorage.setItem("currentUser", defaultUsername) // Save username to localStorage
     updateUser(defaultUsername)
     console.log(context)
     updateLoginUI()
@@ -292,14 +366,23 @@ function signIn() {
       showRewardsBanner()
     }
   } else {
-    logout()
+    logout() // If already signed in, sign out
   }
   window.location.reload();
 }
 
+
 function toggler() {
   document.getElementById("holiday-switch").checked = holidayDrinks
   document.getElementById("api-switch").checked = badAPI
+  
+  let expState;
+
+  if(circleFlag === "false") {
+    expState = false;
+  } else {expState = true;}
+  document.getElementById("experiment-switch").checked = expState;
+  
 }
 
 function addToCart(productId) {
@@ -334,6 +417,8 @@ function applyTheme() {
   else {
     applyGreenColorScheme();
     getProducts(menu)
+
+
   }
 }
 
@@ -346,10 +431,14 @@ function updateCartCount() {
 }
 
 client.on("ready", () => {
+
+  uiTheme = client.variation("circular-logos", context, false)
+  console.log(uiTheme);
+  
   jwplayer().on('ready', () => {
     const jwpSeek = setInterval(videoSeek, 100);
   })
-  heroBanner = client.variation("release-hero-banner", context, false)
+  heroBanner = client.variation("circular-logos", context, false)
   console.log('I AM A HERO' + heroBanner)
   holidayDrinks = client.variation("release-holiday-drinks", context, false)
   membershipRewards = client.variation("membership-rewards", context, false)
@@ -373,6 +462,7 @@ client.on("ready", () => {
   showHolidayDrinks()
   checkmember()
   createImageErrors()
+
 })
 
 client.on("change", () => {
@@ -391,6 +481,8 @@ client.on("change", () => {
   console.log("badAPI is " + badAPI)
   console.log("holiday drinks is " + holidayDrinks)
 
+
+  //getProducts(secondMenu)
   checkmember()
   createImageErrors()
 })
@@ -484,39 +576,20 @@ const menu = [
     price: 2.0,
     img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190531_IcedBlackTea.jpg?impolicy=1by1_wide_topcrop_630",
   },
+
 ]
 
+//turn on experimentation flag
+
 document.getElementById("experimentFlag").addEventListener("click", async () => {
-  try {
-    const response = await fetch("/api/toggle-experimentation-flag", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        projectKey: "brian-l-demo-project",
-        featureFlagKey: "circular-logos",
-        value: true,
-      }),
-    })
-
-    if (!response.ok) {
-      throw new Error("Failed to toggle feature flag")
-    }
-
-    console.log("this is the new flag val =" + newFlagVal)
-
-    const data = await response.json()
-    console.log(`Success: ${data.message}`)
-    imageShape()
-  } catch (error) {
-    console.log(`Error: ${error.message}`)
-    document.getElementById("statusMessage").textContent = `Error: ${error.message}`
+  let newFlagVal;
+  if(circleFlag === "false"){
+    newFlagVal = true;
+  } else {
+    newFlagVal = false;
   }
-})
-
-document.getElementById("experimentFlagOff").addEventListener("click", async () => {
   try {
+    // Make the API call to your server-side endpoint
     const response = await fetch("/api/toggle-experimentation-flag", {
       method: "POST",
       headers: {
@@ -525,7 +598,7 @@ document.getElementById("experimentFlagOff").addEventListener("click", async () 
       body: JSON.stringify({
         projectKey: "brian-l-demo-project",
         featureFlagKey: "circular-logos",
-        value: false,
+        value: newFlagVal, // Use the toggled value
       }),
     })
 
@@ -543,6 +616,7 @@ document.getElementById("experimentFlagOff").addEventListener("click", async () 
     document.getElementById("statusMessage").textContent = `Error: ${error.message}`
   }
 })
+
 
 document.getElementById("bad-api-flag").addEventListener("click", async () => {
   const newFlagVal = !badAPI

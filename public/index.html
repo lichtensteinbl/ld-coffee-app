@@ -63,20 +63,10 @@
             </div>
             <div class="nav-item">
                 <div class="experiment-on-dot"></div>
-                <a href="#" id="experimentFlag">Experiment On</a>
+                <a href="#" id="experimentFlag">Experiment</a>
                  <div class="toggle-switch">
-                    <label class="switch" id = 'experiment-on-switch'>
-                        <input type="checkbox" onclick="document.getElementById('experimentFlag').click()">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="nav-item">
-                <div class="experiment-off-dot"></div>
-                <a href="#" id="experimentFlagOff">Experiment Off</a>
-                <div class="toggle-switch">
                     <label class="switch">
-                        <input type="checkbox" id = 'experiment-off-switch' onclick="document.getElementById('experimentFlagOff').click()">
+                        <input type="checkbox" id ='experiment-switch' onclick="document.getElementById('experimentFlag').click()">
                         <span class="slider round"></span>
                     </label>
                 </div>
@@ -111,8 +101,8 @@
                 </form>
             </div>
         </div>
-        <button class="cart-btn" id="cartButtonMobile" onclick="toggleCartDropdown()">
-            <i class="fas fa-shopping-cart"></i> <span id="cartCountMobile">0</span>
+        <button class="cart-btn" id="cartButtonMobile"  onclick="toggleCartDropdown()">
+            <i class="fas fa-shopping-cart"></i> <span style="display:none" id="cartCountMobile">0</span>
         </button>
     </div>
 

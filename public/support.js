@@ -1,6 +1,7 @@
 const chatBox = document.getElementById('chatBox');
 const chatInput = document.getElementById('chatInput');
 
+
 // Access slider values
 const temperatureSlider = document.getElementById('temperatureSlider');
 const tokensSlider = document.getElementById('tokensSlider');
@@ -14,9 +15,36 @@ function sendMessage() {
     }
 }
 
+function applyGreenColorScheme() {
+    const logo = document.querySelector('.nav-bar h1');
+    const greenElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn  cartButtonMobile, .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop');
+    //const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+  
+  
+  
+    if (logo) {
+      logo.style.fontFamily = 'Pacifico, cursive';
+      logo.style.color = '#006241'; // Green color
+      logo.style.display = display = 'block';
+      //addToCartButtons.style.color = '#0062410';
+  
+    }
+  
+    greenElements.forEach(element => {
+      element.style.backgroundColor = '#006241'; // Red background
+      element.style.color = '#fff'; // Ensure text is white
+      logo.style.font = "24px Pacifico, cursive";
+      logo.style.display = display = 'block';
+    });
+  }
+  
+
+
 client.on('ready', () => {
+   
     coffeeBotResponse = client.variation('coffee-bot', context, false);
     console.log(coffeeBotResponse)
+    () 
 });
 
 function addMessage(sender, message) {
@@ -46,6 +74,7 @@ function addMessage(sender, message) {
 // Initial chatbot message
 window.onload = function() {
     addMessage('bot', 'How can I help you today?');
+    applyGreenColorScheme()
 };
 
 async function getBotResponse(message) {
@@ -116,7 +145,6 @@ document.getElementById('selectConfig').addEventListener('click', async () => {
         document.getElementById('statusMessage').textContent = `Error: ${error.message}`;
     }
 });
-
 
 
 
