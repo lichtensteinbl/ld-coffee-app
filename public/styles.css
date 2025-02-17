@@ -1150,7 +1150,7 @@ input:checked + .slider:before {
     left: 50%;
     transform: translateX(-50%);
     background-color: #006241; /* Green background */
-    color: #fff; /* White text */
+    color: #fff; /*z White text */
     padding: 10px 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -1190,6 +1190,7 @@ input:checked + .slider:before {
     background: #e0e0e0;
     outline: none;
     -webkit-appearance: none;
+    appearance: none;
     margin-bottom: 10px;
 }
 

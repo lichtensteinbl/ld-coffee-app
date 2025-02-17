@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
     element.style.color = '#fff'; // Ensure text is white
     logo.style.font = "36px Impact, sans-serif";
     logo.style.display = display = 'none';
-  });
+  }); 
 
 });
 
@@ -41,8 +41,14 @@ const storedImg = []
 let circleFlag // Define circleFlag at the top
 
 function showRewardsBanner() {
+  if(membershipRewards === "true"){
   document.getElementById("rewards-sections").style.display = "block"
+  }else {
+    document.getElementById("rewards-sections").style.display = "none"
+
+  }
 }
+
 function generateRandomKey() {
   let randomKey = ""
   const characters = "ABCDI"
@@ -232,7 +238,7 @@ if (loginForm) {
       console.log(context)
       updateLoginUI()
 
-      if (membershipRewards) {
+      if (membershipRewards === "true") {
         showRewardsBanner()
       }
 
@@ -353,19 +359,29 @@ function signIn() {
         console.log(context);
         updateLoginUI();
         showNotification("Logged in successfully!");
-        if (membershipRewards) {
+        if (membershipRewards === "true") {
             showRewardsBanner();
         }
     } else {
         logout(); // If already signed in, sign out
+        if (membershipRewards === "true") {
+          showRewardsBanner();
+      }
     }
     window.location.reload();
 }
 
 function toggler() {
+
+  if (membershipRewards === "off"){
+    document.getElementById("rewards-switch").checked = false;
+  } else { document.getElementById("rewards-switch").checked = true;
+  }
+
+
   document.getElementById("holiday-switch").checked = holidayDrinks
   document.getElementById("api-switch").checked = badAPI
-  document.getElementById("rewards-switch").checked = membershipRewards;
+  
   
   let expState;
 
@@ -442,7 +458,7 @@ client.on("ready", () => {
   toggler()
   turnOnHero();
 
-  if(membershipRewards){
+  if(membershipRewards === "true"){
     document.querySelector(".dashboard-content").style.display = "block";
   } else{
     document.querySelector(".dashboard-content").style.display = "none";
@@ -474,7 +490,7 @@ client.on("change", () => {
   if (badAPI) {
   }
 
-  if(membershipRewards){
+  if(membershipRewards === "true"){
     document.querySelector(".dashboard-content").style.display = "block";
   } else{
     document.querySelector(".dashboard-content").style.display = "none";
@@ -589,7 +605,12 @@ const menu = [
 
 
 document.getElementById("rewards-flag").addEventListener("click", async () => {
-  let newFlagVal = !membershipRewards
+  let newFlagVal;
+  if(membershipRewards === "off"){
+    newFlagVal = true;}
+    else {
+      newFlagVal = false;
+    }
   try {
     // Make the API call to your server-side endpoint
     const response = await fetch("/api/toggle-membership-flag", {
