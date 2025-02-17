@@ -123,6 +123,7 @@ window.onclick = function(event) {
 document.getElementById('selectConfig').addEventListener('click', async () => {
     const temperature = document.getElementById('temperatureValue').textContent.toLowerCase();
     const tokens = document.getElementById('tokensValue').textContent.toLowerCase();
+    alert('Config Set')
 
     try {
         // Make the API call to your server-side endpoint

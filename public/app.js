@@ -13,7 +13,9 @@ function videoSeek() {
   } 
 }
 
-
+document.querySelector('.nav-bar h1').addEventListener("click", function () {
+  window.location.reload();
+})
 
 
 
@@ -89,7 +91,7 @@ function createImageErrors() {
         counter ++;
       }
       callBadApi()
-    }, 6000)
+    }, 10000)
   }
 }
 
