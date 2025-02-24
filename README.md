@@ -1,6 +1,6 @@
 # Coffee Shop Project
 
-Welcome to the Coffee Shop project! This repository contains a web application with several pages:
+Welcome to the Toggle App! This LaunchDarkly demo app contains a web application with several pages:
 - **index.html** – The main landing page.
 - **support.html** – A dedicated support chat page.
 - **viewer.html & viewer-support.html** – Pages that run independent login and cart functionality for viewer experiences.
@@ -18,8 +18,8 @@ Welcome to the Coffee Shop project! This repository contains a web application w
 ## Installation
 
 1. **Prerequisites:**  
-   - Node.js (version 16.20.2 recommended)
-   - npm (version 8.19.4 recommended)
+   - Node.js
+   - npm 
 
 2. **Clone the repository:**
    ```bash
@@ -39,10 +39,6 @@ Welcome to the Coffee Shop project! This repository contains a web application w
 
 ## Project Structure
 
-## Usage
-
-- Visit [http://localhost:4004](http://localhost:4004) to use the regular site.
-- Visit [http://localhost:4004/viewer.html](http://localhost:4004/viewer.html) for the viewer mode.
 
 ## Configuration
 
@@ -85,3 +81,4 @@ To deploy manually:
 ## License
 
 ISC
+# coffee-app
