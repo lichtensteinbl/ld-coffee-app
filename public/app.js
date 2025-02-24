@@ -1,78 +1,99 @@
+import { initialize } from 'launchdarkly-js-client-sdk';
+// ================================
+// Main Application Logic (app.js)
+// --------------------------------
+// This file is the primary entry point for the Coffee Shop app.
+// It handles global state management such as:
+// - LaunchDarkly feature flag initialization and updates
+// - User authentication (login/logout) and storage management
+// - Dynamic product rendering and cart functionality
+// - UI updates (theme and notifications)
+// ================================
+
+// Replace hardcoded values with environment variables
+const clientSideKey = process.env.LD_CLIENT_SIDE_KEY;
+const APIFlagKey = process.env.LD_API_FLAG || "release-new-api";
+const membershipFlagKey = process.env.LD_MEMBERSHIP_FLAG || "release-member-rewards";
+const experimentFlagKey = process.env.LD_EXPERIMENT_FLAG || "release-branding-change";
+const bannerFlagKey = process.env.LD_BANNER_FLAG || "release-banner";
+const projectKey = process.env.LD_PROJECT_KEY;
+const newProductAPIFlagKey = process.env.LD_NEW_PRODUCT_API || "release-new-product-api";
+
+// Context for feature flags, updated on user login.
 const context = {
   kind: "user",
-  key: "abcd",
+  key: "placeholder",
   tier: "non-member",
-}
+};
 
+let currentUser = null
+let heroBanner;
+let branding; 
+const storedImg = []
+let holidayDrinks;
+let badAPI; 
+let membershipRewards;
 
-
+// Function: videoSeek
+// Purpose: Loops the video after a certain position.
 function videoSeek() {
   let currentPos = jwplayer().getPosition();
   if (currentPos > 25) {
     jwplayer().seek(1)
-  } 
+  }
 }
 
-document.querySelector('.nav-bar h1').addEventListener("click", function () {
+// Attach click handler on the site logo to reload the page.
+document.querySelector('.nav-bar h1').addEventListener("click", () => {
   window.location.reload();
-})
+});
 
-
-
+// DOMContentLoaded: Setup initial event listeners and UI guards.
 document.addEventListener("DOMContentLoaded", function () {
-  
-  const logo = document.querySelector('.nav-bar h1');
-  const greenElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop');
+  const elements = document.querySelectorAll('.login-btn, .nav-bar h1, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop');
+  elements.forEach(element => {
+    document.querySelector('.nav-bar h1').display = 'none';
+  });
 
-  if (logo) {
-    logo.style.fontFamily = 'Impact, sans-serif';
-    logo.style.color = '#FF0000'; // Red color
+  const element = document.querySelector('.hamburger');
+  if (element) {
+    element.addEventListener('click', toggleNav);
   }
-
-  greenElements.forEach(element => {
-    element.style.backgroundColor = '#FF0000'; // Red background
-    element.style.color = '#fff'; // Ensure text is white
-    logo.style.font = "36px Impact, sans-serif";
-    logo.style.display = display = 'none';
-  }); 
-
+  // Repeat such guards for other selectors used below.
+  const hamburger = document.querySelector('.hamburger');
+  if (hamburger) {
+    hamburger.addEventListener('click', toggleNav);
+  }
+  // Guard other element selections:
+  //const someElement = document.querySelector('.some-other-selector');
+  //if (someElement) {
+    // Attach events...
+  //}
+  const experimentSwitch = document.getElementById("experiment-switch");
+  if (experimentSwitch) {
+    experimentSwitch.checked = (branding === "Red");
+  }
 });
 
 
-const storedImg = []
-let circleFlag // Define circleFlag at the top
-
 function showRewardsBanner() {
-  if(membershipRewards === "true"){
-  document.getElementById("rewards-sections").style.display = "block"
-  }else {
+  if (membershipRewards === "true") {
+    document.getElementById("rewards-sections").style.display = "block"
+  } else {
     document.getElementById("rewards-sections").style.display = "none"
-
   }
 }
 
 function generateRandomKey() {
-  let randomKey = ""
-  const characters = "ABCDI"
-  for (let i = 0; i < characters.length; i++) {
-    randomKey += characters.charAt(Math.floor(Math.random() * characters.length))
-  }
-  context.key = randomKey
-  //console.log(context.key)
+   context.key =  Math.floor(Math.random() * (1000 - 100 + 1))
 }
 
 generateRandomKey()
 console.log(context);
 
-const client = LDClient.initialize("64fb46764b5857122177a598", context)
-let holidayDrinks = ""
-const cartCount = 0
-let cart = []
-let badAPI
+const client = initialize(clientSideKey, context);
+window.client = client; // Expose client globally
 
-function showHolidayDrinks() {
-  turnOnHero();
-}
 
 const brokenURL = "https://globalassets.starbucks.com/djpg?impolicy=1by1_wide_topcrop_630"
 
@@ -80,7 +101,7 @@ function createImageErrors() {
   if (badAPI) {
     const holidayContainer = document.getElementById("holiday-products")
     const images = holidayContainer.getElementsByTagName("img")
-    let counter = 0; 
+    let counter = 0;
     for (const img of images) {
       storedImg.push(img.src)
       img.src = brokenURL
@@ -88,11 +109,14 @@ function createImageErrors() {
     setTimeout(() => {
       for (const img of images) {
         img.src = storedImg[counter]
-        counter ++;
+        counter++;
       }
-      callBadApi()
+      callBadApi();
     }, 10000)
+  
+
   }
+  
 }
 
 function getProducts(products) {
@@ -104,7 +128,11 @@ function getProducts(products) {
   const holidayContainer = document.getElementById("holiday-products")
 
   products.forEach((product) => {
-
+    if(branding === "Red") {
+      product.img = product.img2;
+    } else {
+      product.img = product.img}
+      
     const productElement = document.createElement("div")
     productElement.className = "product"
     productElement.innerHTML = `
@@ -120,27 +148,23 @@ function getProducts(products) {
     }
     if (product.temp === "cold") {
       coldContainer.appendChild(productElement)
-      
+
     }
     if (product.temp === "holiday") {
-      product.img = "asdfas.com";
       holidayContainer.appendChild(productElement)
     }
     if (product.temp === "food") {
       foodContainer.appendChild(productElement)
     }
 
-    if (circleFlag == "Circle") {
-      applyRedColorScheme();
+    if (branding == "Red") {
+      applyColorScheme(redScheme);
     }
-    else { applyGreenColorScheme(); 
+    else {
+      applyColorScheme(greenScheme);
       makeImagesCircular()
-
     }
-
-
   })
-  //imageShape();
 }
 
 function makeImagesCircular() {
@@ -157,46 +181,40 @@ function makeImagesCircular() {
   })
 }
 
-function makeImagesRectangle() {
-  const productImages = document.querySelectorAll(".product img")
-  productImages.forEach((img) => {
-    img.style.width = ""
-    img.style.height = ""
-    img.style.borderRadius = ""
-    img.style.objectFit = ""
-    img.style.display = ""
-    img.style.margin = ""
-  })
-}
 
 function toggleNav(event) {
-  event.stopPropagation() // Prevent the click event from bubbling up
+  if (event) {
+    event.stopPropagation(); // Only stop propagation if the event exists
+  }
   const navLinks = document.getElementById("navLinks")
   navLinks.classList.toggle("show")
 }
+window.toggleNav = toggleNav;
 
 function toggleLoginDropdown() {
-    if (!currentUser) {
-        signIn();
-    } else {
-        logout();
-    }
+  if (!currentUser) {
+    signIn();
+  } else {
+    logout();
+  }
 }
 
 function toggleLoginDropdownMobile() {
-    if (!currentUser) {
-        signIn();
-    } else {
-        logout();
-    }
-    const dropdownMobile = document.getElementById("loginDropdownMobile");
-    dropdownMobile.style.display = dropdownMobile.style.display === "block" ? "none" : "block";
+  if (!currentUser) {
+    signIn();
+  } else {
+    logout();
+  }
+  const dropdownMobile = document.getElementById("loginDropdownMobile");
+  dropdownMobile.style.display = dropdownMobile.style.display === "block" ? "none" : "block";
 }
+window.toggleLoginDropdownMobile = toggleLoginDropdownMobile; // Expose function globally
 
 function toggleQRModal() {
   const qrModal = document.getElementById("qrModal")
   qrModal.style.display = qrModal.style.display === "block" ? "none" : "block"
 }
+window.toggleQRModal = toggleQRModal; // Expose function globally
 
 window.onclick = (event) => {
   const qrModal = document.getElementById("qrModal")
@@ -229,15 +247,10 @@ if (loginForm) {
 
     // Accept any username for login
     if (username) {
-      console.log(username + " has logged in successfully")
       currentUser = username
       localStorage.setItem("currentUser", username) // Save username to localStorage
       //checkmember();
       updateUser(username)
-      //if (username.length > 5) {
-      //  createImageErrors();
-      //}
-      console.log(context)
       updateLoginUI()
 
       if (membershipRewards === "true") {
@@ -286,17 +299,13 @@ window.onload = () => {
     updateUser(savedUser)
     updateLoginUI()
   }
-
-  fetch("/api/reset-cart")
-    .then((response) => response.json())
-    .then((data) => {
-      cart = []
-      updateCartCount()
-    })
-    .catch((error) => console.error("Error:", error))
 }
 
-let currentUser = null
+// ================================
+// Authentication Functions
+// signIn, logout, updateUser and updateLoginUI manage user authentication,
+// flag identification via LaunchDarkly, and UI adjustments.
+// ================================
 
 function updateUser(username) {
   context.tier = "member"
@@ -308,202 +317,178 @@ function updateUser(username) {
   })
 }
 
-// Logout Function
-function logout() {
-    currentUser = null;
-    localStorage.removeItem("currentUser"); // Remove username from localStorage
-    context.tier = "member";
-    context.key = "asdfa";
-    client.identify(context, () => {
-        console.log("Context reset to non-member");
-        console.log(context);
-    });
-    window.location.reload();
-    updateLoginUI();
-    console.log("user has logged out");
-    showNotification("Logged out successfully!");
-    document.getElementById("rewards-section").style.display = "none";
-    document.getElementById("rewards-section").style.display = "none";
-    document.getElementById("rewards-section").style.display = "none";
-}
-
-function updateLoginUI() {
-  const loginButtonMobile = document.getElementById("loginButtonMobile")
-  const loginButtonDesktop = document.getElementById("loginButtonDesktop")
-  const Dropdown = document.getElementById("loginDropdown")
-  const loginDropdownMobile = document.getElementById("loginDropdownMobile")
-
-  if (currentUser) {
-    loginButtonMobile.innerHTML = `Log Out`
-    loginButtonDesktop.innerHTML = `Log Out`
-    loginDropdown.innerHTML = `
-            <button onclick="logout()">Log Out</button>
-        `
-    loginDropdownMobile.innerHTML = `` //remove the log out button
-  } else {
-    loginButtonMobile.innerHTML = `Log In`
-    loginButtonDesktop.innerHTML = `Log In`
-    loginDropdown.innerHTML = `
-            <button onclick="signIn()">Log In</button>
-        `
-    loginDropdownMobile.innerHTML = `` //remove the log in button
-  }
-}
 
 // New signIn function
 function signIn() {
-    if (!currentUser) {
-        const defaultUsername = "defaultUser"; // You can set any default username here
-        console.log(defaultUsername + " has logged in successfully");
-        currentUser = defaultUsername;
-        localStorage.setItem("currentUser", defaultUsername); // Save username to localStorage
-        updateUser(defaultUsername);
-        console.log(context);
-        updateLoginUI();
-        showNotification("Logged in successfully!");
-        if (membershipRewards === "true") {
-            showRewardsBanner();
-        }
-    } else {
-        logout(); // If already signed in, sign out
-        if (membershipRewards === "true") {
-          showRewardsBanner();
-      }
+  if (!currentUser) {
+    const defaultUsername = "defaultUser"; // You can set any default username here
+    currentUser = defaultUsername;
+    localStorage.setItem("currentUser", defaultUsername); // Save username to localStorage
+    updateUser(defaultUsername);
+    updateLoginUI();
+    showNotification("Logged in successfully!");
+    if (membershipRewards === "true") {
+      showRewardsBanner();
     }
-    window.location.reload();
+  } else {
+    logout(); // If already signed in, sign out
+    if (membershipRewards === "true") {
+      showRewardsBanner();
+    }
+  }
+  window.location.reload();
 }
+
+// Logout Function
+function logout() {
+  currentUser = null;
+  localStorage.removeItem("currentUser"); // Remove username from localStorage
+  context.tier = "member";
+  context.key = "asdfa";
+  client.identify(context, () => {
+    console.log("Context reset to non-member");
+  });
+  window.location.reload();
+  updateLoginUI();
+  console.log("user has logged out");
+  showNotification("Logged out successfully!");
+  // Change "rewards-section" to "rewards-sections"
+  const rewardsElem = document.getElementById("rewards-sections");
+  if (rewardsElem) rewardsElem.style.display = "none";
+}
+
+function updateLoginUI() {
+  const loginButtonMobile = document.getElementById("loginButtonMobile");
+  const loginButtonDesktop = document.getElementById("loginButtonDesktop");
+  const Dropdown = document.getElementById("loginDropdown");
+  const loginDropdownMobile = document.getElementById("loginDropdownMobile");
+
+  if (currentUser) {
+    loginButtonMobile.innerHTML = `Log Out`;
+    loginButtonDesktop.innerHTML = `Log Out`;
+    Dropdown.innerHTML = `<button onclick="logout()">Log Out</button>`;
+    loginDropdownMobile.innerHTML = ``;
+
+    // Ensure the user icon is visible
+    const userIcon = document.querySelector('.fas.fa-user, .fas.fa-user-alt');
+    if (userIcon) {
+      userIcon.style.display = "block";
+    }
+  } else {
+    loginButtonMobile.innerHTML = `Log In`;
+    loginButtonDesktop.innerHTML = `Log In`;
+    Dropdown.innerHTML = `<button onclick="signIn()">Log In</button>`;
+    loginDropdownMobile.innerHTML = ``;
+
+    // Hide the user icon
+    const userIcon = document.querySelector('.fas.fa-user, .fas.fa-user-alt');
+    if (userIcon) {
+      userIcon.style.display = "none";
+    }
+  }
+}
+
+
 
 function toggler() {
 
-  if (membershipRewards === "off"){
+  if (membershipRewards === "off") {
     document.getElementById("rewards-switch").checked = false;
-  } else { document.getElementById("rewards-switch").checked = true;
+  } else {
+    document.getElementById("rewards-switch").checked = true;
   }
 
-
-  document.getElementById("holiday-switch").checked = holidayDrinks
+  document.getElementById("banner-switch").checked = heroBanner;
   document.getElementById("api-switch").checked = badAPI
-  
-  
+
+
   let expState;
 
-  if(circleFlag === "false") {
+  if (branding !== "Red") {
     expState = false;
-  } else {expState = true;}
+  } else { expState = true; }
   document.getElementById("experiment-switch").checked = expState;
-  
+
 }
 
-function addToCart(productId) {
-  fetch("/api/cart", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ id: productId }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.message === "Item added to cart") {
-        cart = data.cart
-        updateCartCount()
-      } else {
-        console.error("Failed to add item to cart")
-      }
-    })
-    .catch((error) => console.error("Error:", error))
-}
 
-let holidayAlreadyOn = false
-let heroBanner;
+
+
 
 function applyTheme() {
-  if (circleFlag == "Circle") {
-    applyRedColorScheme()
-    getProducts(secondMenu)
+  if (branding == "Red") {
+    applyColorScheme(redScheme);
+
   }
   else {
-    applyGreenColorScheme();
-    getProducts(menu)
-
+    applyColorScheme(greenScheme);
 
   }
+  getProducts(menu); 
 }
 
-function updateCartCount() {
-  const cartCountMobile = document.getElementById("cartCountMobile")
-  const cartCountDesktop = document.getElementById("cartCountDesktop")
-  const cartCount = cart.length
-  if (cartCountMobile) cartCountMobile.textContent = cartCount
-  if (cartCountDesktop) cartCountDesktop.textContent = cartCount
-}
+
 
 client.on("ready", () => {
-  membershipRewards = client.variation("release-membership", context, false)
-  console.log("member rewards = " + membershipRewards)
+  membershipRewards = client.variation(membershipFlagKey, context, false)
 
-  
-  
-  jwplayer().on('ready', () => {
-    const jwpSeek = setInterval(videoSeek, 100);
-  })
-  if(context.tier == "member"){
-  document.querySelector('.fas.fa-user-alt').style.display = "block";
+  if (typeof jwplayer === 'function' && document.querySelector('#someJWPlayerContainer')) {
+    jwplayer().on('ready', () => {
+      const jwpSeek = setInterval(videoSeek, 100);
+    });
+  } else {
+    console.warn("jwplayer is not available on this page.");
   }
 
-  holidayDrinks = client.variation("release-holiday-drinks", context, false)
-  circleFlag = client.variation("circular-logos", context, false)
-  console.log("circle = " + circleFlag)
-  badAPI = client.variation("release-new-product-api", context, false)
-  console.log("badAPI is " + badAPI)
+  if (context.tier == "member") {
+    document.querySelector('.fas.fa-user-alt').style.display = "block";
+  }
+  heroBanner = client.variation(bannerFlagKey, context, false)
+  branding = client.variation(experimentFlagKey, context, false)
+  console.log("branding = " + branding)
+  console.log("member rewards = " + membershipRewards)
+    console.log("badAPI is " + badAPI)
+
+
 
   toggler()
   turnOnHero();
 
-  if(membershipRewards === "true"){
+  if (membershipRewards === "true") {
     document.querySelector(".dashboard-content").style.display = "block";
-  } else{
+  } else {
     document.querySelector(".dashboard-content").style.display = "none";
   }
 
   console.log("client is ready")
 
-  console.log(holidayDrinks)
-  if (holidayDrinks) {
-    holidayAlreadyOn = true
-  }
-  applyTheme()
 
-  showHolidayDrinks()
+  applyTheme()
   checkmember()
   createImageErrors()
 
 })
 
+
 client.on("change", () => {
-  heroBanner = client.variation("release-hero-banner", context, false)
-  holidayDrinks = client.variation("release-holiday-drinks", context, false)
-  membershipRewards = client.variation("release-membership", context, false)
-  circleFlag = client.variation("circular-logos", context, false)
-  badAPI = client.variation("release-new-product-api", context, false)
+  heroBanner = client.variation(bannerFlagKey, context, false)
+  membershipRewards = client.variation(membershipFlagKey, context, false)
+  console.log('membership rewards is ' + membershipRewards);
+  branding = client.variation(experimentFlagKey, context, false)
+  badAPI = client.variation(APIFlagKey, context, false)
   toggler()
   turnOnHero();
 
-  if (badAPI) {
-  }
 
-  if(membershipRewards === "true"){
+  if (membershipRewards === "true") {
     document.querySelector(".dashboard-content").style.display = "block";
-  } else{
+  } else {
     document.querySelector(".dashboard-content").style.display = "none";
   }
 
   console.log("membership rewards is " + membershipRewards)
   console.log("badAPI is " + badAPI)
-  console.log("holiday drinks is " + holidayDrinks)
 
-
-  //getProducts(secondMenu)
   checkmember()
   createImageErrors()
 })
@@ -517,215 +502,279 @@ const menu = [
     id: 10,
     temp: "holiday",
     name: "Chestnut Latte",
-    price: 3.5,
     img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190716_ChestnutPralineCreme.jpg?impolicy=1by1_wide_topcrop_630",
+    img2: "https://i.ibb.co/gZh5NhsD/SBX20190716-Chestnut-Praline-Creme-removebg-preview.png"
   },
   {
-    id: 11,
     temp: "holiday",
     name: "Peppermint Mocha",
-    price: 2.5,
     img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20230612_4613_PeppermintMochaFrappuccino-onGreen-MOP_1800.jpg?impolicy=1by1_wide_topcrop_630",
+    img2: "https://i.ibb.co/TqrnX893/SBX20230612-7785-Iced-Peppermint-Mocha-on-Green-MOP-1800-removebg-preview.png"
   },
   {
-    id: 12,
     temp: "holiday",
     name: "Caramel Brulee Latte",
-    price: 3.0,
     img: "https://globalassets.starbucks.com/digitalassets/products/bev/CaramelBruleeFrappuccino.jpg?impolicy=1by1_wide_topcrop_630",
+    img2: "https://i.ibb.co/QvBSLtV3/Caramel-Brulee-Frappuccino-removebg-preview.png"
   },
   {
-    id: 13,
     temp: "holiday",
     name: "Gingerbread Chai",
-    price: 2.0,
     img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20230612_7785_IcedPeppermintMocha-onGreen-MOP_1800.jpg?impolicy=1by1_wide_topcrop_630",
+    img2: "https://i.ibb.co/TqrnX893/SBX20230612-7785-Iced-Peppermint-Mocha-on-Green-MOP-1800-removebg-preview.png"
   },
   {
-    id: 1,
     temp: "hot",
     name: "Espresso",
-    price: 2.5,
     img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_Espresso_Single.jpg?impolicy=1by1_wide_topcrop_630",
+    img2: "https://i.ibb.co/mnSFqVB/SBX20190617-Espresso-Single-removebg-preview.png"
   },
   {
-    id: 2,
     temp: "hot",
     name: "Cappuccino",
-    price: 3.0,
     img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_Cappuccino.jpg?impolicy=1by1_wide_topcrop_630",
+    img2: "https://i.ibb.co/H0Gf3V1/SBX20190617-Cappuccino-removebg-preview.png"
   },
   {
-    id: 3,
     temp: "hot",
     name: "Latte",
-    price: 3.5,
     img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_CaffeLatte.jpg?impolicy=1by1_wide_topcrop_630",
+    img2: "https://i.ibb.co/Kxx5DJzq/SBX20190617-Caffe-Latte-removebg-preview.png"
   },
   {
-    id: 4,
     temp: "hot",
     name: "Americano",
-    price: 2.0,
     img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_CaffeAmericano.jpg?impolicy=1by1_wide_topcrop_630",
+    img2: "https://i.ibb.co/m7x4zyN/SBX20190617-Caffe-Americano-removebg-preview.png"
   },
   {
-    id: 5,
     temp: "cold",
     name: "Iced Coffee",
-    price: 2.5,
     img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190422_IcedVanillaLatte.jpg?impolicy=1by1_wide_topcrop_630",
+    img2: "https://i.ibb.co/CspB2tPk/SBX20190422-Iced-Vanilla-Latte-removebg-preview.png"
   },
   {
-    id: 6,
     temp: "cold",
     name: "Matcha Latte",
-    price: 3.0,
     img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20181127_IcedMatchaGreenTeaLatte.jpg?impolicy=1by1_wide_topcrop_630",
+    img2: "https://i.ibb.co/xqTvBqjG/SBX20181127-Iced-Matcha-Green-Tea-Latte-removebg-preview.png"
   },
   {
-    id: 8,
     temp: "cold",
     name: "Berry Refresher",
-    price: 2.0,
     img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20221206_MangoDragonfruitRefreshers.jpg?impolicy=1by1_wide_topcrop_630",
+    img2: "https://i.ibb.co/cc01hWCk/SBX20221206-Mango-Dragonfruit-Refreshers-removebg-preview.png"
   },
   {
-    id: 9,
+
     temp: "cold",
     name: "Iced Tea",
     price: 2.0,
     img: "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190531_IcedBlackTea.jpg?impolicy=1by1_wide_topcrop_630",
-  },
-
-]
+    img2: "https://i.ibb.co/wF6N7svX/SBX20190531-Iced-Black-Tea-removebg-preview.png"
+  }
+];
 
 
 
 //turn on experimentation flag
 
 
-
-document.getElementById("rewards-flag").addEventListener("click", async () => {
-  let newFlagVal;
-  if(membershipRewards === "off"){
-    newFlagVal = true;}
-    else {
-      newFlagVal = false;
-    }
-  try {
-    // Make the API call to your server-side endpoint
-    const response = await fetch("/api/toggle-membership-flag", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        projectKey: "brian-l-demo-project",
-        featureFlagKey: "release-membership",
-        value: newFlagVal, // Use the toggled value
-      }),
-    })
-
-    if (!response.ok) {
-      throw new Error("Failed to toggle feature flag")
-    }
-
-    console.log("this is the new flag val =" + newFlagVal)
-
-    const data = await response.json()
-    console.log(`Success: ${data.message}`)
-    imageShape() // Update the image shape based on the new flag value
-  } catch (error) {
-    console.log(`Error: ${error.message}`)
-    document.getElementById("statusMessage").textContent = `Error: ${error.message}`
-  }
-})
-
-document.getElementById("experimentFlag").addEventListener("click", async () => {
-  let newFlagVal;
-  if(circleFlag === "false"){
-    newFlagVal = true;
-  } else {
-    newFlagVal = false;
-  }
-  try {
-    // Make the API call to your server-side endpoint
-    const response = await fetch("/api/toggle-experimentation-flag", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        projectKey: "brian-l-demo-project",
-        featureFlagKey: "circular-logos",
-        value: newFlagVal, // Use the toggled value
-      }),
-    })
-
-    if (!response.ok) {
-      throw new Error("Failed to toggle feature flag")
-    }
-
-    console.log("this is the new flag val =" + newFlagVal)
-
-    const data = await response.json()
-    console.log(`Success: ${data.message}`)
-    imageShape() // Update the image shape based on the new flag value
-  } catch (error) {
-    console.log(`Error: ${error.message}`)
-    document.getElementById("statusMessage").textContent = `Error: ${error.message}`
-  }
-})
-
-
-
-
-document.getElementById("bad-api-flag").addEventListener("click", async () => {
-  const newFlagVal = !badAPI
-
-  try {
-    // Make the API call to your server-side endpoint
-    const response = await fetch("/api/toggle-bad-api", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        projectKey: "brian-l-demo-project",
-        featureFlagKey: "release-new-product-api",
-        value: newFlagVal, // Use the toggled value
-      }),
-    })
-
-    if (!response.ok) {
-      throw new Error("Failed to toggle feature flag")
-    }
-
-    if (newFlagVal) {
-      //('API Flag Is On')
-    }
-    //s else {alert('API Flag Is Off')}
-
-    console.log("this is the new flag val =" + newFlagVal)
-
-    const data = await response.json()
-    console.log(`Success: ${data.message}`)
-    imageShape() // Update the image shape based on the new flag value
-  } catch (error) {
-    console.log(`Error: ${error.message}`)
-    document.getElementById("statusMessage").textContent = `Error: ${error.message}`
-  }
-})
-
-function addEventListenersToDots() {
-  // Remove all the dot event listener logic
-}
-
 function updateTokensValue(checked) {
   const tokensText = checked ? "Spanish" : "English"
   document.getElementById("tokensValue").textContent = tokensText
 }
+
+
+function closeNavOnClickOutside(event) {
+  const navLinks = document.getElementById("navLinks")
+  const hamburger = document.querySelector(".hamburger")
+
+  if (navLinks.classList.contains("show") && !navLinks.contains(event.target) && !hamburger.contains(event.target)) {
+    navLinks.classList.remove("show")
+  }
+}
+
+document.addEventListener("click", closeNavOnClickOutside)
+
+
+function turnOnHero() {
+  if (heroBanner) {
+    document.getElementById('rewards-sections').style.display = 'block';
+    jwplayer().play();
+  }
+  else {
+    document.getElementById('rewards-sections').style.display = 'none';
+    jwplayer().pause();
+  }
+}
+
+const redScheme = {
+  font: '34px Pacifico, cursive',
+  color: '#FF0000',
+  pointsColor: 'black',
+}
+
+const greenScheme = {
+  font: "24px Pacifico, cursive",
+  color: '#006241',
+  pointsColor: "#006241"
+}
+
+
+function applyColorScheme(colorScheme) {
+  const logo = document.querySelector('.nav-bar h1');
+  const elements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile,.cart-btn #cartCountDesktop');
+
+  Object.assign(logo.style, {
+    color: colorScheme.color,
+    display: 'block',
+    fontFamily: 'Pacifico, cursive'
+  });
+
+  document.querySelector(".points").style.color = colorScheme.pointsColor;
+
+  elements.forEach(element => {
+    element.style.backgroundColor = colorScheme.color; // Red background
+    logo.style.font = colorScheme.font;
+    logo.style.display = 'block';
+  });
+}
+
+
+function showNotification(message) {
+  const notification = document.getElementById('notification');
+  const notificationMessage = document.getElementById('notificationMessage');
+  notificationMessage.textContent = message;
+  notification.classList.add('show');
+  setTimeout(() => {
+    notification.classList.remove('show');
+  }, 3000); // Hide after 3 seconds
+}
+
+
+async function toggleFeatureFlag(apiEndpoint, projectKey, featureFlagKey, newValue) {
+  try {
+    console.log(`Toggling feature flag: ${featureFlagKey} to ${newValue}`);
+    const response = await fetch(apiEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        projectKey: projectKey,
+        featureFlagKey: featureFlagKey,
+        value: newValue
+      }),
+    });
+    if (!response.ok) throw new Error("Failed to toggle feature flag");
+    const data = await response.json();
+    console.log(`Success: ${data.message}`);
+    return data;
+  } catch (error) {
+    console.log(`Error: ${error.message}`);
+    const statusMessage = document.getElementById("statusMessage");
+    if (statusMessage) statusMessage.textContent = `Error: ${error.message}`;
+  }
+}
+
+
+document.getElementById("rewards-flag").addEventListener("click", async () => {
+  const newFlagVal = !(membershipRewards === "true");
+  await toggleFeatureFlag("api/toggle-membership-flag",projectKey, membershipFlagKey, newFlagVal);
+});
+
+document.getElementById("experimentFlag").addEventListener("click", async () => {
+  let newFlagVal = true;
+  if(branding === "Red") {
+    newFlagVal = false;
+  }
+  await toggleFeatureFlag("/api/toggle-experimentation-flag", projectKey, experimentFlagKey, newFlagVal);
+});
+
+
+document.getElementById("bad-api-flag").addEventListener("click", async () => {
+  const newFlagVal = !badAPI
+  await toggleFeatureFlag("/api/toggle-bad-api", projectKey, APIFlagKey, newFlagVal);
+  
+});
+
+
+
+document.getElementById("banner-flag").addEventListener("click", async () => {
+  const newFlagVal = !heroBanner;
+  await toggleFeatureFlag("/api/toggle-feature-flag", projectKey, bannerFlagKey, newFlagVal);
+});
+
+// Add/update addToCart function to update cart state in localStorage
+function addToCart(itemId) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push(itemId);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem('cartCount', cart.length);
+    updateCartCount();
+    // Optionally, display a notification or update UI further
+}
+window.addToCart = addToCart; // Expose function globally
+
+// Function to update the shopping cart counter
+function updateCartCount() {
+    const count = parseInt(localStorage.getItem('cartCount')) || 0;
+    const cartCountElements = document.querySelectorAll("#cartCountMobile, #cartCountDesktop");
+    cartCountElements.forEach(el => {
+        if (count > 0) {
+            el.textContent = count;
+            el.style.display = 'inline';
+        } else {
+            el.style.display = 'none';
+        }
+    });
+}
+
+// Call updateCartCount on page load to restore counter state
+window.addEventListener('load', updateCartCount);
+
+// Updated function to show a dropdown with only the Clear Cart button
+function toggleCartDropdown() {
+  let dropdown = document.getElementById("cartDropdown");
+  // Only display the clear cart button
+  let html = `<div style="font-family: 'Montserrat', sans-serif; color: #333; text-align: center;">`;
+  html += `<button style="margin-top: 10px; background-color: #006241; color: #F5F5F5; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 14px;" onclick="clearCart()">Clear Cart</button>`;
+  html += "</div>";
+  
+  if (!dropdown) {
+    dropdown = document.createElement("div");
+    dropdown.id = "cartDropdown";
+    Object.assign(dropdown.style, {
+      position: "fixed",
+      top: "80px",
+      right: "10px",
+      background: "#F5F5F5",
+      border: "1px solid #ccc",
+      padding: "15px",
+      boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+      borderRadius: "8px",
+      zIndex: "1100",
+      minWidth: "200px"
+    });
+    dropdown.innerHTML = html;
+    document.body.appendChild(dropdown);
+  } else {
+    dropdown.innerHTML = html;
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  }
+}
+
+// Function to clear the cart
+function clearCart() {
+  localStorage.removeItem('cart');
+  localStorage.setItem('cartCount', 0);
+  updateCartCount();
+  let dropdown = document.getElementById("cartDropdown");
+  if (dropdown) {
+    dropdown.style.display = "none";
+  }
+}
+
+
 
 function callBadApi(value) {
   const newFlagVal = !badAPI
@@ -737,8 +786,8 @@ function callBadApi(value) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        projectKey: "brian-l-demo-project",
-        featureFlagKey: "release-new-product-api",
+        projectKey: projectKey,
+        featureFlagKey: APIFlagKey,
         value: value, // Use the toggled value
       }),
     })
@@ -750,185 +799,27 @@ function callBadApi(value) {
   }
 }
 
+// Expose functions globally
+window.toggleNav = toggleNav;
+window.toggleLoginDropdown = toggleLoginDropdown;
+window.toggleLoginDropdownMobile = toggleLoginDropdownMobile;
+window.toggleQRModal = toggleQRModal;
+window.addToCart = addToCart;
+window.updateCartCount = updateCartCount;
+window.toggleCartDropdown = toggleCartDropdown;
+window.clearCart = clearCart;
+window.signIn = signIn;
+window.logout = logout;
+window.updateUser = updateUser;
+window.updateLoginUI = updateLoginUI;
+window.toggler = toggler;
+window.applyTheme = applyTheme;
+window.createImageErrors = createImageErrors;
+window.getProducts = getProducts;
+window.makeImagesCircular = makeImagesCircular;
+window.videoSeek = videoSeek;
 
-
-// Add this function at the end of the file
-function closeNavOnClickOutside(event) {
-  const navLinks = document.getElementById("navLinks")
-  const hamburger = document.querySelector(".hamburger")
-
-  if (navLinks.classList.contains("show") && !navLinks.contains(event.target) && !hamburger.contains(event.target)) {
-    navLinks.classList.remove("show")
-  }
-}
-
-// Add this event listener at the end of the file
-document.addEventListener("click", closeNavOnClickOutside)
-
-
-
-function turnOnHero() {
-  if (holidayDrinks) {
-    document.getElementById('rewards-sections').style.display = 'block';
-    jwplayer().play();
-  }
-  else {
-    document.getElementById('rewards-sections').style.display = 'none';
-    document.getElementById('rewards-sections').style.display = 'none';
-    jwplayer().pause();
-  }
-}
-
-
-function applyRedColorScheme() {
-  const logo = document.querySelector('.nav-bar h1');
-  const redElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile,.cart-btn #cartCountDesktop');
-  //const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-
-  if (logo) {
-    logo.style.fontFamily = 'Pacifico, cursive';
-    logo.style.color = '#FF0000'; // Red color
-    logo.style.display = display = 'block';
-    //addToCartButtons.style.color = '#FF0000';
-  }
-
-  document.querySelector(".points").style.color = 'black';
-
-  redElements.forEach(element => {
-    element.style.backgroundColor = '#FF0000'; // Red background
-    element.style.color = '#fff'; // Ensure text is white
-    logo.style.font = "36px Pacifico, cursive', sans-serif";
-    logo.style.display = display = 'block';
-  });
-}
-
-
-
-
-function applyGreenColorScheme() {
-  const logo = document.querySelector('.nav-bar h1');
-  const greenElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop');
-
-
-
-  if (logo) {
-    logo.style.fontFamily = 'Pacifico, cursive';
-    logo.style.color = '#006241'; // Green color
-    logo.style.display = display = 'block';
-    //addToCartButtons.style.color = '#0062410';
-
-  }
-  document.querySelector(".points").style.color = '#006241';
-
-  greenElements.forEach(element => {
-    element.style.backgroundColor = '#006241'; // Red background
-    element.style.color = '#fff'; // Ensure text is white
-    logo.style.font = "24px Pacifico, cursive";
-    logo.style.display = display = 'block';
-  });
-}
-
-
-
-
-
-
-
-
-const secondMenu = [
-  {
-    id: 10,
-    temp: "holiday",
-    name: "Chestnut Latte",
-    price: 3.5,
-    img: "https://i.ibb.co/gZh5NhsD/SBX20190716-Chestnut-Praline-Creme-removebg-preview.png",
-  },
-  {
-    id: 11,
-    temp: "holiday",
-    name: "Peppermint Mocha",
-    price: 2.5,
-    img: "https://i.ibb.co/TqrnX893/SBX20230612-7785-Iced-Peppermint-Mocha-on-Green-MOP-1800-removebg-preview.png",
-  },
-  {
-    id: 12,
-    temp: "holiday",
-    name: "Caramel Brulee Latte",
-    price: 3.0,
-    img: "https://i.ibb.co/QvBSLtV3/Caramel-Brulee-Frappuccino-removebg-preview.png",
-  },
-  {
-    id: 13,
-    temp: "holiday",
-    name: "Gingerbread Chai",
-    price: 2.0,
-    img: "https://i.ibb.co/TqrnX893/SBX20230612-7785-Iced-Peppermint-Mocha-on-Green-MOP-1800-removebg-preview.png",
-  },
-  {
-    id: 1,
-    temp: "hot",
-    name: "Espresso",
-    price: 2.5,
-    img: "https://i.ibb.co/mnSFqVB/SBX20190617-Espresso-Single-removebg-preview.png",
-  },
-  {
-    id: 2,
-    temp: "hot",
-    name: "Cappuccino",
-    price: 3.0,
-    img: "https://i.ibb.co/H0Gf3V1/SBX20190617-Cappuccino-removebg-preview.png",
-  },
-  {
-    id: 3,
-    temp: "hot",
-    name: "Latte",
-    price: 3.5,
-    img: "https://i.ibb.co/Kxx5DJzq/SBX20190617-Caffe-Latte-removebg-preview.png",
-  },
-  {
-    id: 4,
-    temp: "hot",
-    name: "Americano",
-    price: 2.0,
-    img: "https://i.ibb.co/m7x4zyN/SBX20190617-Caffe-Americano-removebg-preview.png",
-  },
-  {
-    id: 5,
-    temp: "cold",
-    name: "Iced Coffee",
-    price: 2.5,
-    img: "https://i.ibb.co/CspB2tPk/SBX20190422-Iced-Vanilla-Latte-removebg-preview.png",
-  },
-  {
-    id: 6,
-    temp: "cold",
-    name: "Matcha Latte",
-    price: 3.0,
-    img: "https://i.ibb.co/xqTvBqjG/SBX20181127-Iced-Matcha-Green-Tea-Latte-removebg-preview.png",
-  },
-  {
-    id: 8,
-    temp: "cold",
-    name: "Berry Refresher",
-    price: 2.0,
-    img: "https://i.ibb.co/cc01hWCk/SBX20221206-Mango-Dragonfruit-Refreshers-removebg-preview.png",
-  },
-  {
-    id: 9,
-    temp: "cold",
-    name: "Iced Tea",
-    price: 2.0,
-    img: "https://i.ibb.co/wF6N7svX/SBX20190531-Iced-Black-Tea-removebg-preview.png",
-  },
-  
-]
-
-function showNotification(message) {
-    const notification = document.getElementById('notification');
-    const notificationMessage = document.getElementById('notificationMessage');
-    notificationMessage.textContent = message;
-    notification.classList.add('show');
-    setTimeout(() => {
-        notification.classList.remove('show');
-    }, 3000); // Hide after 3 seconds
+const experimentSwitch = document.getElementById("experiment-switch");
+if (experimentSwitch) {
+  experimentSwitch.checked = branding === "Red";
 }

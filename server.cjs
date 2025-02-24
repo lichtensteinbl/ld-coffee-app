@@ -1,27 +1,36 @@
+require('dotenv').config()  // Load environment variables from .env
+
+// This file is the entry point for the Coffee Shop app.
+// It is deployed automatically via GitHub Actions using the workflow in .github/workflows/deploy.yml
+
 const express = require("express")
 const bodyParser = require("body-parser")
 const ld = require("@launchdarkly/node-server-sdk")
 const { initAi } = require("@launchdarkly/server-sdk-ai")
 const axios = require("axios")
+const SDK_Key = process.env.LD_SERVER_SDK_KEY // LaunchDarkly server SDK key
+const API_Auth = process.env.LD_API_AUTH // LaunchDarkly API key
+const ENVIROMENT_KEY = process.env.LD_ENVIRONMENT_KEY // LaunchDarkly environment key
 
 const app = express()
-const port = 4004
+const port = process.env.PORT 
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static("public"))
 
-const client = ld.init("sdk-5bb8da0f-8861-4d67-a2f4-c257055c2335")
+const client = ld.init(SDK_Key)
 
 const context = {
   kind: "user",
   key: "user-key-123abc",
-  name: "Sandy",
   temperature: "low",
 }
 
-// Endpoint to trigger happyContext
-app.post("/api/happy-context", async (req, res) => {
+const environmentId = ENVIROMENT_KEY
+
+// Endpoint to trigger chatbot context
+app.post("/api/chatbot-context", async (req, res) => {
   try {
     // Log the request body to debug
     const { temperature, tokens } = req.body // Destructure temperature and tokens from the request body
@@ -79,29 +88,31 @@ app.post("/api/chatbot", async (req, res) => {
 // Endpoint to toggle feature flags
 app.post("/api/toggle-feature-flag", async (req, res) => {
   const { projectKey, featureFlagKey, value } = req.body
-
+  console.log(`Toggling ${featureFlagKey} to ${value}`)
   try {
+    // Ensure the environment id here matches your actual LaunchDarkly environment
     const url = `https://app.launchdarkly.com/api/v2/flags/${projectKey}/${featureFlagKey}`
     const response = await axios.patch(
       url,
       [
         {
           op: "replace",
-          path: `/environments/production/on`,
+          path: `/environments/${environmentId}/on`,
           value: value,
         },
       ],
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "api-78c8185b-3e24-4e42-850b-fce3db6ecd1d",
+          Authorization: API_Auth,
         },
       },
     )
 
     res.json({ message: "Feature flag toggled successfully", data: response.data })
   } catch (error) {
-    console.error("Error:", error.response ? error.response.data : error.message)
+    // Log full error details for debugging
+    console.error("Error toggling feature flag:", error.response?.data || error.message)
     res.status(500).json({ message: "Failed to toggle feature flag" })
   }
 })
@@ -116,14 +127,14 @@ app.post("/api/toggle-experimentation-flag", async (req, res) => {
       [
         {
           op: "replace",
-          path: `/environments/production/on`,
+          path: `/environments/${environmentId}/on`,
           value: value,
         },
       ],
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "api-78c8185b-3e24-4e42-850b-fce3db6ecd1d",
+          Authorization: API_Auth,
         },
       },
     )
@@ -134,8 +145,6 @@ app.post("/api/toggle-experimentation-flag", async (req, res) => {
     res.status(500).json({ message: "Failed to toggle feature flag" })
   }
 })
-
-
 
 app.post("/api/toggle-membership-flag", async (req, res) => {
   const { projectKey, featureFlagKey, value } = req.body
@@ -147,14 +156,14 @@ app.post("/api/toggle-membership-flag", async (req, res) => {
       [
         {
           op: "replace",
-          path: `/environments/production/on`,
+          path: `/environments/${environmentId}/on`,
           value: value,
         },
       ],
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "api-78c8185b-3e24-4e42-850b-fce3db6ecd1d",
+          Authorization: API_Auth, // Updated from API_AUTH to API_Auth
         },
       },
     )
@@ -176,14 +185,14 @@ app.post("/api/toggle-experimentation-flag", async (req, res) => {
       [
         {
           op: "replace",
-          path: `/environments/production/on`,
+          path: `/environments/${environmentId}/on`,
           value: value,
         },
       ],
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "api-78c8185b-3e24-4e42-850b-fce3db6ecd1d",
+          Authorization: API_Auth,
         },
       },
     )
@@ -205,14 +214,14 @@ app.post("/api/toggle-bad-api", async (req, res) => {
       [
         {
           op: "replace",
-          path: `/environments/production/on`,
+          path: `/environments/${environmentId}/on`,
           value: value,
         },
       ],
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "api-78c8185b-3e24-4e42-850b-fce3db6ecd1d",
+          Authorization: API_Auth,
         },
       },
     )
@@ -224,14 +233,12 @@ app.post("/api/toggle-bad-api", async (req, res) => {
   }
 })
 
-// Initialize the LaunchDarkly SDK and start the guardian runner
 async function initializeApp() {
   try {
     await client.waitForInitialization()
     console.log("*** SDK successfully initialized!")
 
-    // Start the guardian runner
-    await guardianRunner()
+  
 
     // Test a feature flag
     const ldBot = await client.variation("coffee-bot", context, false)
@@ -244,44 +251,7 @@ async function initializeApp() {
   }
 }
 
-// Guardian runner function
-async function guardianRunner() {
-  let i = 1
 
-  async function loop() {
-    if (i < 10) {
-      const newKey = randomKeyGenerator()
-      const newContext = {
-        kind: "user",
-        key: newKey,
-      }
-      //console.log('New context:', newContext);
-
-      try {
-        const test = await client.variation("release-new-product-api", newContext, false)
-        await client.track("error-count", newContext)
-        //console.log('Variation result:', test);
-      } catch (error) {
-        // console.error('Error in guardianRunner:', error);
-      }
-
-      i++
-      setTimeout(loop, 1000) // Increase delay to 1 second
-    }
-  }
-
-  loop()
-}
-
-// Helper function to generate random keys
-function randomKeyGenerator() {
-  const characters = "ABCDEFG"
-  let randomValue = ""
-  for (let i = 0; i < characters.length; i++) {
-    randomValue += characters.charAt(Math.floor(Math.random() * characters.length))
-  }
-  return randomValue
-}
 
 // Endpoint to handle chatbot requests
 
@@ -309,10 +279,17 @@ app.get("/support.html", (req, res) => {
   res.sendFile(__dirname + "/public/support.html")
 })
 
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  console.log("Health check received")
+  res.status(200).json({ message: "Server is running" })
+})
+
 // Start the server
-app.listen(process.env.PORT || port, () => {
+const server = app.listen(process.env.PORT || port, () => {
   console.log(`Server running at http://localhost:${port}`)
 })
+server.setTimeout(0) // Disables timeout or set a large number (in ms)
 
 // Initialize the app
 initializeApp()

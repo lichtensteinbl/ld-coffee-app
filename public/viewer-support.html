@@ -1,12 +1,3 @@
-<!-- 
-  Coffee Shop Support Page (support.html)
-  -----------------------------------------
-  This page provides the support chat interface for the Coffee Shop app.
-  It includes:
-    - A navigation bar for support and other site links.
-    - A chat container to send messages and receive bot responses. 
-    - Integration with support.js and global styling via styles.css.
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,17 +27,17 @@
                 <i class="">Log In</i>
             </button>
             <div class="nav-item">
-                <a href="index.html">Menu</a>
+                <a href="viewer.html">Menu</a>
             </div>
             <div class="nav-item">
-                <a href="support.html">Support</a>
+                <a href="viewer-support.html">Support</a>
             </div>
             <div class="nav-item">
                 <a href="#" onclick="toggleQRModal()">QR Code</a>
                  <div class="toggle-switch">
                 </div>
             </div>
-            <div class="nav-item">
+            <div class="nav-item"style = "display: none;">
                 <a href="#" id="toggleFeatureFlag">Holiday</a>
                 <div class="toggle-switch">
                     <label class="switch">
@@ -55,7 +46,7 @@
                     </label>
                 </div>
             </div>
-            <div class="nav-item">
+            <div class="nav-item"style = "display: none;">
                 <a href="#" id="bad-api-flag">API</a>
                 <div class="toggle-switch">
                     <label class="switch">
@@ -64,7 +55,7 @@
                     </label>
                 </div>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" style = "display: none;">
                 <a href="#" id="experimentFlag">Experiment On</a>
                 <div class="toggle-switch">
                     <label class="switch">
@@ -73,7 +64,7 @@
                     </label>
                 </div>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" style = "display: none;">
                 <a href="#" id="experimentFlagOff">Experiment Off</a>
                 <div class="toggle-switch">
                     <label class="switch">
@@ -126,19 +117,19 @@
         <!-- New Buttons -->
         <!-- New Text Element -->
         <p id="variationText"></p>
-        <div class="sliders">
+        <div class="sliders" style="display:none">
             <div class="slider-container" >
                 <label for="temperatureSlider">Temperature:</label>
                 <input type="range" id="temperatureSlider" min="1" max="2" value="1" oninput="updateTemperatureValue(this.value)">
                 <span id="temperatureValue">Low</span>
             </div>
-            <div class="slider-container">
+            <div class="slider-container"style="display:none">
                 <label for="tokensSlider">Language:</label>
                 <input type="range" id="tokensSlider" min="1" max="2" value="1" oninput="updateTokensValue(this.value)">
                 <span id="tokensValue">English</span>
             </div>
         </div>
-        <div class="button-container">
+        <div class="button-container"style="display:none">
             <button class="select-config-btn" id = 'selectConfig'>Set Config</button>
         </div>
     </div>

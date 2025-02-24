@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ...existing head code... -->
+    <title>Coffee Shop - Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- This page is dedicated to viewer-only functionality -->
+</head>
+<body>
+    <!-- ================================
+         Viewer Page Navigation
+         (Uses distinct IDs so its login and cart work independently)
+         ================================ -->
+    <div class="nav-bar">
+        <div class="hamburger" onclick="toggleNav(event)">
+            <!-- ...existing code... -->
+        </div>
+        <div class="nav-links" id="navLinks">
+            <!-- Viewer login button and dropdown; note the prefixed IDs -->
+            <button class="login-btn" id="viewerLoginButtonMobile" onclick="toggleViewerLoginDropdownMobile()">
+                <i> Log In</i> 
+            </button>
+            <!-- ...other nav items can include viewer-specific links if needed... -->
+            <div class="login-dropdown" id="viewerLoginDropdownMobile">
+                <h3>Sign In</h3>
+                <form id="viewerLoginFormMobile">
+                    <!-- ...form fields... -->
+                </form>
+            </div>
+        </div>
+        <h1>ToggleBucks</h1>
+        <!-- Optionally include desktop-specific viewer login if needed -->
+        <div class="login-container" style="display: none">
+            <!-- ... -->
+        </div>
+        <!-- Viewer cart button with unique ID -->
+        <button class="cart-btn" id="viewerCartButtonMobile" onclick="toggleViewerCartDropdown()">
+            <i class="fas fa-shopping-cart"></i> <span id="viewerCartCountMobile">0</span>
+        </button>
+    </div>
+    <!-- ...rest of the viewer page markup... -->
+
+    <!-- Instead of loading the generic app.js, load viewer.js for independent behavior -->
+    <script type="module" src="viewer.js"></script>
+    <!-- ...existing code... -->
+</body>
+</html>

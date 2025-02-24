@@ -8,6 +8,9 @@ body {
     font-size: 16px;
     color: #333;
     background-color: #F5F5F5;
+    max-width: 375px;  /* Fixed mobile width */
+    margin: 0 auto;    /* Center the content */
+    overflow-x: hidden;
 }
 
 h1 {
@@ -716,6 +719,12 @@ input:checked + .slider:before {
     }
 }
 
+@media only screen and (min-width: 376px) {
+  html, body, .container, .nav-bar, .dashboard-content, .submenu {
+    width: 375px !important;
+    margin: 0 auto;
+  }
+}
 
 #rewards-sections {
     font-size: 24px; /* Adjust the font size as needed */

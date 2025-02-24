@@ -1,20 +1,15 @@
 <!-- 
-  Coffee Shop Landing Page (index.html)
-  --------------------------------------
-  This file is the main landing page for the Coffee Shop app.
-  It includes:
-    - A fixed navigation bar with login, cart, and feature flag toggles.
-    - Dynamic sections for featured products, cold drinks, hot drinks, etc.
-    - Integration of global app logic via app.js.
-  Note: The navigation and feature toggles are linked to LaunchDarkly flags in app.js.
+  Coffee Shop Viewer Page
+  -------------------------
+  This page provides a viewer experience where:
+    - Login and cart state is managed independently from the main app.
+    - Unique element IDs (prefixed with 'viewer') ensure no conflicts.
+    - Viewer-specific logic is loaded via viewer.js.
 -->
-  
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=no">
-    <!-- include your own jwplayer library -->
-
     <script src=" https://cdn.jwplayer.com/libraries/tbDcRRiq.js"></script>
 
    
@@ -46,52 +41,52 @@
                 <a href="#">Menu</a>
             </div>
             <div class="nav-item">
-                <a href="support.html">Support</a>
+                <a href="viewer-support.html">Support</a>
             </div>
             <div class="nav-item">
                 <div class="qr-code-dot"></div>
                 <a href="#" onclick="toggleQRModal()">QR Code</a>
             </div>
             <div class="nav-item">
-                <a href="#" id="banner-flag">Banner</a>
-                <div class="toggle-switch">
+                <a href="#" id="banner-flag" style="display:none">Banner</a>
+                <div class="toggle-switch" style="display:none">
                     <label class="switch">
-                        <input type="checkbox" id="banner-switch" onclick="document.getElementById('banner-flag').click()">
+                        <input type="checkbox" id="banner-switch" style="display:none" onclick="document.getElementById('banner-flag').click()">
                         <span class="slider round"></span>
                     </label>
                 </div>
             </div>
             <div class="nav-item">
-                <a href="#" id="rewards-flag">Rewards</a>
-                <div class="toggle-switch">
-                    <label class="switch">
-                        <input type="checkbox" id="rewards-switch" onclick="document.getElementById('rewards-flag').click()">
+                <a href="#" id="rewards-flag" style="display:none">Rewards</a>
+                <div class="toggle-switch" style="display:none">
+                    <label class="switch"style="display:none">
+                        <input type="checkbox" id="rewards-switch"style="display:none" onclick="document.getElementById('rewards-flag').click()">
                         <span class="slider round"></span>
                     </label>
                 </div>
             </div>
             <div class="nav-item">
                 <div class="api-dot"></div>
-                <a href="#" id="bad-api-flag">API</a>
-                <div class="toggle-switch">
-                    <label class="switch">
+                <a href="#" id="bad-api-flag"style="display:none">API</a>
+                <div class="toggle-switch" style="display:none">
+                    <label class="switch" style="display:none">
                         <input type="checkbox" id="api-switch" onclick="document.getElementById('bad-api-flag').click()">
                         <span class="slider round"></span>
                     </label>
                 </div>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" style="display:none">
                 <div class="experiment-on-dot"></div>
                 <a href="#" id="experimentFlag">Experiment</a>
-                 <div class="toggle-switch">
+                 <div class="toggle-switch" style="display:none">
                     <label class="switch">
                         <input type="checkbox" id ='experiment-switch' onclick="document.getElementById('experimentFlag').click()">
                         <span class="slider round"></span>
                     </label>
                 </div>
             </div>
-            <div class="nav-item">
-                <a href="viewer.html">Viewer</a>
+            <div class="nav-item" style="display:none">
+                <a href="viewer.html" >Viewer</a>
             </div>
             <div class="login-dropdown" id="loginDropdownMobile">
                 <h3>Sign In</h3>
@@ -169,7 +164,6 @@
 <!-- Video Section -->
   
     <div id="rewards-sections" style="display: none;">
-         <!-- include your own jwplayer single-line embed here or add a different video server-->
         <script src="https://cdn.jwplayer.com/players/8DVx6fWQ-tbDcRRiq.js"></script>
     </div>
 
@@ -205,6 +199,7 @@
 
     <script src="./dist/bundle.js"></script>
     <script type="module" src="app.js"></script>
+    <script type="module" src="viewer.js"></script>
 
 <div id="contextEvents"></div>
 <div id="flagEvents"></div>
