@@ -1,4 +1,3 @@
-import { initialize } from 'launchdarkly-js-client-sdk';
 
 const clientSideKey = "67bab894bffb5f0c01b78239"
 const APIFlagKey = "release-new-api";
@@ -20,7 +19,6 @@ let branding;
 const storedImg = []
 let holidayDrinks;
 let badAPI; 
-let membershipRewards;
 
 function videoSeek() {
   let currentPos = jwplayer().getPosition();
@@ -38,25 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
   elements.forEach(element => {
     document.querySelector('.nav-bar h1').display = 'none';
   });
-
-  const element = document.querySelector('.hamburger');
-  if (element) {
-    element.addEventListener('click', toggleNav);
-  }
-  // Repeat such guards for other selectors used below.
-  const hamburger = document.querySelector('.hamburger');
-  if (hamburger) {
-    hamburger.addEventListener('click', toggleNav);
-  }
-  // Guard other element selections:
-  //const someElement = document.querySelector('.some-other-selector');
-  //if (someElement) {
-    // Attach events...
-  //}
-  const experimentSwitch = document.getElementById("experiment-switch");
-  if (experimentSwitch) {
-    experimentSwitch.checked = (branding === "Red");
-  }
 });
 
 
@@ -75,8 +54,8 @@ function generateRandomKey() {
 generateRandomKey()
 console.log(context);
 
-const client = initialize(clientSideKey, context);
-window.client = client; // Expose client globally
+const client = LDClient.initialize(clientSideKey, context);
+
 
 
 const brokenURL = "https://globalassets.starbucks.com/djpg?impolicy=1by1_wide_topcrop_630"
@@ -173,7 +152,6 @@ function toggleNav(event) {
   const navLinks = document.getElementById("navLinks")
   navLinks.classList.toggle("show")
 }
-window.toggleNav = toggleNav;
 
 function toggleLoginDropdown() {
   if (!currentUser) {
@@ -192,13 +170,11 @@ function toggleLoginDropdownMobile() {
   const dropdownMobile = document.getElementById("loginDropdownMobile");
   dropdownMobile.style.display = dropdownMobile.style.display === "block" ? "none" : "block";
 }
-window.toggleLoginDropdownMobile = toggleLoginDropdownMobile; // Expose function globally
 
 function toggleQRModal() {
   const qrModal = document.getElementById("qrModal")
   qrModal.style.display = qrModal.style.display === "block" ? "none" : "block"
 }
-window.toggleQRModal = toggleQRModal; // Expose function globally
 
 window.onclick = (event) => {
   const qrModal = document.getElementById("qrModal")
@@ -332,9 +308,9 @@ function logout() {
   updateLoginUI();
   console.log("user has logged out");
   showNotification("Logged out successfully!");
-  // Change "rewards-section" to "rewards-sections"
-  const rewardsElem = document.getElementById("rewards-sections");
-  if (rewardsElem) rewardsElem.style.display = "none";
+  document.getElementById("rewards-section").style.display = "none";
+  document.getElementById("rewards-section").style.display = "none";
+  document.getElementById("rewards-section").style.display = "none";
 }
 
 function updateLoginUI() {
@@ -412,13 +388,9 @@ function applyTheme() {
 client.on("ready", () => {
   membershipRewards = client.variation("release-member-rewards", context, false)
 
-  if (typeof jwplayer === 'function' && document.querySelector('#someJWPlayerContainer')) {
-    jwplayer().on('ready', () => {
-      const jwpSeek = setInterval(videoSeek, 100);
-    });
-  } else {
-    console.warn("jwplayer is not available on this page.");
-  }
+  jwplayer().on('ready', () => {
+    const jwpSeek = setInterval(videoSeek, 100);
+  })
 
   if (context.tier == "member") {
     document.querySelector('.fas.fa-user-alt').style.display = "block";
@@ -617,7 +589,7 @@ function applyColorScheme(colorScheme) {
   elements.forEach(element => {
     element.style.backgroundColor = colorScheme.color; // Red background
     logo.style.font = colorScheme.font;
-    logo.style.display = 'block';
+    logo.style.display = display = 'block';
   });
 }
 
@@ -635,7 +607,6 @@ function showNotification(message) {
 
 async function toggleFeatureFlag(apiEndpoint, projectKey, featureFlagKey, newValue) {
   try {
-    console.log(`Toggling feature flag: ${featureFlagKey} to ${newValue}`);
     const response = await fetch(apiEndpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -655,19 +626,11 @@ async function toggleFeatureFlag(apiEndpoint, projectKey, featureFlagKey, newVal
     if (statusMessage) statusMessage.textContent = `Error: ${error.message}`;
   }
 }
-/*
+
 
 document.getElementById("rewards-flag").addEventListener("click", async () => {
   const newFlagVal = !(membershipRewards === "true");
-  await toggleFeatureFlag("/api/toggle-bad-api", projectKey, 'release-new-api', newFlagVal);
-});*/
-
-document.getElementById("rewards-flag").addEventListener("click", async () => {
-  let newFlagVal = true;
-  if(branding === "Red") {
-    newFlagVal = false;
-  }
-  await toggleFeatureFlag("/api/toggle-experimentation-flag", projectKey, "release-branding-change", newFlagVal);
+  await toggleFeatureFlag("/api/toggle-membership-flag",projectKey, "release-member-rewards", newFlagVal);
 });
 
 document.getElementById("experimentFlag").addEventListener("click", async () => {
@@ -701,7 +664,6 @@ function addToCart(itemId) {
     updateCartCount();
     // Optionally, display a notification or update UI further
 }
-window.addToCart = addToCart; // Expose function globally
 
 // Function to update the shopping cart counter
 function updateCartCount() {
@@ -793,29 +755,4 @@ function callBadApi(value) {
     console.log(`Error: ${error.message}`)
     document.getElementById("statusMessage").textContent = `Error: ${error.message}`
   }
-}
-
-// Expose functions globally
-window.toggleNav = toggleNav;
-window.toggleLoginDropdown = toggleLoginDropdown;
-window.toggleLoginDropdownMobile = toggleLoginDropdownMobile;
-window.toggleQRModal = toggleQRModal;
-window.addToCart = addToCart;
-window.updateCartCount = updateCartCount;
-window.toggleCartDropdown = toggleCartDropdown;
-window.clearCart = clearCart;
-window.signIn = signIn;
-window.logout = logout;
-window.updateUser = updateUser;
-window.updateLoginUI = updateLoginUI;
-window.toggler = toggler;
-window.applyTheme = applyTheme;
-window.createImageErrors = createImageErrors;
-window.getProducts = getProducts;
-window.makeImagesCircular = makeImagesCircular;
-window.videoSeek = videoSeek;
-
-const experimentSwitch = document.getElementById("experiment-switch");
-if (experimentSwitch) {
-  experimentSwitch.checked = branding === "Red";
 }

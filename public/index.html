@@ -1,21 +1,8 @@
-<!-- 
-  Coffee Shop Landing Page (index.html)
-  --------------------------------------
-  This file is the main landing page for the Coffee Shop app.
-  It includes:
-    - A fixed navigation bar with login, cart, and feature flag toggles.
-    - Dynamic sections for featured products, cold drinks, hot drinks, etc.
-    - Integration of global app logic via app.js.
-  Note: The navigation and feature toggles are linked to LaunchDarkly flags in app.js.
--->
-  
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=no">
-    <!-- include your own jwplayer library -->
     <script src=" https://cdn.jwplayer.com/libraries/tbDcRRiq.js"></script>
-
 
    
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,7 +36,7 @@
                 <a href="support.html">Support</a>
             </div>
             <div class="nav-item">
-                <div class="qr-code-dots"></div>
+                <div class="qr-code-dot"></div>
                 <a href="#" onclick="toggleQRModal()">QR Code</a>
             </div>
             <div class="nav-item">
@@ -90,9 +77,6 @@
                     </label>
                 </div>
             </div>
-            <div class="nav-item">
-                <a href="viewer.html">Viewer</a>
-            </div>
             <div class="login-dropdown" id="loginDropdownMobile">
                 <h3>Sign In</h3>
                 <form id="loginFormMobile">
@@ -107,7 +91,7 @@
 
         <h1>ToggleBucks</h1>
 
-        <div class="login-container" style = "display: none">
+        <div class="login-container" style = "display: none";>
             <button class="login-btn" id="loginButtonDesktop" onclick="toggleLoginDropdown()" hidden>
                 <i class="fas fa-user"></i> Sign In
             </button>
@@ -168,10 +152,10 @@
   
 <!-- Video Section -->
   
-    <div id="rewards-sections" style="display: none;">
-         <!-- include your own jwplayer single-line embed here or add a different video server-->
-        <script src="https://cdn.jwplayer.com/players/8DVx6fWQ-tbDcRRiq.js"></script>
-    </div>
+</section>
+        <div id="rewards-sections" style="display: none;">
+            <script src="https://cdn.jwplayer.com/players/8DVx6fWQ-tbDcRRiq.js"></script>
+        </div>
 
     <!-- Product Sections -->    
   
@@ -203,8 +187,13 @@
         </div>
     </div>
 
-    <script src="./dist/bundle.js"></script>
-    <script type="module" src="app.js"></script>
+    <script src="app.js"></script>
+    <script>
+
+
+
+    </script>
+
 
 <div id="contextEvents"></div>
 <div id="flagEvents"></div>

@@ -3,8 +3,10 @@ const bodyParser = require("body-parser")
 const ld = require("@launchdarkly/node-server-sdk")
 const { initAi } = require("@launchdarkly/server-sdk-ai")
 const axios = require("axios")
-const SDK_Key = "sdk-5bb8da0f-8861-4d67-a2f4-c257055c2335"
+const SDK_Key = "sdk-7dd12d51-99e0-457d-852f-51404a3d7378"
 const API_Auth = "api-bcd8e385-c2db-4e16-9a03-3f85e0eabcb9"
+const OPENAI_API_KEY = `Bearer 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`
+const ENVIROMENTS_ID = '';
 
 const app = express()
 const port = 4004
@@ -13,12 +15,11 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static("public"))
 
-const client = ld.init(SDK_Key)
+const client = ld.init("sdk-7dd12d51-99e0-457d-852f-51404a3d7378")
 
 const context = {
   kind: "user",
   key: "user-key-123abc",
-  name: "Sandy",
   temperature: "low",
 }
 
@@ -34,7 +35,7 @@ app.post("/api/chatbot-context", async (req, res) => {
     console.log(context)
 
     // Send response
-    res.json({ message: "Happy context triggered", context })
+    res.json({ message: "chatbot-context-triggered", context })
   } catch (error) {
     console.error("Error:", error)
     res.status(500).json({ error: "An error occurred while evaluating the flag" })
@@ -56,7 +57,7 @@ async function aiConfigs(req, res, ldmessage) {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer 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`, // Replace with your actual API key
+          Authorization: OPENAI_API_KEY,
         },
       },
     )
@@ -81,32 +82,33 @@ app.post("/api/chatbot", async (req, res) => {
 // Endpoint to toggle feature flags
 app.post("/api/toggle-feature-flag", async (req, res) => {
   const { projectKey, featureFlagKey, value } = req.body
-  console.log(`Toggling ${featureFlagKey} to ${value}`)
+  console.log(`Received request to toggle feature flag: ${featureFlagKey} to ${value}`)
   try {
-    // Ensure the environment id here matches your actual LaunchDarkly environment
-    const environmentId = "production"
     const url = `https://app.launchdarkly.com/api/v2/flags/${projectKey}/${featureFlagKey}`
     const response = await axios.patch(
       url,
       [
         {
           op: "replace",
-          path: `/environments/${environmentId}/on`,
+          path: `/environments/production/on`,
           value: value,
         },
       ],
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: API_Auth,
+          Authorization: "api-bcd8e385-c2db-4e16-9a03-3f85e0eabcb9",
         },
       },
     )
 
     res.json({ message: "Feature flag toggled successfully", data: response.data })
   } catch (error) {
-    // Log full error details for debugging
-    console.error("Error toggling feature flag:", error.response?.data || error.message)
+    console.error("Error while toggling feature flag:", {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+    })
     res.status(500).json({ message: "Failed to toggle feature flag" })
   }
 })
@@ -128,7 +130,7 @@ app.post("/api/toggle-experimentation-flag", async (req, res) => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: API_Auth,
+          Authorization: "api-bcd8e385-c2db-4e16-9a03-3f85e0eabcb9",
         },
       },
     )
@@ -142,7 +144,7 @@ app.post("/api/toggle-experimentation-flag", async (req, res) => {
 
 app.post("/api/toggle-membership-flag", async (req, res) => {
   const { projectKey, featureFlagKey, value } = req.body
-
+  console.log(`Received request to toggle membership flag: ${featureFlagKey} to ${value}`)
   try {
     const url = `https://app.launchdarkly.com/api/v2/flags/${projectKey}/${featureFlagKey}`
     const response = await axios.patch(
@@ -161,14 +163,16 @@ app.post("/api/toggle-membership-flag", async (req, res) => {
         },
       },
     )
-
     res.json({ message: "Feature flag toggled successfully", data: response.data })
   } catch (error) {
-    console.error("Error:", error.response ? error.response.data : error.message)
-    res.status(500).json({ message: "Failed to toggle feature flag" })
+    console.error("Error while toggling membership flag:", {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+    })
+    res.status(500).json({ message: "Failed to toggle membership flag" })
   }
 })
-
 
 app.post("/api/toggle-experimentation-flag", async (req, res) => {
   const { projectKey, featureFlagKey, value } = req.body
@@ -313,17 +317,15 @@ app.get("/support.html", (req, res) => {
   res.sendFile(__dirname + "/public/support.html")
 })
 
-// Health check endpoint
+// Add a simple GET endpoint to verify the server is running
 app.get("/api/health", (req, res) => {
-  console.log("Health check received")
   res.status(200).json({ message: "Server is running" })
 })
 
 // Start the server
-const server = app.listen(process.env.PORT || port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`Server running at http://localhost:${port}`)
 })
-server.setTimeout(0) // Disables timeout or set a large number (in ms)
 
 // Initialize the app
 initializeApp()
