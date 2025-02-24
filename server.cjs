@@ -5,6 +5,7 @@ require('dotenv').config()  // Load environment variables from .env
 
 const express = require("express")
 const bodyParser = require("body-parser")
+const cors = require('cors')  // Add this line
 const ld = require("@launchdarkly/node-server-sdk")
 const { initAi } = require("@launchdarkly/server-sdk-ai")
 const axios = require("axios")
@@ -14,6 +15,13 @@ const ENVIROMENT_KEY = "production" // LaunchDarkly environment key
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY // OpenAI API key
 const app = express()
 const port = process.env.PORT || 4004  // Make sure port matches what's in .env
+
+// Add CORS middleware before other middleware
+app.use(cors({
+  origin: ['http://localhost:4004', 'https://coffee-app-updated-72a34cbd99d5.herokuapp.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
