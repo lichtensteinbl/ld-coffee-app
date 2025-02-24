@@ -659,7 +659,7 @@ async function toggleFeatureFlag(apiEndpoint, projectKey, featureFlagKey, newVal
 
 document.getElementById("rewards-flag").addEventListener("click", async () => {
   const newFlagVal = !(membershipRewards === "true");
-  await toggleFeatureFlag("api/toggle-membership-flag",projectKey, "release-member-rewards", newFlagVal);
+  await toggleFeatureFlag("/api/toggle-membership-flag", projectKey, membershipFlagKey, newFlagVal);
 });
 
 document.getElementById("experimentFlag").addEventListener("click", async () => {

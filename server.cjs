@@ -13,7 +13,7 @@ const API_Auth = "api-bcd8e385-c2db-4e16-9a03-3f85e0eabcb9" // LaunchDarkly API 
 const ENVIROMENT_KEY = "production" // LaunchDarkly environment key
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY // OpenAI API key
 const app = express()
-const port = 4004
+const port = process.env.PORT || 4004  // Make sure port matches what's in .env
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -286,7 +286,7 @@ app.get("/api/health", (req, res) => {
 })
 
 // Start the server
-const server = app.listen(process.env.PORT || port, () => {
+const server = app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`)
 })
 server.setTimeout(0) // Disables timeout or set a large number (in ms)
