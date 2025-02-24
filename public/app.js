@@ -10,14 +10,12 @@ import { initialize } from 'launchdarkly-js-client-sdk';
 // - UI updates (theme and notifications)
 // ================================
 
-// Replace hardcoded values with environment variables
-const clientSideKey = process.env.LD_CLIENT_SIDE_KEY;
-const APIFlagKey = process.env.LD_API_FLAG || "release-new-api";
-const membershipFlagKey = process.env.LD_MEMBERSHIP_FLAG || "release-member-rewards";
-const experimentFlagKey = process.env.LD_EXPERIMENT_FLAG || "release-branding-change";
-const bannerFlagKey = process.env.LD_BANNER_FLAG || "release-banner";
-const projectKey = process.env.LD_PROJECT_KEY;
-const newProductAPIFlagKey = process.env.LD_NEW_PRODUCT_API || "release-new-product-api";
+const clientSideKey = "67bab894bffb5f0c01b78239";
+const APIFlagKey = "release-new-api";
+const membershipFlagKey = "release-member-rewards";
+const experimentFlagKey = "release-branding-change";
+const bannerFlagKey = "release-banner"
+const projectKey = "coffee-app";
 
 // Context for feature flags, updated on user login.
 const context = {
@@ -430,7 +428,7 @@ function applyTheme() {
 
 
 client.on("ready", () => {
-  membershipRewards = client.variation(membershipFlagKey, context, false)
+  membershipRewards = client.variation("release-member-rewards", context, false)
 
   if (typeof jwplayer === 'function' && document.querySelector('#someJWPlayerContainer')) {
     jwplayer().on('ready', () => {
@@ -443,8 +441,8 @@ client.on("ready", () => {
   if (context.tier == "member") {
     document.querySelector('.fas.fa-user-alt').style.display = "block";
   }
-  heroBanner = client.variation(bannerFlagKey, context, false)
-  branding = client.variation(experimentFlagKey, context, false)
+  heroBanner = client.variation("release-banner", context, false)
+  branding = client.variation("release-branding-change", context, false)
   console.log("branding = " + branding)
   console.log("member rewards = " + membershipRewards)
     console.log("badAPI is " + badAPI)
@@ -471,11 +469,11 @@ client.on("ready", () => {
 
 
 client.on("change", () => {
-  heroBanner = client.variation(bannerFlagKey, context, false)
-  membershipRewards = client.variation(membershipFlagKey, context, false)
+  heroBanner = client.variation("release-banner", context, false)
+  membershipRewards = client.variation("release-member-rewards", context, false)
   console.log('membership rewards is ' + membershipRewards);
-  branding = client.variation(experimentFlagKey, context, false)
-  badAPI = client.variation(APIFlagKey, context, false)
+  branding = client.variation("release-branding-change", context, false)
+  badAPI = client.variation("release-new-api", context, false)
   toggler()
   turnOnHero();
 
@@ -679,7 +677,7 @@ async function toggleFeatureFlag(apiEndpoint, projectKey, featureFlagKey, newVal
 
 document.getElementById("rewards-flag").addEventListener("click", async () => {
   const newFlagVal = !(membershipRewards === "true");
-  await toggleFeatureFlag("api/toggle-membership-flag",projectKey, membershipFlagKey, newFlagVal);
+  await toggleFeatureFlag("api/toggle-membership-flag",projectKey, "release-member-rewards", newFlagVal);
 });
 
 document.getElementById("experimentFlag").addEventListener("click", async () => {
@@ -687,13 +685,13 @@ document.getElementById("experimentFlag").addEventListener("click", async () => 
   if(branding === "Red") {
     newFlagVal = false;
   }
-  await toggleFeatureFlag("/api/toggle-experimentation-flag", projectKey, experimentFlagKey, newFlagVal);
+  await toggleFeatureFlag("/api/toggle-experimentation-flag", projectKey, "release-branding-change", newFlagVal);
 });
 
 
 document.getElementById("bad-api-flag").addEventListener("click", async () => {
   const newFlagVal = !badAPI
-  await toggleFeatureFlag("/api/toggle-bad-api", projectKey, APIFlagKey, newFlagVal);
+  await toggleFeatureFlag("/api/toggle-bad-api", projectKey, "release-new-api", newFlagVal);
   
 });
 
@@ -701,7 +699,7 @@ document.getElementById("bad-api-flag").addEventListener("click", async () => {
 
 document.getElementById("banner-flag").addEventListener("click", async () => {
   const newFlagVal = !heroBanner;
-  await toggleFeatureFlag("/api/toggle-feature-flag", projectKey, bannerFlagKey, newFlagVal);
+  await toggleFeatureFlag("/api/toggle-feature-flag", projectKey, "release-banner", newFlagVal);
 });
 
 // Add/update addToCart function to update cart state in localStorage
@@ -787,7 +785,7 @@ function callBadApi(value) {
       },
       body: JSON.stringify({
         projectKey: projectKey,
-        featureFlagKey: APIFlagKey,
+        featureFlagKey: "release-new-api",
         value: value, // Use the toggled value
       }),
     })

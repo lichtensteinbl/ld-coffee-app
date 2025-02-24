@@ -11,7 +11,7 @@ const axios = require("axios")
 const SDK_Key = process.env.LD_SERVER_SDK_KEY // LaunchDarkly server SDK key
 const API_Auth = process.env.LD_API_AUTH // LaunchDarkly API key
 const ENVIROMENT_KEY = process.env.LD_ENVIRONMENT_KEY // LaunchDarkly environment key
-
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY // OpenAI API key
 const app = express()
 const port = process.env.PORT 
 
@@ -63,7 +63,7 @@ async function aiConfigs(req, res, ldmessage) {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer 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`, // Replace with your actual API key
+          Authorization: OPENAI_API_KEY // Replace with your actual API key
         },
       },
     )
