@@ -13,6 +13,7 @@ Welcome to the Coffee Shop project! This repository contains a web application w
 - [Usage](#usage)
 - [Feature Flags](#feature-flags)
 - [Troubleshooting](#troubleshooting)
+- [Deployment](#deployment)
 
 ## Installation
 
@@ -60,24 +61,26 @@ LD_EXPERIMENT_FLAG=your_experiment_flag_here
 LD_BANNER_FLAG=your_banner_flag_here
 LD_PROJECT_KEY=your_project_key_here
 LD_SERVER_SDK_KEY=your_server_sdk_key_here
-PORT=3000
+PORT = your_port_here
 ```
 
 Alternatively, set these variables in your hosting environment.
 
-## GitHub Deployment
+## Deployment
+This project is automatically deployed via GitHub Actions when changes are pushed to the main branch.
 
-This repository includes a GitHub Actions workflow in the file:
-.github/workflows/deploy.yml
+### Environment Variables
+You'll need to set up the following secrets in your GitHub repository:
+- `LD_CLIENT_SIDE_KEY`
+- `LD_SERVER_SDK_KEY`
+- `LD_API_AUTH`
 
-When changes are pushed to the `main` branch, the workflow will:
-- Check out the repository
-- Set up Node.js (version 16.x)
-- Install dependencies using `npm install`
-- Run tests (if available)
-- Start the application using `npm start`
-
-Customize the deployment step as needed for your hosting environment.
+### Manual Deployment
+To deploy manually:
+1. Clone the repository
+2. Create a .env file with required variables
+3. Run `npm install`
+4. Run `npm start`
 
 ## License
 
