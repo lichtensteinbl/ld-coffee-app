@@ -142,10 +142,8 @@ app.post("/api/toggle-experimentation-flag", async (req, res) => {
 
 app.post("/api/toggle-membership-flag", async (req, res) => {
   const { projectKey, featureFlagKey, value } = req.body
-  console.log(`Toggling ${featureFlagKey} to ${value}`)
+
   try {
-    // Ensure the environment id here matches your actual LaunchDarkly environment
-    const environmentId = "production"
     const url = `https://app.launchdarkly.com/api/v2/flags/${projectKey}/${featureFlagKey}`
     const response = await axios.patch(
       url,
@@ -159,7 +157,7 @@ app.post("/api/toggle-membership-flag", async (req, res) => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "api-bcd8e385-c2db-4e16-9a03-3f85e0eabcb9",
+          Authorization: API_Auth,
         },
       },
     )
@@ -170,6 +168,7 @@ app.post("/api/toggle-membership-flag", async (req, res) => {
     res.status(500).json({ message: "Failed to toggle feature flag" })
   }
 })
+
 
 app.post("/api/toggle-experimentation-flag", async (req, res) => {
   const { projectKey, featureFlagKey, value } = req.body
