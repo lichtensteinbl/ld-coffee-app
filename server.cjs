@@ -1,20 +1,9 @@
-import express from "express";
-import dotenv from "dotenv";
-dotenv.config();
-
-// Set up EJS as the templating engine
-const app = express();
-app.set("view engine", "ejs");
-app.set("views", "./views");
-
-// Serve static files
-app.use(express.static("public"));
-
 require('dotenv').config()  // Load environment variables from .env
 
 // This file is the entry point for the Coffee Shop app.
 // It is deployed automatically via GitHub Actions using the workflow in .github/workflows/deploy.yml
 
+const express = require("express")
 const bodyParser = require("body-parser")
 const ld = require("@launchdarkly/node-server-sdk")
 const { initAi } = require("@launchdarkly/server-sdk-ai")
@@ -22,11 +11,13 @@ const axios = require("axios")
 const SDK_Key = process.env.LD_SERVER_SDK_KEY // LaunchDarkly server SDK key
 const API_Auth = process.env.LD_API_AUTH // LaunchDarkly API key
 const ENVIROMENT_KEY = process.env.LD_ENVIRONMENT_KEY // LaunchDarkly environment key
-
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY // OpenAI API key
+const app = express()
 const port = process.env.PORT 
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static("public"))
 
 const client = ld.init(SDK_Key)
 
@@ -72,7 +63,7 @@ async function aiConfigs(req, res, ldmessage) {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer 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`, // Replace with your actual API key
+          Authorization: OPENAI_API_KEY // Replace with your actual API key
         },
       },
     )
@@ -293,14 +284,6 @@ app.get("/api/health", (req, res) => {
   console.log("Health check received")
   res.status(200).json({ message: "Server is running" })
 })
-
-// Example route to render the index template
-app.get("/", (req, res) => {
-  res.render("index", {
-    LD_JWPLAYER_LIB_URL: process.env.LD_JWPLAYER_LIB_URL,
-    LD_JWPLAYER_REWARDS_URL: process.env.LD_JWPLAYER_REWARDS_URL,
-  });
-});
 
 // Start the server
 const server = app.listen(process.env.PORT || port, () => {
