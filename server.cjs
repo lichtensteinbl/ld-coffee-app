@@ -152,7 +152,7 @@ app.post("/api/toggle-membership-flag", async (req, res) => {
       [
         {
           op: "replace",
-          path: `/environments/${environmentId}/on`,
+          path: `/environments/production/on`,
           value: value,
         },
       ],
