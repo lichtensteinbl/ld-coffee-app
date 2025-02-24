@@ -1,28 +1,18 @@
 import { initialize } from 'launchdarkly-js-client-sdk';
-// ================================
-// Main Application Logic (app.js)
-// --------------------------------
-// This file is the primary entry point for the Coffee Shop app.
-// It handles global state management such as:
-// - LaunchDarkly feature flag initialization and updates
-// - User authentication (login/logout) and storage management
-// - Dynamic product rendering and cart functionality
-// - UI updates (theme and notifications)
-// ================================
 
-const clientSideKey = "67bab894bffb5f0c01b78239";
+const clientSideKey = "67bab894bffb5f0c01b78239"
 const APIFlagKey = "release-new-api";
 const membershipFlagKey = "release-member-rewards";
 const experimentFlagKey = "release-branding-change";
 const bannerFlagKey = "release-banner"
 const projectKey = "coffee-app";
 
-// Context for feature flags, updated on user login.
+
 const context = {
   kind: "user",
   key: "placeholder",
   tier: "non-member",
-};
+}
 
 let currentUser = null
 let heroBanner;
@@ -32,8 +22,6 @@ let holidayDrinks;
 let badAPI; 
 let membershipRewards;
 
-// Function: videoSeek
-// Purpose: Loops the video after a certain position.
 function videoSeek() {
   let currentPos = jwplayer().getPosition();
   if (currentPos > 25) {
@@ -41,12 +29,10 @@ function videoSeek() {
   }
 }
 
-// Attach click handler on the site logo to reload the page.
-document.querySelector('.nav-bar h1').addEventListener("click", () => {
+document.querySelector('.nav-bar h1').addEventListener("click", function () {
   window.location.reload();
-});
+})
 
-// DOMContentLoaded: Setup initial event listeners and UI guards.
 document.addEventListener("DOMContentLoaded", function () {
   const elements = document.querySelectorAll('.login-btn, .nav-bar h1, .add-to-cart-btn, .cart-btn:not(#cartButtonMobile), .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop');
   elements.forEach(element => {
@@ -299,11 +285,7 @@ window.onload = () => {
   }
 }
 
-// ================================
-// Authentication Functions
-// signIn, logout, updateUser and updateLoginUI manage user authentication,
-// flag identification via LaunchDarkly, and UI adjustments.
-// ================================
+
 
 function updateUser(username) {
   context.tier = "member"
@@ -658,7 +640,7 @@ async function toggleFeatureFlag(apiEndpoint, projectKey, featureFlagKey, newVal
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        projectKey: projectKey,
+        projectKey: 'coffee-app',
         featureFlagKey: featureFlagKey,
         value: newValue
       }),
@@ -772,6 +754,14 @@ function clearCart() {
   }
 }
 
+/*
+function callBadApi(){
+document.getElementById("bad-api-flag").addEventListener("click", async () => {
+  const newFlagVal = !badAPI
+  await toggleFeatureFlag("/api/toggle-bad-api", projectKey, "release-new-api", value);
+  
+});
+}*/
 
 
 function callBadApi(value) {
@@ -784,7 +774,7 @@ function callBadApi(value) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        projectKey: projectKey,
+        projectKey: "coffee-app",
         featureFlagKey: "release-new-api",
         value: value, // Use the toggled value
       }),
