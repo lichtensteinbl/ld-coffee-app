@@ -655,11 +655,19 @@ async function toggleFeatureFlag(apiEndpoint, projectKey, featureFlagKey, newVal
     if (statusMessage) statusMessage.textContent = `Error: ${error.message}`;
   }
 }
-
+/*
 
 document.getElementById("rewards-flag").addEventListener("click", async () => {
   const newFlagVal = !(membershipRewards === "true");
   await toggleFeatureFlag("/api/toggle-bad-api", projectKey, 'release-new-api', newFlagVal);
+});*/
+
+document.getElementById("rewards-flag").addEventListener("click", async () => {
+  let newFlagVal = true;
+  if(branding === "Red") {
+    newFlagVal = false;
+  }
+  await toggleFeatureFlag("/api/toggle-experimentation-flag", projectKey, "release-branding-change", newFlagVal);
 });
 
 document.getElementById("experimentFlag").addEventListener("click", async () => {
