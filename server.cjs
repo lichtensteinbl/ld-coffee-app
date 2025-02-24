@@ -8,12 +8,12 @@ const bodyParser = require("body-parser")
 const ld = require("@launchdarkly/node-server-sdk")
 const { initAi } = require("@launchdarkly/server-sdk-ai")
 const axios = require("axios")
-const SDK_Key = process.env.LD_SERVER_SDK_KEY // LaunchDarkly server SDK key
-const API_Auth = process.env.LD_API_AUTH // LaunchDarkly API key
-const ENVIROMENT_KEY = process.env.LD_ENVIRONMENT_KEY // LaunchDarkly environment key
+const SDK_Key = "sdk-7dd12d51-99e0-457d-852f-51404a3d7378"// LaunchDarkly server SDK key
+const API_Auth = "api-bcd8e385-c2db-4e16-9a03-3f85e0eabcb9" // LaunchDarkly API key
+const ENVIROMENT_KEY = "production" // LaunchDarkly environment key
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY // OpenAI API key
 const app = express()
-const port = process.env.PORT 
+const port = 4004
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
