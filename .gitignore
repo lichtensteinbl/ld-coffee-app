@@ -1,16 +1,16 @@
-# Dependencies
-#node_modules/
-#dist/
+ Dependencies
+node_modules/
+dist/
 
-# Environment variables
-#.env
+ Environment variables
+.env
 
-# System files
-#.DS_Store
+ System files
+.DS_Store
 
-# Logs
-#*.log
-#npm-debug.log*
+ Logs
+*.log
+npm-debug.log*
 
-# Build files
-#build/
+ Build files
+build/
