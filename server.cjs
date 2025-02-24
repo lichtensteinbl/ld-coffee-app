@@ -159,7 +159,7 @@ app.post("/api/toggle-membership-flag", async (req, res) => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: API_Auth,
+          Authorization: "api-bcd8e385-c2db-4e16-9a03-3f85e0eabcb9",
         },
       },
     )
