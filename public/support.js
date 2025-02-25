@@ -1,23 +1,10 @@
-// ================================
-// Support Chat and Configuration Logic (support.js)
-// --------------------------------
-// This file manages the support chat functionality. It is responsible for:
-// - Sending user messages and fetching bot responses
-// - Rendering chat bubbles and applying visual styles
-// - Handling configuration sliders (temperature and language selection)
-// - Managing QR modal toggling and notifications for support interactions
-// ================================
-const coffeeBotFlagKey = process.env.LD_COFFEE_BOT_FLAG || "coffee-bot";
-
 const chatBox = document.getElementById('chatBox');
 const chatInput = document.getElementById('chatInput');
 
-// Access slider values for configuration
+// Access slider values
 const temperatureSlider = document.getElementById('temperatureSlider');
 const tokensSlider = document.getElementById('tokensSlider');
 
-// Function: sendMessage
-// Send a message from the user and then fetch a bot response.
 function sendMessage() {
     const message = chatInput.value.trim();
     if (message) {
@@ -29,31 +16,27 @@ function sendMessage() {
 
 document.querySelector('.nav-bar h1').style.display = 'block';
 
-// Helper: applyGreenColorScheme
-// Applies the green color scheme to various UI elements.
 function applyGreenColorScheme() {
     const logo = document.querySelector('.nav-bar h1');
-    const greenElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn, #cartCountMobile, #cartCountDesktop');
+    const greenElements = document.querySelectorAll('.login-btn, .add-to-cart-btn, .cart-btn cartButtonMobile, .cart-btn #cartCountMobile, .cart-btn #cartCountDesktop');
     if (logo) {
         logo.style.fontFamily = 'Pacifico, cursive';
         logo.style.color = '#006241'; // Green color
-        logo.style.display = 'block';
+        logo.style.display = display = 'block';
     }
     greenElements.forEach(element => {
         element.style.backgroundColor = '#006241'; // Green background
         element.style.color = '#fff'; // Ensure text is white
         logo.style.font = "24px Pacifico, cursive";
-        logo.style.display = 'block';
+        logo.style.display = display = 'block';
     });
 }
 
 client.on('ready', () => {
-    coffeeBotResponse = client.variation(coffeeBotFlagKeyß, context, false);
+    coffeeBotResponse = client.variation('coffee-bot', context, false);
     console.log(coffeeBotResponse)
 });
 
-// Function: addMessage
-// Purpose: Add a chat bubble to the chatBox from the user or bot.
 function addMessage(sender, message) {
     const messageElement = document.createElement('div');
     messageElement.className = `chat-message ${sender}`;
@@ -78,14 +61,12 @@ function addMessage(sender, message) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Initialize support chat on window load.
+// Initial chatbot message
 window.onload = function() {
     addMessage('bot', 'How can I help you today?');
     applyGreenColorScheme();
 };
 
-// Async function: getBotResponse
-// Fetches the chatbot response from the server.
 async function getBotResponse(message) {
     try {
         const response = await fetch('/api/chatbot', {
@@ -104,7 +85,7 @@ async function getBotResponse(message) {
     }
 }
 
-// Toggle QR Modal visibility.
+// Toggle QR Code Modal
 function toggleQRModal() {
     const qrModal = document.getElementById('qrModal');
     qrModal.style.display = qrModal.style.display === 'block' ? 'none' : 'block';
@@ -129,11 +110,10 @@ window.onclick = function(event) {
     }
 }
 
-// Config Button: Attach event handler for sending configuration settings.
 document.getElementById('selectConfig').addEventListener('click', async () => {
     const temperature = document.getElementById('temperatureValue').textContent.toLowerCase();
     const tokens = document.getElementById('tokensValue').textContent.toLowerCase();
-    alert('Selected configuration: ' + temperature + ' temperature and ' + tokens);
+    alert('Config Set');
 
     try {
         // Make the API call to your server-side endpoint
@@ -157,54 +137,9 @@ document.getElementById('selectConfig').addEventListener('click', async () => {
     }
 });
 
-// Additional helper functions for token and temperature updates.
-function updateTokensValue(value) {
-    const tokensText = value == 1 ? 'English' : 'Spanish';
-    document.getElementById('tokensValue').textContent = tokensText;
-}
 
-function toggleNav() {
-    const navLinks = document.getElementById('navLinks');
-    navLinks.classList.toggle('show');
-}
 
-function closeLoginDropdownMobile() {
-    const dropdownMobile = document.getElementById('loginDropdownMobile');
-    dropdownMobile.style.display = 'none';
-}
 
-function updateTemperatureValue(value) {
-    const temperatureText = value == 1 ? 'Low' : value == 2 ? 'High' : '';
-    document.getElementById('temperatureValue').textContent = temperatureText;
-}
 
-function selectConfig() {
-    const temperature = document.getElementById('temperatureValue').textContent;
-    const tokens = document.getElementById('tokensValue').textContent;
-}
 
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelector('.hamburger').addEventListener('click', toggleNav);
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', toggleNav);
-    });
-    document.querySelectorAll('.nav-item a').forEach(link => {
-        link.addEventListener('click', toggleNav);
-    });
-    document.querySelectorAll('.nav-item .toggle-switch input').forEach(input => {
-        input.addEventListener('click', toggleNav);
-    });
-});
 
-/* Global assignments */
-window.sendMessage = sendMessage;
-window.applyGreenColorScheme = applyGreenColorScheme;
-window.addMessage = addMessage;
-window.getBotResponse = getBotResponse;
-window.toggleQRModal = toggleQRModal;
-window.toggleLoginDropdownMobile = toggleLoginDropdownMobile;
-window.updateTokensValue = updateTokensValue;
-window.toggleNav = toggleNav;
-window.closeLoginDropdownMobile = closeLoginDropdownMobile;
-window.updateTemperatureValue = updateTemperatureValue;
-window.selectConfig = selectConfig;

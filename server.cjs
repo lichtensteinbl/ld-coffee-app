@@ -3,10 +3,11 @@ const bodyParser = require("body-parser")
 const ld = require("@launchdarkly/node-server-sdk")
 const { initAi } = require("@launchdarkly/server-sdk-ai")
 const axios = require("axios")
+const { default: OpenAI } = require("openai")
 const SDK_Key = "sdk-7dd12d51-99e0-457d-852f-51404a3d7378"
 const API_Auth = "api-bcd8e385-c2db-4e16-9a03-3f85e0eabcb9"
-const OPENAI_API_KEY = `Bearer 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`
-const ENVIROMENTS_ID = '';
+const OPENAI_API_KEY = `Bearer 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` // Replace with your actual OpenAI API key
+const ENVIROMENTS_ID = `/environments/production/on`;
 
 const app = express()
 const port = 4004
@@ -43,15 +44,12 @@ app.post("/api/chatbot-context", async (req, res) => {
 })
 
 async function aiConfigs(req, res, ldmessage) {
-  const { message } = req.body
-  //const { tokens } = context.tokens;
-
   try {
     const response = await axios.post(
       "https://api.openai.com/v1/chat/completions",
       {
         model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: ldmessage }], // Use the 'message' from the request body
+        messages: [{ role: "user", content: ldmessage }],
         max_tokens: 300,
       },
       {
@@ -59,15 +57,18 @@ async function aiConfigs(req, res, ldmessage) {
           "Content-Type": "application/json",
           Authorization: OPENAI_API_KEY,
         },
-      },
+      }
     )
 
     const botMessage = response.data.choices[0].message.content.trim()
-    console.log("this is the LD bot talking" + botMessage)
+    console.log("OpenAI response:", botMessage)
     res.json({ response: botMessage })
   } catch (error) {
-    console.error("Error:", error)
-    res.json({ response: "Sorry, I am having trouble understanding you right now." })
+    console.error("OpenAI API Error:", error.response?.data || error.message)
+    res.status(500).json({ 
+      response: "Sorry, I am having trouble connecting to the AI service.",
+      error: error.response?.data || error.message 
+    })
   }
 }
 
@@ -90,7 +91,7 @@ app.post("/api/toggle-feature-flag", async (req, res) => {
       [
         {
           op: "replace",
-          path: `/environments/production/on`,
+          path: ENVIROMENTS_ID,
           value: value,
         },
       ],
@@ -123,7 +124,7 @@ app.post("/api/toggle-experimentation-flag", async (req, res) => {
       [
         {
           op: "replace",
-          path: `/environments/production/on`,
+          path: ENVIROMENTS_ID,
           value: value,
         },
       ],
@@ -152,7 +153,7 @@ app.post("/api/toggle-membership-flag", async (req, res) => {
       [
         {
           op: "replace",
-          path: `/environments/production/on`,
+          path: ENVIROMENTS_ID,
           value: value,
         },
       ],
@@ -184,7 +185,7 @@ app.post("/api/toggle-experimentation-flag", async (req, res) => {
       [
         {
           op: "replace",
-          path: `/environments/production/on`,
+          path: ENVIROMENTS_ID,
           value: value,
         },
       ],
@@ -213,7 +214,7 @@ app.post("/api/toggle-bad-api", async (req, res) => {
       [
         {
           op: "replace",
-          path: `/environments/production/on`,
+          path: ENVIROMENTS_ID,
           value: value,
         },
       ],
@@ -238,8 +239,7 @@ async function initializeApp() {
     await client.waitForInitialization()
     console.log("*** SDK successfully initialized!")
 
-    // Start the guardian runner
-    await guardianRunner()
+  
 
     // Test a feature flag
     const ldBot = await client.variation("coffee-bot", context, false)
@@ -252,34 +252,7 @@ async function initializeApp() {
   }
 }
 
-// Guardian runner function
-async function guardianRunner() {
-  let i = 1
 
-  async function loop() {
-    if (i < 10) {
-      const newKey = randomKeyGenerator()
-      const newContext = {
-        kind: "user",
-        key: newKey,
-      }
-      //console.log('New context:', newContext);
-
-      try {
-        const test = await client.variation("release-new-product-api", newContext, false)
-        await client.track("error-count", newContext)
-        //console.log('Variation result:', test);
-      } catch (error) {
-        // console.error('Error in guardianRunner:', error);
-      }
-
-      i++
-      setTimeout(loop, 1000) // Increase delay to 1 second
-    }
-  }
-
-  loop()
-}
 
 // Helper function to generate random keys
 function randomKeyGenerator() {
